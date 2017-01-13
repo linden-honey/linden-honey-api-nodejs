@@ -1,35 +1,39 @@
 {
-    "name": "linden-honey-rest-api",
-    "version": "1.0.0",
-    "description": "REST API for the best quotes of Egor Letov",
-    "main": "index.js",
-    "dependencies": {
-        "restify": "^4.3.0"
-    },
-    "devDependencies": {
-        "eslint": "^3.13.1"
-    },
-    "scripts": {
-        "start": "node index.js",
-        "debug": "node --inspect index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/alebabai/linden-honey-rest-api.git"
-    },
-    "keywords": [
-        "linden honey",
-        "node",
-        "rest",
-        "api",
-        "letov",
-        "grob"
-    ],
-    "author": "Alexander Babai",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/alebabai/linden-honey-rest-api/issues"
-    },
-    "homepage": "https://github.com/alebabai/linden-honey-rest-api"
+  "name": "linden-honey",
+  "version": "1.0.0",
+  "description": "REST API for the best quotes of Egor Letov",
+  "main": "index.js",
+  "dependencies": {
+    "restify": "^4.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "eslint": "^3.13.1"
+  },
+  "scripts": {
+    "build": "babel src/ -d .build/",
+    "cbuild": "babel -w src/ -d .build/",
+    "start": "npm run build && node .build/index.js",
+    "debug": "npm run build && node --inspect .build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/alebabai/linden-honey.git"
+  },
+  "keywords": [
+    "linden honey",
+    "node",
+    "rest",
+    "api",
+    "letov",
+    "grob"
+  ],
+  "author": "Alexander Babai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alebabai/linden-honey/issues"
+  },
+  "homepage": "https://github.com/alebabai/linden-honey"
 }
