@@ -4,11 +4,12 @@
   "description": "REST API for the best quotes of Egor Letov",
   "main": "index.js",
   "dependencies": {
+    "cheerio": "^0.22.0",
+    "node-fetch": "^2.0.0-alpha.1",
     "restify": "^4.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
-    "babel-node-debug": "^2.0.0",
     "babel-preset-latest": "^6.16.0",
     "eslint": "^3.13.1"
   },
