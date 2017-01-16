@@ -9,15 +9,11 @@
     "restify": "^4.3.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-latest": "^6.16.0",
     "eslint": "^3.13.1"
   },
   "scripts": {
-    "build": "babel src/ -d .build/",
-    "cbuild": "babel -w src/ -d .build/",
-    "start": "npm run build && node .build/index.js",
-    "debug": "npm run build && node --inspect .build/index.js",
+    "start": "node src/index.js",
+    "debug": "node --inspect src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

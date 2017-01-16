@@ -1,6 +1,6 @@
-import restify from 'restify'
-import api from './lib/api'
-import * as constants from './lib/util/path-constants'
+const restify = require('restify')
+const api = require('./lib/api')
+const constants = require('./lib/util/path-constants')
 
 const server = restify.createServer({name: 'linden-honey', version: '1.0.0'})
 
