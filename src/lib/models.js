@@ -18,9 +18,16 @@ export class Song {
 }
 
 export class SongMeta {
-    constructor(author, album, text) {
+    constructor(title, author, album, text) {
+        this.title = title
         this.author = author
         this.album = album
         this.text = text
+    }
+}
+
+export class Verse {
+    constructor(rows) {
+        this.rows = rows
     }
 }
