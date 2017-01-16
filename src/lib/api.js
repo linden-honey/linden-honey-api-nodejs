@@ -3,8 +3,18 @@ const cheerio = require('cheerio')
 const { Song, SongMeta, Quote } = require('./models')
 const constants = require('./util/source-constants')
 
+const checkResponse = res => {
+    const error = {
+        message: 'Http Error happens',
+        body: '',
+        statusCode: res.status
+    }
+    return !res.ok ? Promise.reject(error) : res
+}
+
 const fetchAllSongs = () => {
     return fetch(constants.TEXTS_RESOURCE_URL)
+                .then(checkResponse)
                 .then(res => res.textConverted())
                 .then(html => cheerio.load(html))
                 .then($ => $('#abc_list li a')
@@ -20,11 +30,28 @@ const fetchAllSongs = () => {
 const fetchRandomSongMeta = () => {
     return fetchAllSongs()
             .then(songs => songs[Math.floor(Math.random() * songs.length)])
-            .then(song => fetchSongMeta(song.id))
+            .then(song => fetchSongMetaById(song.id))
 }
 
-const fetchSongMeta = songId => {
-    return fetch(constants.SONG_PRINT_URL(songId))
+const fetchSongById = id => {
+    return fetchAllSongs()
+                .then(songs => {
+                    const result = songs.filter(song => song.id === id)
+                    if(result.length === 0) {
+                        return Promise.reject({
+                            message: 'Resource not found',
+                            body: '',
+                            statusCode: 404
+                        })
+                    }
+                    return result[0]
+                })
+}
+
+const fetchSongMetaById = id => {
+    return fetchSongById(id)
+                .then(song => fetch(constants.SONG_PRINT_URL(song.id)))
+                .then(checkResponse)
                 .then(res => res.textConverted())
                 .then(html => cheerio.load(html))
                 .then($ => {
@@ -45,7 +72,7 @@ const fetchSongMeta = songId => {
 
 const fetchAllSongsMeta = () => {
     return fetchAllSongs().then(songs => {
-        const promises = songs.map(song => song.getMeta())
+        const promises = songs.map(song => fetchSongMetaById(song.id))
         return Promise.all(promises)
     })
 }
@@ -61,7 +88,7 @@ const fetchRandomQuote = () => {
 module.exports = {
     getSongs: fetchAllSongs,
     getSongsMeta: fetchAllSongsMeta,
-    getSongMeta: fetchSongMeta,
+    getSongMeta: fetchSongMetaById,
     getRandomSongMeta: fetchRandomSongMeta,
     getQuotes: fetchAllQuotes,
     getRandomQuote: fetchRandomQuote
