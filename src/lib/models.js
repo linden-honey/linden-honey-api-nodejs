@@ -25,9 +25,3 @@ export class SongMeta {
         this.text = text
     }
 }
-
-export class Verse {
-    constructor(rows) {
-        this.rows = rows
-    }
-}

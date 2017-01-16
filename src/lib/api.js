@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import cheerio from 'cheerio'
-import {Song, SongMeta, Quote, Verse} from './models'
+import {Song, SongMeta, Quote} from './models'
 import * as constants from './util/source-constants'
 
 const fetchAllSongs = () => {
@@ -36,12 +36,9 @@ const fetchSongMeta = songId => {
                     const text = $($meta.get(2))
                                       .html()
                                       .split(/\<br\>\s*\<br\>/g)
-                                      .map(verse => {
-                                          const rows = verse.split('<br>')
-                                                            .map(row => row.trim())
-                                                            .map(row => row.replace(/\s+/g,' '))
-                                          return new Verse(rows)
-                                      })
+                                      .map(verse => verse.split('<br>')
+                                                         .map(row => row.trim())
+                                                         .map(row => row.replace(/\s+/g,' ')))
                     return new SongMeta(title, author, album, text)
                 })
 }
