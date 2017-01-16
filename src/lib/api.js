@@ -1,7 +1,7 @@
-import fetch from 'node-fetch'
-import cheerio from 'cheerio'
-import {Song, SongMeta, Quote} from './models'
-import * as constants from './util/source-constants'
+const fetch = require('node-fetch')
+const cheerio = require('cheerio')
+const { Song, SongMeta, Quote } = require('./models')
+const constants = require('./util/source-constants')
 
 const fetchAllSongs = () => {
     return fetch(constants.TEXTS_RESOURCE_URL)
@@ -20,7 +20,7 @@ const fetchAllSongs = () => {
 const fetchRandomSongMeta = () => {
     return fetchAllSongs()
             .then(songs => songs[Math.floor(Math.random() * songs.length)])
-            .then(song => song.getMeta())
+            .then(song => fetchSongMeta(song.id))
 }
 
 const fetchSongMeta = songId => {
@@ -58,7 +58,7 @@ const fetchRandomQuote = () => {
 
 }
 
-const api = {
+module.exports = {
     getSongs: fetchAllSongs,
     getSongsMeta: fetchAllSongsMeta,
     getSongMeta: fetchSongMeta,
@@ -66,5 +66,3 @@ const api = {
     getQuotes: fetchAllQuotes,
     getRandomQuote: fetchRandomQuote
 }
-
-export default api
