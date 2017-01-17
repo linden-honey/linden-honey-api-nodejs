@@ -1,21 +1,25 @@
-exports.Quote = class Quote {
+class Quote {
     constructor(phrase) {
         this.phrase = phrase
     }
 }
 
-exports.Song = class Song {
-    constructor(title, id) {
-        this.title = title
+class Song {
+    constructor(id, title) {
         this.id = id
+        this.title = title
     }
 }
 
-exports.SongMeta = class SongMeta {
-    constructor(title, author, album, text) {
-        this.title = title
-        this.author = author
-        this.album = album
-        this.text = text
+class SongMeta extends Song {
+    constructor(options) {
+        super(options.id, options.title)
+        this.author = options.author
+        this.album = options.album
+        this.text = options.text
     }
 }
+
+exports.Quote = Quote
+exports.Song = Song
+exports.SongMeta = SongMeta

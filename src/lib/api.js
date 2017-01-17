@@ -22,7 +22,7 @@ const fetchAllSongs = () => {
                     const $link = $(link)
                     const path = $link.attr('href')
                     const id = path.substring(path.lastIndexOf('/') + 1, path.indexOf('.'))
-                    return new Song($link.text(), id)
+                    return new Song(id, $link.text())
                 })
                 .toArray())
 }
@@ -66,7 +66,13 @@ const fetchSongMetaById = id => {
                                       .map(verse => verse.split('<br>')
                                                          .map(row => row.trim())
                                                          .map(row => row.replace(/\s+/g,' ')))
-                    return new SongMeta(title, author, album, text)
+                    return new SongMeta({
+                        id: id,
+                        title: title,
+                        author: author,
+                        album: album,
+                        text: text
+                    })
                 })
 }
 
