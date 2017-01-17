@@ -25,23 +25,9 @@ server.get(constants.API_SONGS_RANDOM, (req, res, next) => {
     return next()
 })
 
-server.get(constants.API_SONGS_ALL, (req, res, next) => {
-    api.getSongsMeta()
-       .then(songsMeta => res.send(songsMeta))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
-
 server.get(`${constants.API_SONGS}/:id`, (req, res, next) => {
     api.getSongMeta(req.params.id)
        .then(meta => res.send(meta))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
-
-server.get(constants.API_QUOTES, (req, res, next) => {
-    api.getQuotes()
-       .then(quotes => res.send(quotes))
        .catch(err => errorHandler(res, err))
     return next()
 })

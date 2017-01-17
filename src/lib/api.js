@@ -1,7 +1,6 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
-const StreamJS = require('streamjs')
-const { Song, SongMeta, Quote } = require('./models')
+const { Song, SongMeta, Quote, Verse, Text } = require('./models')
 const constants = require('./util/source-constants')
 
 const getRandomElement = array => array[Math.floor(Math.random() * array.length)]
@@ -54,14 +53,20 @@ const fetchSongMetaById = id => {
                     $._options.decodeEntities = false
                     const title = $('h2').text()
                     const $meta = $('p')
+                    const unknownAlbum = $meta.length === 2
+                    const textSelector = unknownAlbum ? 1 : 2
                     const author = $($meta.get(0)).text().split(': ')[1]
-                    const album = $($meta.get(1)).text().split(': ')[1]
-                    const text = $($meta.get(2))
-                                      .html()
-                                      .split(/\<br\>\s*\<br\>/g)
-                                      .map(verse => verse.split('<br>')
-                                                         .map(row => row.trim())
-                                                         .map(row => row.replace(/\s+/g,' ')))
+                    const album = unknownAlbum ? 'неизвестен' : $($meta.get(1)).text().split(': ')[1]
+                    const verses = $($meta.get(textSelector))
+                                    .html()
+                                    .split(/\<br\>\s*\<br\>/g)
+                                    .map(verse => {
+                                        const quotes = verse.split('<br>')
+                                                            .map(row => row.trim().replace(/\s+/g,' '))
+                                                            .map(phrase => new Quote(phrase))
+                                        return new Verse(quotes)
+                                    })
+                    const text = new Text(verses)
                     return new SongMeta({
                         id: id,
                         title: title,
@@ -72,35 +77,17 @@ const fetchSongMetaById = id => {
                 })
 }
 
-const fetchAllSongsMeta = () => {
-    return fetchAllSongs().then(songs => {
-        const promises = songs.map(song => fetchSongMetaById(song.id))
-        return Promise.all(promises)
-    })
-}
-
-const fetchAllQuotes = () => {
-    return fetchAllSongsMeta()
-                .then(songsMeta => StreamJS.of(songsMeta)
-                                           .flatMap(meta => StreamJS.of(meta.text))
-                                           .flatMap(verse => StreamJS.of(verse))
-                                           .map(phrase => new Quote(phrase))
-                                           .toArray())
-}
-
 const fetchRandomQuote = () => {
     return fetchRandomSongMeta().then(meta => {
-        const verse = getRandomElement(meta.text)
-        const phrase = getRandomElement(verse)
-        return new Quote(phrase)
+        const verse = getRandomElement(meta.text.verses)
+        const quote = getRandomElement(verse.quotes)
+        return quote
     })
 }
 
 module.exports = {
     getSongs: fetchAllSongs,
-    getSongsMeta: fetchAllSongsMeta,
     getSongMeta: fetchSongMetaById,
     getRandomSongMeta: fetchRandomSongMeta,
-    getQuotes: fetchAllQuotes,
     getRandomQuote: fetchRandomQuote
 }
