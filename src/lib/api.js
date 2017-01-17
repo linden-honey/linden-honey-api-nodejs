@@ -1,7 +1,10 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
+const StreamJS = require('streamjs')
 const { Song, SongMeta, Quote } = require('./models')
 const constants = require('./util/source-constants')
+
+const getRandomElement = array => array[Math.floor(Math.random() * array.length)]
 
 const checkResponse = res => {
     const error = {
@@ -29,22 +32,15 @@ const fetchAllSongs = () => {
 
 const fetchRandomSongMeta = () => {
     return fetchAllSongs()
-            .then(songs => songs[Math.floor(Math.random() * songs.length)])
-            .then(song => fetchSongMetaById(song.id))
+                .then(songs => getRandomElement(songs))
+                .then(song => fetchSongMetaById(song.id))
 }
 
 const fetchSongById = id => {
     return fetchAllSongs()
                 .then(songs => {
-                    const result = songs.filter(song => song.id === id)
-                    if(result.length === 0) {
-                        return Promise.reject({
-                            message: 'Resource not found',
-                            body: '',
-                            statusCode: 404
-                        })
-                    }
-                    return result[0]
+                    const song = songs.find(song => song.id === id)
+                    return song || Promise.reject({message: 'Resource not found', statusCode: 404})
                 })
 }
 
@@ -84,11 +80,20 @@ const fetchAllSongsMeta = () => {
 }
 
 const fetchAllQuotes = () => {
-
+    return fetchAllSongsMeta()
+                .then(songsMeta => StreamJS.of(songsMeta)
+                                           .flatMap(meta => StreamJS.of(meta.text))
+                                           .flatMap(verse => StreamJS.of(verse))
+                                           .map(phrase => new Quote(phrase))
+                                           .toArray())
 }
 
 const fetchRandomQuote = () => {
-
+    return fetchRandomSongMeta().then(meta => {
+        const verse = getRandomElement(meta.text)
+        const phrase = getRandomElement(verse)
+        return new Quote(phrase)
+    })
 }
 
 module.exports = {

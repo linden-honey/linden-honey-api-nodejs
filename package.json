@@ -6,7 +6,8 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "node-fetch": "^2.0.0-alpha.1",
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "streamjs": "^1.6.4"
   },
   "devDependencies": {
     "eslint": "^3.13.1"

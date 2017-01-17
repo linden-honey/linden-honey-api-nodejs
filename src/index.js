@@ -47,6 +47,9 @@ server.get(constants.API_QUOTES, (req, res, next) => {
 })
 
 server.get(constants.API_QUOTES_RANDOM, (req, res, next) => {
+    api.getRandomQuote()
+       .then(quote => res.send(quote))
+       .catch(err => errorHandler(res, err))
     return next()
 })
 
