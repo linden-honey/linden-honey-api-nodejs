@@ -1,3 +1,4 @@
+const ROOT = '/'
 const API = '/api'
 const API_SONGS = `${API}/songs`
 const API_SONGS_ALL = `${API_SONGS}/all`
@@ -6,6 +7,7 @@ const API_QUOTES = `${API}/quotes`
 const API_QUOTES_RANDOM = `${API_QUOTES}/random`
 
 module.exports = Object.freeze({
+    ROOT: ROOT,
     API: API,
     API_SONGS: API_SONGS,
     API_SONGS_ALL: API_SONGS_ALL,

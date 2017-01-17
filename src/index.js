@@ -11,6 +11,12 @@ const errorHandler = (res, err) => {
 
 const server = restify.createServer({name: 'linden-honey', version: '1.0.0'})
 
+server.get(constants.ROOT, (req, res, next) => {
+    const welcomeString = "Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану..."
+    res.end(welcomeString)
+    return next()
+})
+
 server.get(constants.API_SONGS, (req, res, next) => {
     api.getSongs()
        .then(songs => res.send(songs))
