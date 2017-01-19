@@ -14,4 +14,4 @@ module.exports = Object.freeze({
     API_SONGS_RANDOM: API_SONGS_RANDOM,
     API_QUOTES: API_QUOTES,
     API_QUOTES_RANDOM: API_QUOTES_RANDOM
-});
+})

@@ -1,6 +1,6 @@
 const restify = require('restify')
-const api = require('./lib/api')
-const constants = require('./lib/util/path-constants')
+const api = require('./utils/api')
+const constants = require('./utils/constants/path-constants')
 
 const errorHandler = (res, err) => {
     const error = Error.isPrototypeOf(err) ?
@@ -12,7 +12,7 @@ const errorHandler = (res, err) => {
 const server = restify.createServer({name: 'linden-honey', version: '1.0.0'})
 
 server.get(constants.ROOT, (req, res, next) => {
-    const welcomeString = "Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану..."
+    const welcomeString = 'Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану...'
     res.end(welcomeString)
     return next()
 })

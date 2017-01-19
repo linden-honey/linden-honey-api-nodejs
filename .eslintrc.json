@@ -8,20 +8,19 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-console": [
+            "off"
+        ],
         "indent": [
-            "error",
+            "warn",
             4
         ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
         "quotes": [
-            "error",
+            "warn",
             "single"
         ],
         "semi": [
-            "error",
+            "warn",
             "never"
         ]
     }

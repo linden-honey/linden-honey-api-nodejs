@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 const { Song, SongMeta, Quote, Verse, Text } = require('./models')
-const constants = require('./util/source-constants')
+const constants = require('./constants/source-constants')
 
 const getRandomElement = array => array[Math.floor(Math.random() * array.length)]
 
