@@ -22,6 +22,21 @@
         "semi": [
             "warn",
             "never"
+        ],
+        "no-undef": [
+            "error"
+        ],
+        "eqeqeq": [
+            "error",
+            "always", {
+                "null": "ignore"
+            }
+        ],
+        "space-before-blocks": [
+            "warn"
+        ],
+        "space-infix-ops": [
+            "warn"
         ]
     }
 }

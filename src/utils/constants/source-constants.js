@@ -5,7 +5,7 @@ const SONG_PRINT_URL = songId => {
 }
 
 module.exports = Object.freeze({
-    BASE_URL: BASE_URL,
-    TEXTS_RESOURCE_URL: TEXTS_RESOURCE_URL,
-    SONG_PRINT_URL: SONG_PRINT_URL
-});
+    BASE_URL,
+    TEXTS_RESOURCE_URL,
+    SONG_PRINT_URL
+})

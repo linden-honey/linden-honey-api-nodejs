@@ -49,6 +49,6 @@ const getSongMeta = html => {
 }
 
 module.exports = {
-    getSongs: getSongs,
-    getSongMeta: getSongMeta
+    getSongs,
+    getSongMeta
 }

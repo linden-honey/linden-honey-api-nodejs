@@ -1,12 +1,12 @@
 class Text {
-    constructor(verses) {
-        this.verses = verses
+    constructor(verses = []) {
+        this.verses = [...verses]
     }
 }
 
 class Verse {
-    constructor(quotes) {
-        this.quotes = quotes
+    constructor(quotes = []) {
+        this.quotes = [...quotes]
     }
 }
 

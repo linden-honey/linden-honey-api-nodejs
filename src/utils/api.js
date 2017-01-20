@@ -19,25 +19,31 @@ const getQuoteFromMeta = meta => {
     return getRandomElement(verse.quotes)
 }
 
-const fetchAllSongs = () => fetch(constants.TEXTS_RESOURCE_URL)
-                                .then(checkResponse)
-                                .then(res => res.textConverted())
-                                .then(parser.getSongs)
+const fetchAllSongs = () => (
+    fetch(constants.TEXTS_RESOURCE_URL)
+        .then(checkResponse)
+        .then(res => res.textConverted())
+        .then(parser.getSongs)
+)
 
 const fetchSongById = id => fetchAllSongs().then(songs => {
     const song = songs.find(song => song.id === id)
     return song || Promise.reject({message: 'Resource not found', statusCode: 404})
 })
 
-const fetchRandomSongMeta = () => fetchAllSongs()
-                                    .then(songs => getRandomElement(songs))
-                                    .then(song => fetchSongMetaById(song.id))
+const fetchRandomSongMeta = () =>  (
+    fetchAllSongs()
+        .then(songs => getRandomElement(songs))
+        .then(song => fetchSongMetaById(song.id))
+)
 
-const fetchSongMetaById = id => fetchSongById(id)
-                                    .then(song => fetch(constants.SONG_PRINT_URL(song.id)))
-                                    .then(checkResponse)
-                                    .then(res => res.textConverted())
-                                    .then(parser.getSongMeta)
+const fetchSongMetaById = id => (
+    fetchSongById(id)
+        .then(song => fetch(constants.SONG_PRINT_URL(song.id)))
+        .then(checkResponse)
+        .then(res => res.textConverted())
+        .then(parser.getSongMeta)
+)
 
 const fetchRandomQuote = () => fetchRandomSongMeta().then(getQuoteFromMeta)
 
