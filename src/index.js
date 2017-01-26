@@ -38,6 +38,13 @@ server.get(`${constants.API_SONGS}/:id`, (req, res, next) => {
     return next()
 })
 
+server.get(`${constants.API_SONGS}/:id/quotes/random`, (req, res, next) => {
+    api.getRandomQuoteFromSong(req.params.id)
+       .then(quote => res.send(quote))
+       .catch(err => errorHandler(res, err))
+    return next()
+})
+
 server.get(constants.API_QUOTES_RANDOM, (req, res, next) => {
     api.getRandomQuote()
        .then(quote => res.send(quote))

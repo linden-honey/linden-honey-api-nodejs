@@ -47,9 +47,12 @@ const fetchSongMetaById = id => (
 
 const fetchRandomQuote = () => fetchRandomSongMeta().then(getQuoteFromMeta)
 
+const fetchRandomQuoteBySongId = id => fetchSongMetaById(id).then(getQuoteFromMeta)
+
 module.exports = {
     getSongs: fetchAllSongs,
     getSongMeta: fetchSongMetaById,
     getRandomSongMeta: fetchRandomSongMeta,
-    getRandomQuote: fetchRandomQuote
+    getRandomQuote: fetchRandomQuote,
+    getRandomQuoteFromSong: fetchRandomQuoteBySongId
 }
