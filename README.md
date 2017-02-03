@@ -1,2 +1,2 @@
-# linden-honey-rest-api
-REST API for the best quotes of Egor Letov
+# Linden Honey
+REST API for the lyrics of Yegor Letov and his post-punk/psychedelic rock band Grazhdanskaya Oborona (Civil Defense)
