@@ -8,4 +8,4 @@ REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock ba
 
 [https://linden-honey.herokuapp.com](https://linden-honey.herokuapp.com)
 
-![](images/big_logo.jpg)
+![](images/logo_sq.jpg)
