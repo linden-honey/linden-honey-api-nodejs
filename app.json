@@ -2,6 +2,7 @@
     "name": "Linden Honey",
     "description": "REST API for the lyrics of Yegor Letov and his post-punk/psychedelic rock band Grazhdanskaya Oborona (Civil Defense)",
     "repository": "https://github.com/alebabai/linden-honey",
+    "logo": "https://raw.githubusercontent.com/alebabai/linden-honey/master/images/big_logo.jpg"
     "keywords": [
         "linden honey",
         "node",
