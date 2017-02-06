@@ -1,6 +1,9 @@
 {
     "app": {
         "name": "Linden Honey",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "messages": {
+            "welcome": "Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану..."
+        }
     }
 }

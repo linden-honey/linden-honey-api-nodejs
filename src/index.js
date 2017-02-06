@@ -16,8 +16,7 @@ const server = restify.createServer({
 })
 
 server.get(constants.ROOT, (req, res, next) => {
-    const welcomeString = 'Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану...'
-    res.end(welcomeString)
+    res.end(config.get('app:messages:welcome'))
     return next()
 })
 
