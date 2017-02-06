@@ -1,5 +1,6 @@
 const restify = require('restify')
 const api = require('./utils/api')
+const config = require('./utils/config')
 const constants = require('./utils/constants/path-constants')
 
 const errorHandler = (res, err) => {
@@ -9,7 +10,10 @@ const errorHandler = (res, err) => {
     res.send(error)
 }
 
-const server = restify.createServer({name: 'linden-honey', version: '1.0.0'})
+const server = restify.createServer({
+    name: config.get('app:name'),
+    version: config.get('app:version')
+})
 
 server.get(constants.ROOT, (req, res, next) => {
     const welcomeString = 'Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану...'
