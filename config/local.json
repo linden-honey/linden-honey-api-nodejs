@@ -1,9 +1,18 @@
 {
     "app": {
         "name": "Linden Honey",
+        "host": "localhost",
+        "port": 8080,
         "version": "1.0.0",
         "messages": {
             "welcome": "Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану..."
         }
+    },
+    "db": {
+        "dbName": "linden_honey_local",
+        "host": "localhost",
+        "port": 27017,
+        "user": "local",
+        "password": "local"
     }
 }
