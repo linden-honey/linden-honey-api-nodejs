@@ -8,7 +8,15 @@ nconf.argv()
          file:'config/local.json'
      })
 
-//TODO add required keys to prevent unexpected behaviour
-nconf.required([])
+nconf.required([
+    'app:name',
+    'app:host',
+    'app:port',
+    'db:dbName',
+    'db:host',
+    'db:port',
+    'db:user',
+    'db:password',
+])
 
 module.exports = nconf
