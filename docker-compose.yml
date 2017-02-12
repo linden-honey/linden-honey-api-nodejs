@@ -1,0 +1,36 @@
+version: "3.0"
+
+services:
+  app:
+    container_name: linden-honey-app
+    build: .
+    ports:
+     - "8080:8080"
+    networks:
+      - linden-honey-net
+    links:
+     - db
+    environment:
+     - app_host=app
+     - app_port=8080
+     - db_host=db
+     - db_port=27017
+     - db_dbName=linden_honey_local
+     - db_user=local
+     - db_pass=local
+  db:
+    container_name: linden-honey-mongodb
+    image: "mongo:latest"
+    expose:
+     - "27017"
+    networks:
+      - linden-honey-net
+    environment:
+     - MONGODB_USER=local
+     - MONGODB_PASS=local
+     - MONGODB_DATABASE=linden_honey_local
+    command: "--auth"
+
+networks:
+  linden-honey-net:
+    driver: bridge
