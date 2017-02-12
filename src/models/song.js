@@ -14,4 +14,4 @@ const Song = new Schema({
     }
 })
 
-exports.Song = mongoose.model('Song', Song)
+module.exports = mongoose.model('Song', Song)
