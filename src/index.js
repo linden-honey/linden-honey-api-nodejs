@@ -14,7 +14,9 @@ server.use(logger())
 
 server.use(route.get(constants.API_SONGS, songController.getAllSongs))
 server.use(route.get(constants.API_SONGS_RANDOM, songController.getRandomSong))
-server.use(route.get(`${constants.API_SONGS}/:id`, songController.getSong))
+server.use(route.get(`${constants.API_SONGS}/:id`, songController.getSongById))
+server.use(route.get(`${constants.API_SONGS}/:id/quotes/random`, songController.getRandomQuoteFromSong))
+server.use(route.get(constants.API_QUOTES_RANDOM, songController.getRandomQuote))
 
 server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
     db.init(config.get('db:config'))
