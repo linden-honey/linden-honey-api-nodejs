@@ -12,10 +12,12 @@ const server = module.exports = koa()
 server.name = config.get('app:name')
 server.use(logger())
 
-server.use(route.get(constants.API_SONGS, songController.findAll))
+server.use(route.get(constants.API_SONGS, songController.getAllSongs))
+server.use(route.get(`${constants.API_SONGS}/:id`, songController.getSong))
+server.use(route.get(constants.API_SONGS_RANDOM, songController.getRandomSong))
 
 server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
     db.init(config.get('db:config'))
       .then(() => !!config.get('db:migration:enabled') && migration.initData(config.get('db:migration:url')))
-    console.log('%s application started!', server.name)
+    console.log(`${server.name} application started!`)
 })

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 exports.init = (options = {}) => {
+    mongoose.Promise = Promise
     mongoose.connection.on('connected', () => {
         console.log(`Mongoose connected to ${mongoose.connection.host}:${mongoose.connection.port}`)
     })
