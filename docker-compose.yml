@@ -16,8 +16,8 @@ services:
      - db_host=db
      - db_port=27017
      - db_dbName=linden_honey_local
-     - db_user=local
-     - db_pass=local
+     - db_user=
+     - db_password=
   db:
     container_name: linden-honey-mongodb
     image: "mongo:latest"
@@ -25,11 +25,6 @@ services:
      - "27017"
     networks:
       - linden-honey-net
-    environment:
-     - MONGODB_USER=local
-     - MONGODB_PASS=local
-     - MONGODB_DATABASE=linden_honey_local
-    command: "--auth"
 
 networks:
   linden-honey-net:
