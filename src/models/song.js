@@ -7,7 +7,9 @@ const Song = new Schema({
     album: String,
     text: {
         verses: [{
+            _id: false,
             quotes: [{
+                _id: false,
                 phrase: String
             }]
         }]

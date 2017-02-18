@@ -1,12 +1,6 @@
 const mongoose = require('mongoose')
 
 exports.init = (options = {}) => {
-    const connectionURL = `mongodb://${options.host}:${options.port}/${options.dbName}`
-    mongoose.connect(connectionURL, {
-        user: options.user,
-        pass: options.password
-    })
-
     mongoose.connection.on('connected', () => {
         console.log(`Mongoose connected to ${mongoose.connection.host}:${mongoose.connection.port}`)
     })
@@ -26,5 +20,9 @@ exports.init = (options = {}) => {
         })
     })
 
-    return mongoose
+    const connectionURL = `mongodb://${options.host}:${options.port}/${options.dbName}`
+    return mongoose.connect(connectionURL, {
+        user: options.user,
+        pass: options.password
+    })
 }

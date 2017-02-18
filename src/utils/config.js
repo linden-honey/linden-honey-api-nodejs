@@ -12,11 +12,11 @@ nconf.required([
     'app:name',
     'app:host',
     'app:port',
-    'db:dbName',
-    'db:host',
-    'db:port',
-    'db:user',
-    'db:password',
+    'db:config:dbName',
+    'db:config:host',
+    'db:config:port',
+    'db:config:user',
+    'db:config:password'
 ])
 
 module.exports = nconf

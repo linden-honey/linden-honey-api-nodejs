@@ -9,10 +9,16 @@
         }
     },
     "db": {
-        "dbName": "linden_honey_local",
-        "host": "localhost",
-        "port": 27017,
-        "user": "local",
-        "password": "local"
+        "config": {
+            "dbName": "linden_honey_local",
+            "host": "localhost",
+            "port": 27017,
+            "user": null,
+            "password": null
+        },
+        "migration": {
+            "enabled": false,
+            "url": null
+        }
     }
 }
