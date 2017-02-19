@@ -1,6 +1,7 @@
 const koa = require('koa')
 const logger = require('koa-logger')
-const route = require('koa-route')
+const Router = require('koa-joi-router')
+const docs = require('koa-docs')
 
 const db = require('./utils/db')
 const migration = require('./utils/migration')
@@ -11,22 +12,49 @@ const verseController = require('./controllers/verse-controller')
 const songController = require('./controllers/song-controller')
 
 const server = module.exports = koa()
+const songsRouter = Router()
+const versesRouter = Router()
+const quotesRouter = Router()
+
+songsRouter.get(constants.API_SONGS, songController.getAllSongs)
+songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
+songsRouter.get(`${constants.API_SONGS}/:songId`, songController.getSongById)
+songsRouter.get(`${constants.API_SONGS}/:songId/quotes/random`, songController.getRandomQuoteFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses/random`, songController.getRandomVerseFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId/quotes/random`, songController.getRandomQuoteFromSongByVerseId)
+
+versesRouter.get(constants.API_VERSES_RANDOM, verseController.getRandomVerse)
+versesRouter.get(`${constants.API_VERSES}/:verseId`, verseController.getVerseById)
+versesRouter.get(`${constants.API_VERSES}/:verseId/quotes/random`, verseController.getRandomQuoteFromVerse)
+
+quotesRouter.get(constants.API_QUOTES_RANDOM, quoteController.getRandomQuote)
+quotesRouter.get(`${constants.API_QUOTES}/:quoteId`, quoteController.getQuoteById)
+
 server.name = config.get('app:name')
 server.use(logger())
-
-server.use(route.get(constants.API_SONGS, songController.getAllSongs))
-server.use(route.get(constants.API_SONGS_RANDOM, songController.getRandomSong))
-server.use(route.get(`${constants.API_SONGS}/:id`, songController.getSongById))
-server.use(route.get(`${constants.API_SONGS}/:id/quotes/random`, songController.getRandomQuoteFromSong))
-server.use(route.get(`${constants.API_SONGS}/:id/verses/random`, songController.getRandomVerseFromSong))
-server.use(route.get(`${constants.API_SONGS}/:id/verses/:id/quotes/random`, songController.getRandomQuoteFromSongByVerseId))
-
-server.use(route.get(constants.API_VERSES_RANDOM, verseController.getRandomVerse))
-server.use(route.get(`${constants.API_VERSES}/:id`, verseController.getVerseById))
-server.use(route.get(`${constants.API_VERSES}/:id/quotes/random`, verseController.getRandomQuoteFromVerse))
-
-server.use(route.get(constants.API_QUOTES_RANDOM, quoteController.getRandomQuote))
-server.use(route.get(`${constants.API_QUOTES}/:id`, quoteController.getQuoteById))
+server.use(songsRouter.middleware())
+server.use(versesRouter.middleware())
+server.use(quotesRouter.middleware())
+server.use(docs.get('/docs', {
+    title: config.get('docs:title'),
+    version: config.get('app:version'),
+    theme: config.get('docs:theme'),
+    routeHandlers: config.get('docs:routeHandlers'),
+    groups: [
+        {
+            groupName: config.get('docs:groups:songs:title'),
+            routes: songsRouter.routes
+        },
+        {
+            groupName: config.get('docs:groups:verses:title'),
+            routes: versesRouter.routes
+        },
+        {
+            groupName: config.get('docs:groups:quotes:title'),
+            routes: quotesRouter.routes
+        }
+    ]
+}))
 
 server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
     db.connect(config.get('db:config'))

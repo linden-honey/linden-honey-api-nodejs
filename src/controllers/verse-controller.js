@@ -11,8 +11,8 @@ const findVerseById = function * (id, fields) {
     return song && song.text.verses[0]
 }
 
-exports.getVerseById = function * (id) {
-    const verse = yield findVerseById(id, 'text')
+exports.getVerseById = function * () {
+    const verse = yield findVerseById(this.params.verseId, 'text')
     if (verse) {
         this.body = verse
     } else {
@@ -25,8 +25,8 @@ exports.getRandomVerse = function * () {
     this.body = song.text.getRandomVerse()
 }
 
-exports.getRandomQuoteFromVerse = function * (id) {
-    const verse = yield findVerseById(id, '-__v')
+exports.getRandomQuoteFromVerse = function * () {
+    const verse = yield findVerseById(this.params.verseId, '-__v')
     if (verse) {
         this.body = verse.getRandomQuote()
     } else {

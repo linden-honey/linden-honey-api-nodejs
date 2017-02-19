@@ -5,7 +5,7 @@ nconf.argv()
          separator: '_'
      })
      .file({
-         file:'config/local.json'
+         file:'config/default.json'
      })
 
 nconf.required([

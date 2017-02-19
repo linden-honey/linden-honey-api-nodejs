@@ -20,5 +20,21 @@
             "enabled": false,
             "url": null
         }
+    },
+    "docs": {
+        "title": "Linden Honey API description",
+        "theme": "lumen",
+        "routeHandlers": "disabled",
+        "groups": {
+            "songs": {
+                "title": "Songs API"
+            },
+            "verses": {
+                "title": "Verses API"
+            },
+            "quotes": {
+                "title": "Quotes API"
+            }
+        }
     }
 }

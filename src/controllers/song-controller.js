@@ -11,8 +11,8 @@ exports.getAllSongs = function * () {
     this.body = yield Song.find({}, '_id title')
 }
 
-exports.getSongById = function * (id) {
-    const song = yield findSongById(id, '-__v')
+exports.getSongById = function * () {
+    const song = yield findSongById(this.params.songId, '-__v')
     if (song) {
         this.body = song
     } else {
@@ -24,8 +24,8 @@ exports.getRandomSong = function * () {
     this.body = yield Song.findRandomSong({}, '-__v')
 }
 
-exports.getRandomQuoteFromSong = function * (id) {
-    const song = yield findSongById(id, '-__v')
+exports.getRandomQuoteFromSong = function * () {
+    const song = yield findSongById(this.params.songId, '-__v')
     if (song) {
         this.body = song.text.getRandomVerse().getRandomQuote()
     } else {
@@ -33,9 +33,9 @@ exports.getRandomQuoteFromSong = function * (id) {
     }
 }
 
-exports.getRandomQuoteFromSongByVerseId = function * (songId, verseId) {
-    const song = yield findSongById(songId, '-__v')
-    const verse = song && song.text.verses.find(verse => verse.id === verseId)
+exports.getRandomQuoteFromSongByVerseId = function * () {
+    const song = yield findSongById(this.params.songId, '-__v')
+    const verse = song && song.text.verses.find(verse => verse.id === this.params.verseId)
     if (song && verse) {
         this.body = verse.getRandomQuote()
     } else {
@@ -43,8 +43,8 @@ exports.getRandomQuoteFromSongByVerseId = function * (songId, verseId) {
     }
 }
 
-exports.getRandomVerseFromSong = function * (id) {
-    const song = yield findSongById(id, '-__v')
+exports.getRandomVerseFromSong = function * () {
+    const song = yield findSongById(this.params.songId, '-__v')
     if (song) {
         this.body = song.text.getRandomVerse()
     } else {
