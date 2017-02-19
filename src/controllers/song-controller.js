@@ -24,6 +24,15 @@ exports.getRandomSong = function * () {
     this.body = yield Song.findRandomSong({}, '-__v')
 }
 
+exports.getQuotesFromSong = function * () {
+    const song = yield findSongById(this.params.songId, '-__v')
+    if (song) {
+        this.body = [].concat(...song.text.verses.map(verse => verse.quotes))
+    } else {
+        this.throw(MSG_ERROR_NOT_FOUND, 404)
+    }
+}
+
 exports.getRandomQuoteFromSong = function * () {
     const song = yield findSongById(this.params.songId, '-__v')
     if (song) {
@@ -40,6 +49,15 @@ exports.getRandomQuoteFromSongByVerseId = function * () {
         this.body = verse.getRandomQuote()
     } else {
         this.throw(404)
+    }
+}
+
+exports.getVersesFromSong = function * () {
+    const song = yield findSongById(this.params.songId, '-__v')
+    if (song) {
+        this.body = song.text.verses
+    } else {
+        this.throw(MSG_ERROR_NOT_FOUND, 404)
     }
 }
 

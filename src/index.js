@@ -23,7 +23,9 @@ rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('app
 songsRouter.get(constants.API_SONGS, songController.getAllSongs)
 songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
 songsRouter.get(`${constants.API_SONGS}/:songId`, songController.getSongById)
+songsRouter.get(`${constants.API_SONGS}/:songId/quotes`, songController.getQuotesFromSong)
 songsRouter.get(`${constants.API_SONGS}/:songId/quotes/random`, songController.getRandomQuoteFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses`, songController.getVersesFromSong)
 songsRouter.get(`${constants.API_SONGS}/:songId/verses/random`, songController.getRandomVerseFromSong)
 songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId/quotes/random`, songController.getRandomQuoteFromSongByVerseId)
 
