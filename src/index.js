@@ -1,57 +1,70 @@
-const restify = require('restify')
-const api = require('./utils/api')
+const koa = require('koa')
+const logger = require('koa-logger')
+const Router = require('koa-joi-router')
+const docs = require('koa-docs')
+
+const db = require('./utils/db')
+const migration = require('./utils/migration')
+const config = require('./utils/config')
 const constants = require('./utils/constants/path-constants')
+const rootController = require('./controllers/root-controller')
+const quoteController = require('./controllers/quote-controller')
+const verseController = require('./controllers/verse-controller')
+const songController = require('./controllers/song-controller')
 
-const errorHandler = (res, err) => {
-    const error = Error.isPrototypeOf(err) ?
-                  restify.InternalServerError(err.message) :
-                  new restify.HttpError(err)
-    res.send(error)
-}
+const server = module.exports = koa()
+const rootRouter = Router()
+const songsRouter = Router()
+const versesRouter = Router()
+const quotesRouter = Router()
 
-const server = restify.createServer({name: 'linden-honey', version: '1.0.0'})
+rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('app:messages:welcome')))
 
-server.get(constants.ROOT, (req, res, next) => {
-    const welcomeString = 'Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану...'
-    res.end(welcomeString)
-    return next()
-})
+songsRouter.get(constants.API_SONGS, songController.getAllSongs)
+songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
+songsRouter.get(`${constants.API_SONGS}/:songId`, songController.getSongById)
+songsRouter.get(`${constants.API_SONGS}/:songId/quotes`, songController.getQuotesFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/quotes/random`, songController.getRandomQuoteFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses`, songController.getVersesFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses/random`, songController.getRandomVerseFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId/quotes/random`, songController.getRandomQuoteFromSongByVerseId)
 
-server.get(constants.API_SONGS, (req, res, next) => {
-    api.getSongs()
-       .then(songs => res.send(songs))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
+versesRouter.get(constants.API_VERSES_RANDOM, verseController.getRandomVerse)
+versesRouter.get(`${constants.API_VERSES}/:verseId`, verseController.getVerseById)
+versesRouter.get(`${constants.API_VERSES}/:verseId/quotes/random`, verseController.getRandomQuoteFromVerse)
 
-server.get(constants.API_SONGS_RANDOM, (req, res, next) => {
-    api.getRandomSongMeta()
-       .then(meta => res.send(meta))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
+quotesRouter.get(constants.API_QUOTES_RANDOM, quoteController.getRandomQuote)
+quotesRouter.get(`${constants.API_QUOTES}/:quoteId`, quoteController.getQuoteById)
 
-server.get(`${constants.API_SONGS}/:id`, (req, res, next) => {
-    api.getSongMeta(req.params.id)
-       .then(meta => res.send(meta))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
+server.name = config.get('app:name')
+server.use(logger())
+server.use(rootRouter.middleware())
+server.use(songsRouter.middleware())
+server.use(versesRouter.middleware())
+server.use(quotesRouter.middleware())
+server.use(docs.get('/docs', {
+    title: config.get('docs:title'),
+    version: config.get('app:version'),
+    theme: config.get('docs:theme'),
+    routeHandlers: config.get('docs:routeHandlers'),
+    groups: [
+        {
+            groupName: config.get('docs:groups:songs:title'),
+            routes: songsRouter.routes
+        },
+        {
+            groupName: config.get('docs:groups:verses:title'),
+            routes: versesRouter.routes
+        },
+        {
+            groupName: config.get('docs:groups:quotes:title'),
+            routes: quotesRouter.routes
+        }
+    ]
+}))
 
-server.get(`${constants.API_SONGS}/:id/quotes/random`, (req, res, next) => {
-    api.getRandomQuoteFromSong(req.params.id)
-       .then(quote => res.send(quote))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
-
-server.get(constants.API_QUOTES_RANDOM, (req, res, next) => {
-    api.getRandomQuote()
-       .then(quote => res.send(quote))
-       .catch(err => errorHandler(res, err))
-    return next()
-})
-
-server.listen(process.env.PORT || 8080, () => {
-    console.log('%s listening at %s', server.name, server.url)
+server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
+    db.connect(config.get('db:config'))
+      .then(() => config.get('db:migration:enabled') && migration.initData(config.get('db:migration:url')))
+    console.log(`${server.name} application started!`)
 })

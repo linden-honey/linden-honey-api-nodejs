@@ -1,0 +1,40 @@
+{
+    "app": {
+        "name": "Linden Honey",
+        "host": "localhost",
+        "port": 8080,
+        "version": "1.0.0",
+        "messages": {
+            "welcome": "Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану..."
+        }
+    },
+    "db": {
+        "config": {
+            "dbName": "linden_honey_local",
+            "host": "localhost",
+            "port": 27017,
+            "user": null,
+            "password": null
+        },
+        "migration": {
+            "enabled": false,
+            "url": null
+        }
+    },
+    "docs": {
+        "title": "Linden Honey API description",
+        "theme": "lumen",
+        "routeHandlers": "disabled",
+        "groups": {
+            "songs": {
+                "title": "Songs API"
+            },
+            "verses": {
+                "title": "Verses API"
+            },
+            "quotes": {
+                "title": "Quotes API"
+            }
+        }
+    }
+}
