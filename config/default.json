@@ -5,7 +5,7 @@
         "port": 8080,
         "version": "1.0.0",
         "messages": {
-            "welcome": "Welcome to the Linden Honey Server!\n\nPowered by Now and Node.js\n\n\n\nИ всё идёт по плану..."
+            "welcome": "Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану..."
         }
     },
     "db": {

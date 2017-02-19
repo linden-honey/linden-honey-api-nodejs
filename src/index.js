@@ -7,14 +7,18 @@ const db = require('./utils/db')
 const migration = require('./utils/migration')
 const config = require('./utils/config')
 const constants = require('./utils/constants/path-constants')
+const rootController = require('./controllers/root-controller')
 const quoteController = require('./controllers/quote-controller')
 const verseController = require('./controllers/verse-controller')
 const songController = require('./controllers/song-controller')
 
 const server = module.exports = koa()
+const rootRouter = Router()
 const songsRouter = Router()
 const versesRouter = Router()
 const quotesRouter = Router()
+
+rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('app:messages:welcome')))
 
 songsRouter.get(constants.API_SONGS, songController.getAllSongs)
 songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
@@ -32,6 +36,7 @@ quotesRouter.get(`${constants.API_QUOTES}/:quoteId`, quoteController.getQuoteByI
 
 server.name = config.get('app:name')
 server.use(logger())
+server.use(rootRouter.middleware())
 server.use(songsRouter.middleware())
 server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
