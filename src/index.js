@@ -4,7 +4,6 @@ const Router = require('koa-joi-router')
 const docs = require('koa-docs')
 
 const db = require('./utils/db')
-const migration = require('./utils/migration')
 const config = require('./utils/config')
 const constants = require('./utils/constants/path-constants')
 const rootController = require('./controllers/root-controller')
@@ -65,6 +64,5 @@ server.use(docs.get('/docs', {
 
 server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
     db.connect(config.get('db:config'))
-      .then(() => config.get('db:migration:enabled') && migration.initData(config.get('db:migration:url')))
     console.log(`${server.name} application started!`)
 })

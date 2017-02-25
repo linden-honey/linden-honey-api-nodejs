@@ -17,8 +17,7 @@
             "password": null
         },
         "migration": {
-            "enabled": false,
-            "url": null
+            "url": "https://gist.githubusercontent.com/alebabai/725265e6227e24220fdb136cbcd95d3b/raw/1aa22db63fbb0a6e441d5326942201b16fb4b1fa/letov.min.json"
         }
     },
     "docs": {
