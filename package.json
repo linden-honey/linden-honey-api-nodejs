@@ -41,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/alebabai/linden-honey/issues"
   },
-  "homepage": "https://github.com/alebabai/linden-honey"
+  "homepage": "https://github.com/alebabai/linden-honey",
+  "engines": {
+    "node": "7.6.0"
+  }
 }
