@@ -2,70 +2,78 @@ const Song = require('../models/song')
 
 const MSG_ERROR_NOT_FOUND = 'Song not found'
 
-const findSongById = function * (id, fields) {
+const findSongById = async function (id, fields) {
     const isValidId = Song.base.Types.ObjectId.isValid(id)
-    return isValidId ? yield Song.findById(id, fields) : null
+    return isValidId && await Song.findById(id, fields)
 }
 
-exports.getAllSongs = function * () {
-    this.body = yield Song.find({}, '_id title')
+exports.getAllSongs = async (ctx, next) => {
+    ctx.body = await Song.find({}, '_id title')
+    return next()
 }
 
-exports.getSongById = function * () {
-    const song = yield findSongById(this.params.songId, '-__v')
+exports.getSongById = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
-        this.body = song
+        ctx.body = song
     } else {
-        this.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
+    return next()
 }
 
-exports.getRandomSong = function * () {
-    this.body = yield Song.findRandomSong({}, '-__v')
+exports.getRandomSong = async (ctx, next) => {
+    ctx.body = await Song.findRandomSong({}, '-__v')
+    return next()
 }
 
-exports.getQuotesFromSong = function * () {
-    const song = yield findSongById(this.params.songId, '-__v')
+exports.getQuotesFromSong = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
-        this.body = [].concat(...song.text.verses.map(verse => verse.quotes))
+        ctx.body = [].concat(...song.text.verses.map(verse => verse.quotes))
     } else {
-        this.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
+    return next()
 }
 
-exports.getRandomQuoteFromSong = function * () {
-    const song = yield findSongById(this.params.songId, '-__v')
+exports.getRandomQuoteFromSong = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
-        this.body = song.text.getRandomVerse().getRandomQuote()
+        ctx.body = song.text.getRandomVerse().getRandomQuote()
     } else {
-        this.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
+    return next()
 }
 
-exports.getRandomQuoteFromSongByVerseId = function * () {
-    const song = yield findSongById(this.params.songId, '-__v')
-    const verse = song && song.text.verses.find(verse => verse.id === this.params.verseId)
+exports.getRandomQuoteFromSongByVerseId = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId, '-__v')
+    const verse = song && song.text.verses.find(verse => verse.id === ctx.params.verseId)
     if (song && verse) {
-        this.body = verse.getRandomQuote()
+        ctx.body = verse.getRandomQuote()
     } else {
-        this.throw(404)
+        ctx.throw(404)
     }
+    return next()
 }
 
-exports.getVersesFromSong = function * () {
-    const song = yield findSongById(this.params.songId, '-__v')
+exports.getVersesFromSong = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
-        this.body = song.text.verses
+        ctx.body = song.text.verses
     } else {
-        this.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
+    return next()
 }
 
-exports.getRandomVerseFromSong = function * () {
-    const song = yield findSongById(this.params.songId, '-__v')
+exports.getRandomVerseFromSong = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
-        this.body = song.text.getRandomVerse()
+        ctx.body = song.text.getRandomVerse()
     } else {
-        this.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
+    return next()
 }

@@ -1,5 +1,6 @@
-exports.getRootPageHandler = function (text) {
-    return function * () {
-        this.body = yield Promise.resolve(text)
+exports.getRootPageHandler = (text) => {
+    return (ctx, next) => {
+        ctx.body = text
+        return next()
     }
 }

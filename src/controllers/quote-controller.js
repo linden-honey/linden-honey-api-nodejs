@@ -2,21 +2,23 @@ const Song = require('../models/song')
 
 const MSG_ERROR_NOT_FOUND = 'Quote not found'
 
-exports.getQuoteById = function * () {
+exports.getQuoteById = async (ctx, next) => {
     const isValidId = Song.base.Types.ObjectId.isValid(this.params.quoteId)
     const criteria = {
         'text.verses.quotes._id': this.params.quoteId
     }
-    const song = isValidId ? yield Song.findOne(criteria, 'text') : null
+    const song = isValidId && await Song.findOne(criteria, 'text')
     const quote = song && song.text.verses[0].quotes[0]
     if (quote) {
-        this.body = quote
+        ctx.body = quote
     } else {
-        this.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
+    return next()
 }
 
-exports.getRandomQuote = function * () {
-    const song = yield Song.findRandomSong()
-    this.body = song.text.getRandomVerse().getRandomQuote()
+exports.getRandomQuote = async (ctx, next) => {
+    const song = await Song.findRandomSong()
+    ctx.body = song.text.getRandomVerse().getRandomQuote()
+    return next()
 }

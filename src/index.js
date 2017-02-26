@@ -1,6 +1,6 @@
-const koa = require('koa')
+const Koa = require('koa')
 const logger = require('koa-logger')
-const Router = require('koa-joi-router')
+const Router = require('koa-router')
 const docs = require('koa-docs')
 
 const db = require('./utils/db')
@@ -11,7 +11,7 @@ const quoteController = require('./controllers/quote-controller')
 const verseController = require('./controllers/verse-controller')
 const songController = require('./controllers/song-controller')
 
-const server = module.exports = koa()
+const server = module.exports = new Koa()
 const rootRouter = Router()
 const songsRouter = Router()
 const versesRouter = Router()
@@ -37,30 +37,31 @@ quotesRouter.get(`${constants.API_QUOTES}/:quoteId`, quoteController.getQuoteByI
 
 server.name = config.get('app:name')
 server.use(logger())
-server.use(rootRouter.middleware())
-server.use(songsRouter.middleware())
-server.use(versesRouter.middleware())
-server.use(quotesRouter.middleware())
-server.use(docs.get('/docs', {
-    title: config.get('docs:title'),
-    version: config.get('app:version'),
-    theme: config.get('docs:theme'),
-    routeHandlers: config.get('docs:routeHandlers'),
-    groups: [
-        {
-            groupName: config.get('docs:groups:songs:title'),
-            routes: songsRouter.routes
-        },
-        {
-            groupName: config.get('docs:groups:verses:title'),
-            routes: versesRouter.routes
-        },
-        {
-            groupName: config.get('docs:groups:quotes:title'),
-            routes: quotesRouter.routes
-        }
-    ]
-}))
+server.use(rootRouter.routes())
+server.use(songsRouter.routes())
+server.use(versesRouter.routes())
+server.use(quotesRouter.routes())
+
+// server.use(docs.get('/docs', {
+//     title: config.get('docs:title'),
+//     version: config.get('app:version'),
+//     theme: config.get('docs:theme'),
+//     routeHandlers: config.get('docs:routeHandlers'),
+//     groups: [
+//         {
+//             groupName: config.get('docs:groups:songs:title'),
+//             routes: songsRouter.stack
+//         },
+//         {
+//             groupName: config.get('docs:groups:verses:title'),
+//             routes: songsRouter.stack
+//         },
+//         {
+//             groupName: config.get('docs:groups:quotes:title'),
+//             routes: quotesRouter.stack
+//         }
+//     ]
+// }))
 
 server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
     db.connect(config.get('db:config'))

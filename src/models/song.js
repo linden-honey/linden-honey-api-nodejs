@@ -10,10 +10,10 @@ const SongSchema = new Schema({
     text: TextSchema
 })
 
-SongSchema.statics.findRandomSong = function * (cretirea, fields, callback) {
-    const songsCount = yield this.count()
+SongSchema.statics.findRandomSong = async function (cretirea, fields, callback) {
+    const songsCount = await this.count()
     const randomSongNumber = random.integer(0, songsCount)
-    return yield this.findOne(cretirea, fields, callback).skip(randomSongNumber)
+    return await this.findOne(cretirea, fields, callback).skip(randomSongNumber)
 }
 
 module.exports = mongoose.model('Song', SongSchema)
