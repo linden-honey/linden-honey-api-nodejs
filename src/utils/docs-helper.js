@@ -1,7 +1,6 @@
-exports.getRoutes = (routesStack) => {
-    return routesStack.reduce((previousRoute, currentRoute, index, array) => {
-        return [].concat(...currentRoute.methods.map(method => {
-            return {'method': method, path: currentRoute.path}
-        }))
-    })
+exports.getRoutes = routesStack => {
+    const routes = routesStack.map(route => (
+        route.methods.map(method => ({'method': method, 'path': route.path}))
+    ))
+    return [].concat(...routes)
 }

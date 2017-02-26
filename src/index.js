@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const logger = require('koa-logger')
 const Router = require('koa-router')
+const convert = require('koa-convert')
 const docs = require('koa-docs')
 
 const db = require('./utils/db')
@@ -43,7 +44,7 @@ server.use(songsRouter.routes())
 server.use(versesRouter.routes())
 server.use(quotesRouter.routes())
 
-server.use(docs.get('/docs', {
+server.use(convert(docs.get('/docs', {
     title: config.get('docs:title'),
     version: config.get('app:version'),
     theme: config.get('docs:theme'),
@@ -55,14 +56,14 @@ server.use(docs.get('/docs', {
         },
         {
             groupName: config.get('docs:groups:verses:title'),
-            routes: docsHelper.getRoutes(songsRouter.stack)
+            routes: docsHelper.getRoutes(versesRouter.stack)
         },
         {
             groupName: config.get('docs:groups:quotes:title'),
             routes: docsHelper.getRoutes(quotesRouter.stack)
         }
     ]
-}))
+})))
 
 server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
     db.connect(config.get('db:config'))
