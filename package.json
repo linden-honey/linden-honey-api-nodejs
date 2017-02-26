@@ -2,7 +2,7 @@
   "name": "linden-honey",
   "version": "1.0.0",
   "description": "REST API for the best quotes of Egor Letov",
-  "main": "index.js",
+  "main": "src/index.js",
   "dependencies": {
     "koa": "^2.0.1",
     "koa-convert": "^1.2.0",
