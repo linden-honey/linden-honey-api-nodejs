@@ -1,12 +1,12 @@
 const nconf = require('nconf')
 
 nconf.argv()
-     .env({
-         separator: '_'
-     })
-     .file({
-         file:'config/default.json'
-     })
+    .env({
+        separator: '_'
+    })
+    .file({
+        file: 'config/default.json'
+    })
 
 nconf.required([
     'app:name',
