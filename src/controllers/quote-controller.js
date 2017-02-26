@@ -17,8 +17,7 @@ exports.getQuoteById = async (ctx, next) => {
     return next()
 }
 
-exports.getRandomQuote = async (ctx, next) => {
+exports.getRandomQuote = async ctx => {
     const song = await Song.findRandomSong()
     ctx.body = song.text.getRandomVerse().getRandomQuote()
-    return next()
 }

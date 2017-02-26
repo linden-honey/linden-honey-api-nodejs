@@ -21,17 +21,16 @@ exports.getVerseById = async (ctx, next) => {
     return next()
 }
 
-exports.getRandomVerse = async (ctx, next) => {
+exports.getRandomVerse = async ctx => {
     const song = await Song.findRandomSong()
     ctx.body = song.text.getRandomVerse()
 }
 
-exports.getRandomQuoteFromVerse = async (ctx, next) => {
+exports.getRandomQuoteFromVerse = async ctx => {
     const verse = await findVerseById(ctx.params.verseId, '-__v')
     if (verse) {
         ctx.body = verse.getRandomQuote()
     } else {
         ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
-    return next()
 }

@@ -22,9 +22,8 @@ exports.getSongById = async (ctx, next) => {
     return next()
 }
 
-exports.getRandomSong = async (ctx, next) => {
+exports.getRandomSong = async ctx => {
     ctx.body = await Song.findRandomSong({}, '-__v')
-    return next()
 }
 
 exports.getQuotesFromSong = async (ctx, next) => {
@@ -37,17 +36,16 @@ exports.getQuotesFromSong = async (ctx, next) => {
     return next()
 }
 
-exports.getRandomQuoteFromSong = async (ctx, next) => {
+exports.getRandomQuoteFromSong = async ctx => {
     const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
         ctx.body = song.text.getRandomVerse().getRandomQuote()
     } else {
         ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
-    return next()
 }
 
-exports.getRandomQuoteFromSongByVerseId = async (ctx, next) => {
+exports.getRandomQuoteFromSongByVerseId = async ctx => {
     const song = await findSongById(ctx.params.songId, '-__v')
     const verse = song && song.text.verses.find(verse => verse.id === ctx.params.verseId)
     if (song && verse) {
@@ -55,7 +53,6 @@ exports.getRandomQuoteFromSongByVerseId = async (ctx, next) => {
     } else {
         ctx.throw(404)
     }
-    return next()
 }
 
 exports.getVersesFromSong = async (ctx, next) => {
@@ -68,12 +65,11 @@ exports.getVersesFromSong = async (ctx, next) => {
     return next()
 }
 
-exports.getRandomVerseFromSong = async (ctx, next) => {
+exports.getRandomVerseFromSong = async ctx => {
     const song = await findSongById(ctx.params.songId, '-__v')
     if (song) {
         ctx.body = song.text.getRandomVerse()
     } else {
         ctx.throw(MSG_ERROR_NOT_FOUND, 404)
     }
-    return next()
 }
