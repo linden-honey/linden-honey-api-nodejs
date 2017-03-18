@@ -4,16 +4,15 @@
   "description": "REST API for the best quotes of Egor Letov",
   "main": "src/index.js",
   "dependencies": {
-    "koa": "^2.0.1",
-    "koa-convert": "^1.2.0",
-    "koa-docs": "^2.1.0",
+    "koa": "^2.2.0",
+    "koa-joi-router": "^5.0.0",
     "koa-logger": "^2.0.1",
-    "koa-router": "^7.0.1",
-    "migrate-mongoose": "^3.2.1",
-    "mongoose": "^4.8.2",
+    "migrate-mongoose": "^3.2.2",
+    "mongoose": "^4.9.3",
     "nconf": "^0.8.4",
     "node-fetch": "^1.6.3",
-    "random-js": "^1.0.8"
+    "random-js": "^1.0.8",
+    "swagger2-koa": "^0.0.36"
   },
   "devDependencies": {
     "eslint": "^3.13.1"
