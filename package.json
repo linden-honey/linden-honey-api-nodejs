@@ -1,7 +1,7 @@
 {
   "name": "linden-honey",
   "version": "1.0.0",
-  "description": "REST API for the best quotes of Egor Letov",
+  "description": "REST API for the lyrics of Yegor Letov and his post-punk/psychedelic rock-band Grazhdanskaya Oborona (Civil Defense)",
   "main": "src/index.js",
   "dependencies": {
     "koa": "^2.2.0",
@@ -11,16 +11,14 @@
     "mongoose": "^4.9.3",
     "nconf": "^0.8.4",
     "node-fetch": "^1.6.3",
-    "random-js": "^1.0.8",
-    "swagger2-koa": "^0.0.36"
+    "random-js": "^1.0.8"
   },
   "devDependencies": {
     "eslint": "^3.13.1"
   },
   "scripts": {
     "start": "node src",
-    "debug": "node --inspect src",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "debug": "node --inspect src"
   },
   "repository": {
     "type": "git",
@@ -30,8 +28,7 @@
     "linden honey",
     "letov",
     "grob",
-    "koa",
-    "rest-api",
+    "koajs",
     "mongo",
     "mongoose"
   ],
