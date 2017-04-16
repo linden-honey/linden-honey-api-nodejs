@@ -2,17 +2,14 @@ const Song = require('../models/song')
 
 const MSG_ERROR_NOT_FOUND = 'Verse not found'
 
-const findVerseById = async function (id, fields) {
+const findVerseById = async function (id) {
     const isValidId = Song.base.Types.ObjectId.isValid(id)
-    const criteria = {
-        'text.verses._id': id
-    }
-    const song = isValidId && await Song.findOne(criteria, fields)
+    const song = isValidId && await Song.findOne().where('verses._id').eq(id)
     return song && song.text.verses[0]
 }
 
 exports.getVerseById = async (ctx, next) => {
-    const verse = await findVerseById(ctx.params.verseId, 'text')
+    const verse = await findVerseById(ctx.params.verseId)
     if (verse) {
         ctx.body = verse
     } else {
@@ -27,7 +24,7 @@ exports.getRandomVerse = async ctx => {
 }
 
 exports.getRandomQuoteFromVerse = async ctx => {
-    const verse = await findVerseById(ctx.params.verseId, '-__v')
+    const verse = await findVerseById(ctx.params.verseId)
     if (verse) {
         ctx.body = verse.getRandomQuote()
     } else {

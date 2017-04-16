@@ -5,8 +5,8 @@ const MSG_ERROR_NOT_FOUND = 'Quote not found'
 exports.getQuoteById = async (ctx, next) => {
     const quoteId = ctx.params.quoteId
     const isValidId = Song.base.Types.ObjectId.isValid(quoteId)
-    const song = isValidId && await Song.findOne().where('text.verses.quotes._id').eq(quoteId)
-    const verse = song && song.text.verses.find(verse => verse.quotes.id(quoteId))
+    const song = isValidId && await Song.findOne().where('verses.quotes._id').eq(quoteId)
+    const verse = song && song.verses.find(verse => verse.quotes.id(quoteId))
     const quote = verse && verse.quotes.id(quoteId)
     if (quote) {
         ctx.body = quote
@@ -18,5 +18,5 @@ exports.getQuoteById = async (ctx, next) => {
 
 exports.getRandomQuote = async ctx => {
     const song = await Song.findRandomSong()
-    ctx.body = song.text.getRandomVerse().getRandomQuote()
+    ctx.body = song.getRandomVerse().getRandomQuote()
 }

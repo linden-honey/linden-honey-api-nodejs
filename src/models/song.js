@@ -1,19 +1,23 @@
 const mongoose = require('mongoose')
 const random = require('random-js')()
-const TextSchema = require('./text').schema
+const VerseSchema = require('./verse').schema
 const Schema = mongoose.Schema
 
 const SongSchema = new Schema({
     title: String,
     author: String,
     album: String,
-    text: TextSchema
+    verses: [VerseSchema]
 })
 
-SongSchema.statics.findRandomSong = async function (cretirea, fields, callback) {
+SongSchema.statics.findRandomSong = async function () {
     const songsCount = await this.count()
     const randomSongNumber = random.integer(0, songsCount)
-    return await this.findOne(cretirea, fields, callback).skip(randomSongNumber)
+    return this.findOne().skip(randomSongNumber)
+}
+
+SongSchema.methods.getRandomVerse = function() {
+    return random.pick(this.verses)
 }
 
 module.exports = mongoose.model('Song', SongSchema)
