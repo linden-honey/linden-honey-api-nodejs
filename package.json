@@ -17,7 +17,7 @@
     "eslint": "^3.13.1"
   },
   "scripts": {
-    "migrate": "node_modules/.bin/migrate up -d mongodb://$db_config_user:$db_config_password@$db_config_host:$db_config_port/$db_config_dbName --md src/migrations --es6 --autosync",
+    "migrate": "node_modules/.bin/migrate up -d mongodb://$db_config_user:$db_config_password@$db_config_host:$db_config_port/$db_config_dbName --md src/migrations --es6 --autosync true",
     "start": "node src",
     "debug": "node --inspect src"
   },
