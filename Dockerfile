@@ -1,7 +1,8 @@
 FROM node:latest
 
-ENV ROOT_DIR=/usr/workspace
-ENV WORK_DIR=$ROOT_DIR/linden-honey
+ARG ROOT_DIR=/usr/workspace
+ARG WORK_DIR=$ROOT_DIR/linden-honey
+
 ENV PORT=8080
 
 # Create app directory
