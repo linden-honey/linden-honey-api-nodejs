@@ -21,8 +21,5 @@ process.on('SIGINT', () => {
 })
 
 exports.connect = (options = {}) => {
-    return mongoose.connect(options.url, {
-        user: options.user,
-        pass: options.password
-    })
+    return mongoose.connect(options.url)
 }

@@ -9,10 +9,10 @@ nconf.argv()
     })
 
 nconf.required([
-    'app:name',
-    'app:host',
-    'app:port',
-    'db:url'
+    'APP:NAME',
+    'APP:HOST',
+    'APP:PORT',
+    'DB:URL'
 ])
 
 module.exports = nconf

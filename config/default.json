@@ -1,17 +1,17 @@
 {
-    "app": {
-        "name": "Linden Honey",
-        "host": "localhost",
-        "port": 8080,
-        "version": "1.0.0",
-        "messages": {
-            "welcome": "Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану..."
+    "APP": {
+        "NAME": "Linden Honey",
+        "HOST": "localhost",
+        "PORT": 8080,
+        "VERSION": "1.0.0",
+        "MESSAGES": {
+            "WELCOME": "Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану..."
         }
     },
-    "db": {
-        "url": null,
-        "migration": {
-            "data_url": null
+    "DB": {
+        "URL": null,
+        "MIGRATION": {
+            "DATA_URL": null
         }
     }
 }

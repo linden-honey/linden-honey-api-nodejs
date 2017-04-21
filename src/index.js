@@ -16,7 +16,7 @@ const songsRouter = Router()
 const versesRouter = Router()
 const quotesRouter = Router()
 
-rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('app:messages:welcome')))
+rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('APP:MESSAGES:WELCOME')))
 
 songsRouter.get(constants.API_SONGS, songController.getAllSongs)
 songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
@@ -34,14 +34,14 @@ versesRouter.get(`${constants.API_VERSES}/:verseId/quotes/random`, verseControll
 quotesRouter.get(constants.API_QUOTES_RANDOM, quoteController.getRandomQuote)
 quotesRouter.get(`${constants.API_QUOTES}/:quoteId`, quoteController.getQuoteById)
 
-server.name = config.get('app:name')
+server.name = config.get('APP:NAME')
 server.use(logger())
 server.use(rootRouter.middleware())
 server.use(songsRouter.middleware())
 server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
 
-server.listen(process.env.PORT || config.get('app:port') || 8080, () => {
-    db.connect(config.get('db:config'))
+server.listen(process.env.PORT || config.get('APP:PORT') || 8080, () => {
+    db.connect(config.get('DB'))
     console.log(`${server.name} application started!`)
 })

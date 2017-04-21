@@ -11,9 +11,9 @@ services:
     links:
      - db
     environment:
-     - app_host=app
-     - app_port=8080
-     - db_url=mongo://db:27017/linden_honey_local
+     - APP_HOST=app
+     - APP_PORT=8080
+     - DB_URL=mongo://db:27017/linden_honey_local
   db:
     container_name: linden-honey-mongodb
     image: "mongo:latest"
