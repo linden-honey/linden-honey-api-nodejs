@@ -20,7 +20,7 @@ exports.getVerseById = async (ctx, next) => {
 
 exports.getRandomVerse = async ctx => {
     const song = await Song.findRandomSong()
-    ctx.body = song.text.getRandomVerse()
+    ctx.body = song.getRandomVerse()
 }
 
 exports.getRandomQuoteFromVerse = async ctx => {
