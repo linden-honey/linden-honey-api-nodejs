@@ -20,4 +20,6 @@ SongSchema.methods.getRandomVerse = function() {
     return random.pick(this.verses)
 }
 
+SongSchema.index({title: 'text'})
+
 module.exports = mongoose.model('Song', SongSchema)

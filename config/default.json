@@ -9,9 +9,9 @@
         }
     },
     "DB": {
-        "URL": null,
+        "URL": "mongodb://localhost:27017/linden_honey_local",
         "MIGRATION": {
-            "DATA_URL": null
+            "DATA_URL": "https://gist.githubusercontent.com/alebabai/968b042e94f6b0ab9c33a4e75276d352/raw/88f1fb6e6b092db4416f77e1b1f75197cf33dd94/letov.min.json"
         }
     }
 }

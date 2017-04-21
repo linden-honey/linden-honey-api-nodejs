@@ -18,6 +18,7 @@ const quotesRouter = Router()
 
 rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('APP:MESSAGES:WELCOME')))
 
+songsRouter.get(constants.API_SONGS, songController.findSongs)
 songsRouter.get(constants.API_SONGS, songController.getAllSongs)
 songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
 songsRouter.get(`${constants.API_SONGS}/:songId`, songController.getSongById)
@@ -25,7 +26,8 @@ songsRouter.get(`${constants.API_SONGS}/:songId/quotes`, songController.getQuote
 songsRouter.get(`${constants.API_SONGS}/:songId/quotes/random`, songController.getRandomQuoteFromSong)
 songsRouter.get(`${constants.API_SONGS}/:songId/verses`, songController.getVersesFromSong)
 songsRouter.get(`${constants.API_SONGS}/:songId/verses/random`, songController.getRandomVerseFromSong)
-songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId/quotes/random`, songController.getRandomQuoteFromSongByVerseId)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId`, songController.getVerseFromSong)
+songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId/quotes/random`, songController.getRandomQuoteFromVerse)
 
 versesRouter.get(constants.API_VERSES_RANDOM, verseController.getRandomVerse)
 versesRouter.get(`${constants.API_VERSES}/:verseId`, verseController.getVerseById)
