@@ -8,13 +8,11 @@ ENV PORT=8080
 RUN mkdir -p $WORK_DIR
 
 # Bundle app source
-COPY package.json $WORK_DIR
-COPY config $WORK_DIR/config
-COPY src $WORK_DIR/src
+COPY . $WORK_DIR
 
 # Set workdir and install dependencies
 WORKDIR $WORK_DIR
 RUN npm install
 
-EXPOSE 8080
+EXPOSE $PORT
 CMD [ "npm", "run", "start" ]
