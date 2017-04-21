@@ -21,8 +21,7 @@ process.on('SIGINT', () => {
 })
 
 exports.connect = (options = {}) => {
-    const connectionURL = `mongodb://${options.host}:${options.port}/${options.dbName}`
-    return mongoose.connect(connectionURL, {
+    return mongoose.connect(options.url, {
         user: options.user,
         pass: options.password
     })
