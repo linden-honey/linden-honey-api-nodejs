@@ -23,7 +23,7 @@ exports.getSongById = async (ctx, next) => {
 }
 
 exports.getRandomSong = async ctx => {
-    ctx.body = await Song.findRandomSong().select('-__v')
+    ctx.body = await Song.findRandomSong()
 }
 
 exports.getQuotesFromSong = async (ctx, next) => {

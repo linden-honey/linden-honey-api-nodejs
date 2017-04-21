@@ -13,7 +13,7 @@ const SongSchema = new Schema({
 SongSchema.statics.findRandomSong = async function () {
     const songsCount = await this.count()
     const randomSongNumber = random.integer(0, songsCount)
-    return this.findOne().skip(randomSongNumber)
+    return this.findOne().skip(randomSongNumber).select('-__v')
 }
 
 SongSchema.methods.getRandomVerse = function() {
