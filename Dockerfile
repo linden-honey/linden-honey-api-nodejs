@@ -3,7 +3,7 @@ FROM node:latest
 LABEL name="linden-honey" \
       maintainer="aliaksandr.babai@gmail.com"
 
-ARG ROOT_DIR=/usr/workspace \
+ARG ROOT_DIR=/usr/workspace
 ARG WORK_DIR=$ROOT_DIR/linden-honey
 ENV PORT=8080
 
