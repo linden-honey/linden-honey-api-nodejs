@@ -13,11 +13,7 @@ services:
     environment:
      - app_host=app
      - app_port=8080
-     - db_host=db
-     - db_port=27017
-     - db_dbName=linden_honey_local
-     - db_user=
-     - db_password=
+     - db_url=mongo://db:27017/linden_honey_local
   db:
     container_name: linden-honey-mongodb
     image: "mongo:latest"
