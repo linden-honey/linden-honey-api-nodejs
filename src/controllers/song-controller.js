@@ -1,6 +1,7 @@
 const Song = require('../models/song')
 
-const MSG_ERROR_NOT_FOUND = 'Song not found'
+const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
+const MSG_ERROR_NOT_FOUND = 'Not found'
 
 const findSongById = function (id) {
     const isValidId = Song.base.Types.ObjectId.isValid(id)
@@ -26,7 +27,7 @@ exports.getSongById = async (ctx, next) => {
     if (song) {
         ctx.body = song
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
     }
     return next()
 }
@@ -40,7 +41,7 @@ exports.getQuotesFromSong = async (ctx, next) => {
     if (song) {
         ctx.body = [].concat(...song.verses.map(verse => verse.quotes))
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
     }
     return next()
 }
@@ -50,7 +51,7 @@ exports.getRandomQuoteFromSong = async (ctx, next)  => {
     if (song) {
         ctx.body = song.getRandomVerse().getRandomQuote()
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
     }
     return next()
 }
@@ -70,19 +71,18 @@ exports.getVersesFromSong = async (ctx, next) => {
     if (song) {
         ctx.body = song.verses
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
     }
     return next()
 }
 
-exports.getRandomVerseFromSong = async (ctx, next) => {
+exports.getRandomVerseFromSong = async ctx => {
     const song = await findSongById(ctx.params.songId)
     if (song) {
         ctx.body = song.getRandomVerse()
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
     }
-    return next()
 }
 
 exports.getVerseFromSong = async (ctx, next) => {
