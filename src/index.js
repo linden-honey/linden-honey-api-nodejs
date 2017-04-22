@@ -1,6 +1,6 @@
 const Koa = require('koa')
 const logger = require('koa-logger')
-const Router = require('koa-joi-router')
+const Router = require('koa-router')
 
 const db = require('./utils/db')
 const config = require('./utils/config')
@@ -11,30 +11,42 @@ const verseController = require('./controllers/verse-controller')
 const songController = require('./controllers/song-controller')
 
 const server = module.exports = new Koa()
-const rootRouter = Router()
-const songsRouter = Router()
-const versesRouter = Router()
-const quotesRouter = Router()
+const rootRouter = Router({ prefix: constants.ROOT })
+const songsRouter = Router({ prefix: constants.API_SONGS })
+const versesRouter = Router({ prefix: constants.API_VERSES })
+const quotesRouter = Router({ prefix: constants.API_VERSES })
+
+const paramValidationMiddleware = (validator) => (param, ctx, next) => {
+    if (!validator(param)) {
+        ctx.throw('Invalid param', 400)
+    }
+    return next()
+}
 
 rootRouter.get(constants.ROOT, rootController.getRootPageHandler(config.get('APP:MESSAGES:WELCOME')))
 
-songsRouter.get(constants.API_SONGS, songController.findSongs)
-songsRouter.get(constants.API_SONGS, songController.getAllSongs)
-songsRouter.get(constants.API_SONGS_RANDOM, songController.getRandomSong)
-songsRouter.get(`${constants.API_SONGS}/:songId`, songController.getSongById)
-songsRouter.get(`${constants.API_SONGS}/:songId/quotes`, songController.getQuotesFromSong)
-songsRouter.get(`${constants.API_SONGS}/:songId/quotes/random`, songController.getRandomQuoteFromSong)
-songsRouter.get(`${constants.API_SONGS}/:songId/verses`, songController.getVersesFromSong)
-songsRouter.get(`${constants.API_SONGS}/:songId/verses/random`, songController.getRandomVerseFromSong)
-songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId`, songController.getVerseFromSong)
-songsRouter.get(`${constants.API_SONGS}/:songId/verses/:verseId/quotes/random`, songController.getRandomQuoteFromVerse)
+songsRouter.get('/', songController.findSongs)
+songsRouter.get('/', songController.getAllSongs)
+songsRouter.get('/random', songController.getRandomSong)
+songsRouter
+    .param('songId', paramValidationMiddleware(db.isValidId))
+    .get('/:songId', songController.getSongById)
+    .get('/:songId/quotes', songController.getQuotesFromSong)
+    .get('/:songId/quotes/random', songController.getRandomQuoteFromSong)
+    .get('/:songId/verses', songController.getVersesFromSong)
+    .get('/:songId/verses/random', songController.getRandomVerseFromSong)
+    .param('verseId', paramValidationMiddleware(db.isValidId))
+    .get('/:songId/verses/:verseId', songController.getVerseFromSong)
+    .get('/:songId/verses/:verseId/quotes/random', songController.getRandomQuoteFromVerse)
+    .param('quoteId', paramValidationMiddleware(db.isValidId))
+    .get('/:songId/verses/:verseId/quotes/:quoteId', songController.getQuoteFromVerse)
 
-versesRouter.get(constants.API_VERSES_RANDOM, verseController.getRandomVerse)
-versesRouter.get(`${constants.API_VERSES}/:verseId`, verseController.getVerseById)
-versesRouter.get(`${constants.API_VERSES}/:verseId/quotes/random`, verseController.getRandomQuoteFromVerse)
+versesRouter.get('/random', verseController.getRandomVerse)
+versesRouter.get('/:verseId', verseController.getVerseById)
+versesRouter.get('/:verseId/quotes/random', verseController.getRandomQuoteFromVerse)
 
-quotesRouter.get(constants.API_QUOTES_RANDOM, quoteController.getRandomQuote)
-quotesRouter.get(`${constants.API_QUOTES}/:quoteId`, quoteController.getQuoteById)
+quotesRouter.get('/random', quoteController.getRandomQuote)
+quotesRouter.get('/:quoteId', quoteController.getQuoteById)
 
 server.name = config.get('APP:NAME')
 server.use(logger())
