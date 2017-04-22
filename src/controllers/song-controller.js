@@ -8,7 +8,10 @@ const findSongById = function (id) {
 }
 
 exports.getAllSongs = async (ctx, next) => {
-    ctx.body = await Song.find().select('_id title')
+    const page = ctx.query.page && parseInt(ctx.query.page) || 0
+    const size = ctx.query.size && parseInt(ctx.query.size) || 20
+    const skip = page * size
+    ctx.body = await Song.find().skip(skip).limit(size).select('_id title')
     return next()
 }
 
