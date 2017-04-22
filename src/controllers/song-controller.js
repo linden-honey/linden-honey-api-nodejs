@@ -4,7 +4,7 @@ const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
 const MSG_ERROR_NOT_FOUND = 'Not found'
 
 const findSongById = function (id) {
-    return Song.findById(id).select('-__v')
+    return Song.findById(id)
 }
 
 exports.getAllSongs = async (ctx, next) => {
@@ -36,6 +36,17 @@ exports.getQuotesFromSong = async (ctx, next) => {
     const song = await findSongById(ctx.params.songId)
     if (song) {
         ctx.body = [].concat(...song.verses.map(verse => verse.quotes))
+    } else {
+        ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
+    }
+    return next()
+}
+
+exports.getQuotesFromVerse = async (ctx, next) => {
+    const song = await findSongById(ctx.params.songId)
+    const verse = song && song.verses.id(ctx.params.verseId)
+    if (verse) {
+        ctx.body = verse.quotes
     } else {
         ctx.throw(MSG_ERROR_SONG_NOT_FOUND, 404)
     }

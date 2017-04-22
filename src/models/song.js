@@ -13,13 +13,13 @@ const SongSchema = new Schema({
 SongSchema.statics.findRandomSong = async function () {
     const songsCount = await this.count()
     const randomSongNumber = random.integer(0, songsCount)
-    return this.findOne().skip(randomSongNumber).select('-__v')
+    return this.findOne().skip(randomSongNumber)
 }
 
-SongSchema.methods.getRandomVerse = function() {
+SongSchema.methods.getRandomVerse = function () {
     return random.pick(this.verses)
 }
 
-SongSchema.index({title: 'text'})
+SongSchema.index({ title: 'text' })
 
 module.exports = mongoose.model('Song', SongSchema)

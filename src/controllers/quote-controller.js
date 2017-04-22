@@ -3,11 +3,9 @@ const Song = require('../models/song')
 const MSG_ERROR_NOT_FOUND = 'Quote not found'
 
 exports.getQuoteById = async (ctx, next) => {
-    const quoteId = ctx.params.quoteId
-    const isValidId = Song.base.Types.ObjectId.isValid(quoteId)
-    const song = isValidId && await Song.findOne().where('verses.quotes._id').eq(quoteId)
-    const verse = song && song.verses.find(verse => verse.quotes.id(quoteId))
-    const quote = verse && verse.quotes.id(quoteId)
+    const song = await Song.findOne().where('verses.quotes._id').eq(ctx.params.quoteId)
+    const verse = song && song.verses.find(verse => verse.quotes.id(ctx.params.quoteId))
+    const quote = verse && verse.quotes.id(ctx.params.quoteId)
     if (quote) {
         ctx.body = quote
     } else {
