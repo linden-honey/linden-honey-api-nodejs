@@ -3,7 +3,7 @@ const config = require('../utils/config')
 require('../models/song')
 
 export async function up() {
-    const url = config.get('DB:MIGRATION:DATA_URL')
+    const url = config.get('DB:MIGRATION:URL')
     const responce = await fetch(url)
     const json = await responce.json()
     this('Song').create(json)

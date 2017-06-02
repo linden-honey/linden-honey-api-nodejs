@@ -4,8 +4,8 @@ services:
   db:
     container_name: linden-honey-db
     image: "mongo:latest"
-    expose:
-     - "27017"
+    ports:
+     - "27017:27017"
     networks:
       - linden-honey-net
   app:
@@ -20,7 +20,7 @@ services:
     environment:
      - APP_HOST=app
      - APP_PORT=8080
-     - DB_URL=mongo://db:27017/linden_honey_local
+     - DB_URL=mongodb://db:27017/linden_honey_local
 
 networks:
   linden-honey-net:
