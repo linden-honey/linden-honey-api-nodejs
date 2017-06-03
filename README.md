@@ -4,7 +4,7 @@
 
 REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock band __Grazhdanskaya Oborona (Civil Defense)__
 
-## Heroku Endpoint
+## Heroku instance
 
 [https://linden-honey.herokuapp.com](https://linden-honey.herokuapp.com)
 
