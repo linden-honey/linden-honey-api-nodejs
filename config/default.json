@@ -9,9 +9,6 @@
         }
     },
     "DB": {
-        "URL": "mongodb://localhost:27017/linden_honey_local",
-        "MIGRATION": {
-            "URL": null
-        }
+        "URL": "mongodb://localhost:27017/linden_honey_local"
     }
 }

@@ -17,7 +17,12 @@ exports.getAllSongs = async (ctx, next) => {
 
 exports.findSongs = async (ctx, next) => {
     if (!ctx.query.search) return next()
-    const songs = await Song.find({ $text: { $search: ctx.query.search } }).select('_id title')
+    const songs = await Song.find({
+        title: {
+            $regex: ctx.query.search,
+            $options: 'i'
+        }
+    }).select('_id title')
     ctx.body = songs
 }
 

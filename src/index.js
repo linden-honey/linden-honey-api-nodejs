@@ -52,6 +52,7 @@ versesRouter
     .get('/:verseId/quotes/:quoteId', verseController.getQuoteFromVerse)
 
 quotesRouter
+    .get('/', quoteController.findQuotes)
     .get('/random', quoteController.getRandomQuote)
     .param('quoteId', paramValidationMiddleware(db.isValidId))
     .get('/:quoteId', quoteController.getQuoteById)
