@@ -7,6 +7,7 @@ const { PATH } = require('./utils/constants')
 const { RootController, QuoteController, VerseController, SongController } = require('./controllers')
 
 const server = module.exports = new Koa()
+
 const rootRouter = Router({ prefix: PATH.ROOT })
 const songsRouter = Router({ prefix: PATH.API_SONGS })
 const versesRouter = Router({ prefix: PATH.API_VERSES })
@@ -53,14 +54,13 @@ quotesRouter
     .param('quoteId', paramValidationMiddleware(db.isValidId))
     .get('/:quoteId', QuoteController.getQuoteById)
 
-server.name = config.get('APP:NAME')
 server.use(logger())
 server.use(rootRouter.middleware())
 server.use(songsRouter.middleware())
 server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
 
-server.listen(process.env.PORT || config.get('APP:PORT') || 8080, () => {
+server.listen(config.get('APP:PORT'), () => {
     db.connect(config.get('DB'))
-    console.log(`${server.name} application started!`)
+    console.log(`${config.get('APP:NAME')} application started!`)
 })
