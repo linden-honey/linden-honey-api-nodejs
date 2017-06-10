@@ -10,7 +10,6 @@ nconf.argv()
 
 nconf.required([
     'APP:NAME',
-    'APP:HOST',
     'APP:PORT',
     'DB:URL'
 ])

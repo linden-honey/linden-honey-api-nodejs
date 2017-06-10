@@ -1,9 +1,7 @@
 {
     "APP": {
         "NAME": "Linden Honey",
-        "HOST": "localhost",
         "PORT": 8080,
-        "VERSION": "1.0.0",
         "MESSAGES": {
             "WELCOME": "Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану..."
         }
