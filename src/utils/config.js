@@ -11,17 +11,19 @@ nconf
         search: true
     })
     .defaults({
-        APP: {
-            NAME: 'Linden Honey Bot',
-            PORT: process.env.PORT || 8080,
-            MESSAGES: {
-                WELCOME: 'Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану...'
+        LINDEN_HONEY: {
+            APP: {
+                NAME: 'Linden Honey Bot',
+                PORT: process.env.PORT || 8080,
+                MESSAGES: {
+                    WELCOME: 'Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану...'
+                }
             }
         }
     })
 
 nconf.required([
-    'DB:URL'
+    'LINDEN_HONEY:DB:URL'
 ])
 
 module.exports = nconf
