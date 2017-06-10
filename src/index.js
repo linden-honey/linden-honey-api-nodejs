@@ -20,7 +20,7 @@ const paramValidationMiddleware = (validator) => (param, ctx, next) => {
     return next()
 }
 
-rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LINDEN_HONEY:APP:MESSAGES:WELCOME')))
+rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:APP:MESSAGES:WELCOME')))
 
 songsRouter
     .get('/', SongController.findSongs)
@@ -60,7 +60,7 @@ server.use(songsRouter.middleware())
 server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
 
-server.listen(config.get('LINDEN_HONEY:APP:PORT'), () => {
-    db.connect(config.get('LINDEN_HONEY:DB'))
-    console.log(`${config.get('LINDEN_HONEY:APP:NAME')} application started!`)
+server.listen(config.get('LH:APP:PORT'), () => {
+    db.connect(config.get('LH:DB'))
+    console.log(`${config.get('LH:APP:NAME')} application started!`)
 })
