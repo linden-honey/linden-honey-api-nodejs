@@ -1,6 +1,6 @@
 # Linden Honey
 
-[![Build Status](https://travis-ci.org/alebabai/linden-honey.svg?branch=master)](https://travis-ci.org/alebabai/linden-honey)
+[![Build Status](https://travis-ci.org/linden-honey/linden-honey.svg?branch=master)](https://travis-ci.org/linden-honey/linden-honey)
 
 REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock band __Grazhdanskaya Oborona (Civil Defense)__
 
