@@ -5,8 +5,8 @@ nconf
     .env({
         separator: '_'
     })
-    .file('local', {
-        file: 'linden_honey_config.json',
+    .file('file-config', {
+        file: 'linden_honey.json',
         dir: 'config',
         search: true
     })

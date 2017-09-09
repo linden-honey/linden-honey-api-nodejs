@@ -29,6 +29,10 @@ REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock ba
 
 ## Usage
 
+The following environment variables should be exported before running or you can create file `config/linden_honey.json` with the same structure:
+* `LH_DB_URL`
+* `LH_DB_MIGRATION_URL` //only for migrations
+
 Start application:
 ```
 yarn start
@@ -39,10 +43,7 @@ Start application in debug mode:
 yarn debug
 ```
 
-Run database migration script.  
-The following environment variables should be exported before running:
-* LH\_DB\_URL
-* LH\_DB\_MIGRATION\_URL
+Run database migration script:
 ```
 yarn migrate
 ```
