@@ -9,7 +9,7 @@
 [![license][license-image]][license-url]
 
 [node-image]: https://img.shields.io/badge/node-7.6.x-brightgreen.svg?style=flat-square
-[node-url]: http://www.oracle.com/technetwork/node/nodese/downloads/index.html
+[node-url]: https://nodejs.org/en/download/
 [release-image]: https://img.shields.io/github/release/linden-honey/linden-honey.svg?style=flat-square
 [release-url]: https://github.com/linden-honey/linden-honey/releases
 [downloads-image]: https://img.shields.io/github/downloads/linden-honey/linden-honey/latest/total.svg?style=flat-square
