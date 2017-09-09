@@ -12,7 +12,7 @@
 [node-url]: http://www.oracle.com/technetwork/node/nodese/downloads/index.html
 [release-image]: https://img.shields.io/github/release/linden-honey/linden-honey.svg?style=flat-square
 [release-url]: https://github.com/linden-honey/linden-honey/releases
-[downloads-image]: https://img.shields.io/github/downloads/linden-honey/linden-honey-spring/latest/total.svg?style=flat-square
+[downloads-image]: https://img.shields.io/github/downloads/linden-honey/linden-honey/latest/total.svg?style=flat-square
 [downloads-url]: https://github.com/linden-honey/linden-honey/releases
 [travis-image]: https://img.shields.io/travis/linden-honey/linden-honey/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/linden-honey/linden-honey
