@@ -29,6 +29,8 @@ REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock ba
 
 ## Usage
 
+### Local
+
 The following environment variables should be exported before running or you can create file `config/linden_honey.json` with the same structure:
 * `LH_DB_URL`
 * `LH_DB_MIGRATION_URL` //only for migrations
@@ -48,6 +50,17 @@ Run database migration script:
 yarn migrate
 ```
 
+### Docker
+
+Bootstrap project using docker-compose:
+```
+docker-compose up
+```
+
+Stop and remove containers, networks, images, and volumes:
+```
+docker-compose down
+```
 
 ## Application instance
 
