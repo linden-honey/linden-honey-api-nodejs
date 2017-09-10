@@ -1,4 +1,4 @@
-const Song = require('../models/song')
+const { Song } = require('../models/mongoose')
 
 const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
 const MSG_ERROR_NOT_FOUND = 'Not found'
