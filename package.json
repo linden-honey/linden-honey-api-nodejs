@@ -8,19 +8,23 @@
     "koa": "^2.2.0",
     "koa-logger": "^2.0.1",
     "koa-router": "^7.2.0",
-    "migrate-mongoose": "^3.2.2",
+    "lodash": "^4.17.4",
     "mongoose": "^4.9.3",
     "nconf": "^0.8.4",
     "node-fetch": "^1.7.3",
     "random-js": "^1.0.8"
   },
   "devDependencies": {
-    "eslint": "^3.13.1"
+    "chai": "^4.1.2",
+    "eslint": "^3.13.1",
+    "migrate-mongoose": "^3.2.2",
+    "mocha": "^3.5.3"
   },
   "scripts": {
-    "migrate": "node_modules/.bin/migrate up -d $LH_DB_URL --md src/migrations --es6 --autosync true",
     "start": "node src",
-    "debug": "node --inspect src"
+    "debug": "node --inspect src",
+    "test": "./node_modules/.bin/mocha",
+    "migrate": "node_modules/.bin/migrate up -d $LH_DB_URL --md src/migrations --es6 --autosync true"
   },
   "repository": {
     "type": "git",
