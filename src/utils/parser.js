@@ -31,7 +31,7 @@ const parseSong = html => {
 
 const parsePreviews = html => {
     const $ = parseHtml(html)
-    return $('#abc_list li a')
+    return $('ul#abc_list li a')
         .map((index, link) => {
             const $link = $(link)
             const path = $link.attr('href')
@@ -39,8 +39,8 @@ const parsePreviews = html => {
             const title = $link.text()
             return new Preview({ id, title })
         })
-        .filter(preview => !!preview.id)
         .toArray()
+        .filter(preview => preview.id)
 }
 
 module.exports = {

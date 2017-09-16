@@ -5,7 +5,7 @@ const parser = require('../src/utils/parser')
 
 describe('Parser', () => {
     describe('#parseQuote(html)', () => {
-        it('should return a quote object with a phrase string', () => {
+        it('should return quote object with a phrase string', () => {
             const html = 'Some phrase'
             const quote = parser.parseQuote(html)
             expect(quote)
@@ -37,7 +37,7 @@ describe('Parser', () => {
     })
 
     describe('#parseVerse(html)', () => {
-        it('should return a verse object with a quotes array', () => {
+        it('should return verse object with a quotes array', () => {
             const html = 'Some phrase'
             const verse = parser.parseVerse(html)
             expect(verse)
@@ -78,7 +78,7 @@ describe('Parser', () => {
     })
 
     describe('#parseLyrics(html)', () => {
-        it('should return a verses array', () => {
+        it('should return array with verses objects', () => {
             const html =
                 'Some phrase 1'
                 + '<br\><br\>'
@@ -118,7 +118,7 @@ describe('Parser', () => {
             expect(song).to.have.property('verses').that.is.an('array').with.lengthOf(0)
         })
 
-        it('should return a song object with all filled props', () => {
+        it('should return song object with all filled props', () => {
             const html =
                 '<h2>Всё идёт по плану</h2>'
                 + '<p><strong>Автор:</strong> Е.Летов</p>'
@@ -141,7 +141,7 @@ describe('Parser', () => {
                 })
         })
 
-        it('should return a song object with unknown title', () => {
+        it('should return song object with unknown title', () => {
             const html =
                 + '<p><strong>Автор:</strong> Е.Летов</p>'
                 + '<p><strong>Альбом:</strong> Всё идёт по плану</p>'
@@ -157,7 +157,7 @@ describe('Parser', () => {
                 .is.an('array').with.lengthOf(0)
         })
 
-        it('should return a song object with unknown author', () => {
+        it('should return song object with unknown author', () => {
             const html =
                 '<h2>Всё идёт по плану</h2>'
                 + '<p><strong>Альбом:</strong> Всё идёт по плану</p>'
@@ -173,7 +173,7 @@ describe('Parser', () => {
                 .is.an('array').with.lengthOf(0)
         })
 
-        it('should return a song object with unknown album', () => {
+        it('should return song object with unknown album', () => {
             const html =
                 '<h2>Всё идёт по плану</h2>'
                 + '<p><strong>Автор:</strong> Е.Летов</p>'
@@ -187,6 +187,40 @@ describe('Parser', () => {
                 .to.have.property('verses')
                 .that
                 .is.an('array').with.lengthOf(0)
+        })
+    })
+
+    describe('#parsePreviews(html)', () => {
+        it('should return array with preview objects', () => {
+            const html =
+                '<ul id="abc_list">'
+                + '<li><a href="/texts/1056899068.html">Всё идёт по плану</a></li>'
+                + '<li><a href="">Unknown</a></li>'
+                + '<li><a href="/texts/1056901056.html">Всё как у людей</a></li>'
+                + '</ul>'
+            const previews = parser.parsePreviews(html)
+            expect(previews)
+                .to.be.exist
+                .and
+                .to.be.an('array').with.lengthOf(2)
+                .and
+                .to.be.deep.contains({
+                    id: '1056899068',
+                    title: 'Всё идёт по плану'
+                },
+                {
+                    id: '1056901056',
+                    title: 'Всё как у людей'
+                })
+        })
+
+        it('should return empty array', () => {
+            const html = ''
+            const previews = parser.parsePreviews(html)
+            expect(previews)
+                .to.be.exist
+                .and
+                .to.be.an('array').with.lengthOf(0)
         })
     })
 })
