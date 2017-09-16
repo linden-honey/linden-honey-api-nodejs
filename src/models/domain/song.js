@@ -1,4 +1,4 @@
-const UNKNOWN = 'неизвестнен'
+const UNKNOWN = 'неизвестен'
 
 const defaultState = {
     title: UNKNOWN,
