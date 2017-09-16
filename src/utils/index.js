@@ -1,5 +1,5 @@
 exports.config = require('./config')
 exports.constants = require('./constants')
 exports.db = require('./db')
-exports.grabber = require('./grabber')
 exports.parser = require('./parser')
+exports.Scraper = require('./scraper')
