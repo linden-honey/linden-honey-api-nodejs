@@ -61,6 +61,12 @@ quotesRouter
     .param('quoteId', paramValidationMiddleware(db.isValidId))
     .get('/:quoteId', QuoteController.getQuoteById)
 
+
+scraperRouter.use((ctx, next) => {
+    if(config.get('LH:SCRAPER:ROUTER:ENABLED')) {
+        return next()
+    }
+})
 scraperRouter
     .get('/songs', ScraperController.getSongs(new Scraper({ url: config.get('LH:SCRAPER:URL') })))
 
@@ -69,10 +75,7 @@ server.use(rootRouter.middleware())
 server.use(songsRouter.middleware())
 server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
-
-if (config.get('LH:SCRAPER:ROUTER:ENABLED')) {
-    server.use(scraperRouter.middleware())
-}
+server.use(scraperRouter.middleware())
 
 server.listen(config.get('LH:APP:PORT'), () => {
     db.connect({ url: config.get('LH:DB:URL') })
