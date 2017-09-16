@@ -1,4 +1,4 @@
-const Song = require('../models/song')
+const { Song } = require('../models/mongoose')
 
 const MSG_ERROR_NOT_FOUND = 'Quote not found'
 

@@ -4,8 +4,8 @@ require('../models/song')
 
 export async function up() {
     const url = config.get('LH:DB:MIGRATION:URL')
-    const responce = await fetch(url)
-    const json = await responce.json()
+    const response = await fetch(url)
+    const json = await response.json()
     this('Song').create(json)
 }
 

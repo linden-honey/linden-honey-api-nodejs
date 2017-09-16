@@ -1,3 +1,2 @@
-exports.Quote = require('/quote')
-exports.Verse = require('/verse')
-exports.Song = require('/song')
+exports.Domain = require('./domain')
+exports.Mongoose = require('./Mongoose')

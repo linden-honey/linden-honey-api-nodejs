@@ -45,6 +45,9 @@
         ],
         "space-infix-ops": [
             "warn"
+        ],
+        "no-var": [
+            "error"
         ]
     }
 }
