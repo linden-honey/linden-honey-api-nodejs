@@ -31,7 +31,7 @@ const parseSong = html => {
 
 const parsePreviews = html => {
     const $ = parseHtml(html)
-    return $('ul#abc_list li a')
+    return $('#abc_list a')
         .map((index, link) => {
             const $link = $(link)
             const path = $link.attr('href')
