@@ -5,8 +5,8 @@ mongoose.connection.on('connected', () => {
     console.log(`Mongoose connected to ${mongoose.connection.host}:${mongoose.connection.port}`)
 })
 
-mongoose.connection.on('error', err => {
-    console.log('Mongoose connection error:', err.message)
+mongoose.connection.on('error', error => {
+    console.log('Mongoose unhandled connection error:', error.message)
 })
 
 mongoose.connection.on('disconnected', () => {
@@ -22,6 +22,6 @@ process.on('SIGINT', () => {
 
 exports.isValidId = mongoose.Types.ObjectId.isValid
 
-exports.connect = (options = {}) => {
-    return mongoose.connect(options.URL)
+exports.connect = ({ url }) => {
+    return mongoose.connect(url)
 }

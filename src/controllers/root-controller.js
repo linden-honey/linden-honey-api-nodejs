@@ -1,6 +1,4 @@
-exports.getRootPageHandler = (text) => {
-    return (ctx, next) => {
-        ctx.body = text
-        return next()
-    }
+exports.getRootPageHandler = text => (ctx, next) => {
+    ctx.body = text
+    return next()
 }
