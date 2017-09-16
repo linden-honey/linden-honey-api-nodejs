@@ -3,7 +3,7 @@ const { expect } = require('chai')
 
 const parser = require('../src/utils/parser')
 
-describe('Paser', () => {
+describe('Parser', () => {
     describe('#parseQuote(html)', () => {
         it('should return a quote object with a phrase string', () => {
             const html = 'Some phrase'
