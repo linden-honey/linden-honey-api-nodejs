@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 const config = require('../utils/config')
-require('../models/song')
+require('../models/mongoose/song')
 
 export async function up() {
     const url = config.get('LH:DB:MIGRATION:URL')
