@@ -2,12 +2,21 @@ const fetch = require('node-fetch')
 const retry = require('async-retry')
 
 const parser = require('./parser')
+
 const defaultConfig = {
     retries: 5,
     factor: 3,
     minTimeout: 1000,
     maxTimeout: 60000,
     randomize: true
+}
+
+const validateSong = (song, action) => {
+    const isValid = song && song.verses && song.verses.length
+    if(!isValid && typeof action === 'function') {
+        return action()
+    }
+    return song
 }
 
 class Scraper {
@@ -33,7 +42,10 @@ class Scraper {
             console.debug(`Fetching song with id - ${id} - ${new Date()}`)
             const response = await fetch(`${this.url}/text_print.php?area=go_texts&id=${id}`)
             const html = await response.text()
-            return parser.parseSong(html)
+            const song = parser.parseSong(html)
+            return validateSong(song, () => {
+                throw new Error('Invalid song')
+            })
         }, this.config)
     }
 }

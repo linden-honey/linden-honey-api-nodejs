@@ -17,7 +17,7 @@ const parseVerse = html => {
     return new Verse(quotes)
 }
 
-const parseLyrics = html => html ? html.split(/(?:<br\>){2,}/g).map(parseVerse) : []
+const parseLyrics = html => html ? html.split(/(?:<br\>\s*){2,}/g).map(parseVerse) : []
 
 const parseSong = html => {
     const $ = parseHtml(html)

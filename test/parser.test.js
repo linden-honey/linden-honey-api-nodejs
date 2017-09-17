@@ -85,7 +85,7 @@ describe('Parser', () => {
                 + 'Some phrase 2'
                 + '<br\>'
                 + 'Some phrase 3'
-                + '<br\><br\>'
+                + '<br\> <br\>'
                 + 'Some phrase 4'
             const lyrics = parser.parseLyrics(html)
             expect(lyrics)
