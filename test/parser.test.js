@@ -81,7 +81,7 @@ describe('Parser', () => {
         it('should return array with verses objects', () => {
             const html =
                 'Some phrase 1'
-                + '<br\><br\>'
+                + '<br\><br\><br\>'
                 + 'Some phrase 2'
                 + '<br\>'
                 + 'Some phrase 3'
