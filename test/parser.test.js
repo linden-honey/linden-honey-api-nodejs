@@ -49,9 +49,9 @@ describe('Parser', () => {
                 .that
                 .is.an('array').with.lengthOf(1)
                 .and
-                .deep.contains({
+                .deep.has.members([{
                     phrase: 'Some phrase'
-                })
+                }])
         })
 
         it('should parse all phrases into a quotes array', () => {
@@ -67,13 +67,13 @@ describe('Parser', () => {
                 .that
                 .is.an('array').with.lengthOf(3)
                 .and
-                .deep.contains({
+                .deep.has.members([{
                     phrase: 'Some phrase 1'
                 }, {
                     phrase: 'Some phrase 2'
                 }, {
                     phrase: 'Some phrase 3'
-                })
+                }])
         })
     })
 
@@ -94,7 +94,7 @@ describe('Parser', () => {
                 .to.be.an('array')
                 .with.lengthOf(3)
                 .and
-                .to.be.deep.contains({
+                .to.deep.have.members([{
                     quotes: [{ phrase: 'Some phrase 1' }]
                 }, {
                     quotes: [
@@ -103,7 +103,7 @@ describe('Parser', () => {
                     ]
                 }, {
                     quotes: [{ phrase: 'Some phrase 4' }]
-                })
+                }])
         })
     })
 
@@ -133,12 +133,12 @@ describe('Parser', () => {
                 .to.have.property('verses')
                 .that
                 .is.an('array').with.lengthOf(1)
-                .and.deep.contains({
+                .and.deep.has.members([{
                     quotes: [
                         { phrase: 'Some phrase 1' },
                         { phrase: 'Some phrase 2' }
                     ]
-                })
+                }])
         })
 
         it('should return song object with unknown title', () => {
@@ -204,14 +204,14 @@ describe('Parser', () => {
                 .and
                 .to.be.an('array').with.lengthOf(2)
                 .and
-                .to.be.deep.contains({
+                .to.be.deep.have.members([{
                     id: '1056899068',
                     title: 'Всё идёт по плану'
                 },
                 {
                     id: '1056901056',
                     title: 'Всё как у людей'
-                })
+                }])
         })
 
         it('should return empty array', () => {
