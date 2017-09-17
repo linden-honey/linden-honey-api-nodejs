@@ -29,7 +29,7 @@ nconf
 
 nconf.required([
     'LH:DB:URL',
-    'LH:SCRAPER:URL'
+    nconf.get('LH:SCRAPER:ROUTER:ENABLED') ? 'LH:SCRAPER:URL' : 'LH:SCRAPER:ROUTER:ENABLED'
 ])
 
 module.exports = nconf
