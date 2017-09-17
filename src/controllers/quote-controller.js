@@ -23,7 +23,5 @@ exports.findQuotes = async (ctx, next) => {
             }
         })
         .select('verses.quotes')
-    ctx.body = songs
-        ? [].concat(...songs.map(song => [].concat(...song.verses.map(verse => verse.quotes))))
-        : []
+    ctx.body = [].concat(...songs.map(song => [].concat(...song.verses.map(verse => verse.quotes))))
 }

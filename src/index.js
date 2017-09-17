@@ -22,7 +22,7 @@ const scraperRouter = Router({ prefix: PATH.API_SCRAPER })
 
 const paramValidationMiddleware = (validator) => (param, ctx, next) => {
     if (!validator(param)) {
-        ctx.throw('Invalid param', 400)
+        ctx.throw(400, 'Invalid id')
     }
     return next()
 }
@@ -35,6 +35,7 @@ songsRouter
     .get('/random', SongController.getRandomSong)
     .param('songId', paramValidationMiddleware(db.isValidId))
     .get('/:songId', SongController.getSongById)
+    .get('/:songId/quotes', SongController.findQuotesFromSong)
     .get('/:songId/quotes', SongController.getQuotesFromSong)
     .get('/:songId/quotes/random', SongController.getRandomQuoteFromSong)
     .get('/:songId/verses', SongController.getVersesFromSong)

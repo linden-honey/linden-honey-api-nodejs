@@ -10,12 +10,14 @@ const findSongById = function (id) {
 
 exports.findSongs = async (ctx, next) => {
     if (!ctx.query.search) return next()
-    const songs = await Song.find({
-        title: {
-            $regex: ctx.query.search,
-            $options: 'i'
-        }
-    }).select('_id title')
+    const songs = await Song
+        .find({
+            title: {
+                $regex: ctx.query.search,
+                $options: 'i'
+            }
+        })
+        .select('_id title')
     ctx.body = songs
 }
 
@@ -44,6 +46,21 @@ exports.getRandomSong = async ctx => {
     } else {
         ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
     }
+}
+
+exports.findQuotesFromSong = async (ctx, next) => {
+    if (!ctx.query.search) return next()
+    console.log(ctx.query.search)
+    const songs = await Song
+        .find({
+            _id: ctx.params.songId,
+            'verses.quotes.phrase': {
+                $regex: ctx.query.search,
+                $options: 'i'
+            }
+        })
+        .select('verses.quotes')
+    ctx.body = [].concat(...songs.map(song => [].concat(...song.verses.map(verse => verse.quotes))))
 }
 
 exports.getQuotesFromSong = async (ctx, next) => {
