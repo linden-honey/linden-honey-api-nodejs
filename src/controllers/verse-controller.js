@@ -13,7 +13,7 @@ exports.getVerseById = async (ctx, next) => {
     if (verse) {
         ctx.body = verse
     } else {
-        ctx.throw(MSG_ERROR_VERSE_NOT_FOUND, 404)
+        ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
     }
     return next()
 }
@@ -29,7 +29,7 @@ exports.getRandomQuoteFromVerse = async ctx => {
     if (quote) {
         ctx.body = quote
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(404, MSG_ERROR_NOT_FOUND)
     }
 }
 
@@ -38,7 +38,7 @@ exports.getQuotesFromVerse = async ctx => {
     if (verse) {
         ctx.body = verse.quotes
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(404, MSG_ERROR_NOT_FOUND)
     }
 }
 
@@ -48,7 +48,7 @@ exports.getQuoteFromVerse = async ctx => {
     if (quote) {
         ctx.body = quote
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(404, MSG_ERROR_NOT_FOUND)
     }
 }
 

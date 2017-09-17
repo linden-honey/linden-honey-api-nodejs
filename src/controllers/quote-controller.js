@@ -9,7 +9,7 @@ exports.getQuoteById = async (ctx, next) => {
     if (quote) {
         ctx.body = quote
     } else {
-        ctx.throw(MSG_ERROR_NOT_FOUND, 404)
+        ctx.throw(404, MSG_ERROR_NOT_FOUND)
     }
     return next()
 }
@@ -21,12 +21,14 @@ exports.getRandomQuote = async ctx => {
 
 exports.findQuotes = async (ctx, next) => {
     if (!ctx.query.search) return next()
-    const songs = await Song.find({
-        'verses.quotes.phrase': {
-            $regex: ctx.query.search,
-            $options: 'i'
-        }
-    }).select('verses.quotes')
+    const songs = await Song
+        .find({
+            'verses.quotes.phrase': {
+                $regex: ctx.query.search,
+                $options: 'i'
+            }
+        })
+        .select('verses.quotes')
     ctx.body = songs
         ? [].concat(...songs.map(song => [].concat(...song.verses.map(verse => verse.quotes))))
         : []

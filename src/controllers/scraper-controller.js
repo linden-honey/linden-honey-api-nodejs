@@ -4,7 +4,7 @@ exports.getSongs = scraper => async (ctx, next) => {
         ctx.body = songs
     } catch (e) {
         console.log('Couldn\'t fetch songs due to error: ', e.message)
-        ctx.throw('Scraping failed with error - try again later', 500)
+        ctx.throw(500, 'Scraping failed with error - try again later')
     }
     return next()    
 }
