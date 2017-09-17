@@ -1,1 +1,1 @@
-web: yarn && yarn migrate && yarn start 
+web: yarn migrate && yarn start 
