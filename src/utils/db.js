@@ -24,6 +24,6 @@ exports.isValidId = mongoose.Types.ObjectId.isValid
 
 exports.connect = ({ url }) => {
     return mongoose.connect(url, {
-        useMongoClient: true,
+        useMongoClient: true
     })
 }

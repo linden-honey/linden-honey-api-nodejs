@@ -20,6 +20,11 @@ SongSchema.methods.getRandomVerse = function () {
     return random.pick(this.verses)
 }
 
-SongSchema.index({ title: 'text' })
+SongSchema.index({ title: 'text' }, {
+    default_language: 'russian',
+    weights: {
+        title: 1
+    }
+})
 
 module.exports = mongoose.model('Song', SongSchema)

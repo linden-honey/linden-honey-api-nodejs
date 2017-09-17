@@ -13,7 +13,7 @@ nconf
     .defaults({
         LH: {
             APP: {
-                NAME: 'Linden Honey Bot',
+                NAME: 'Linden Honey',
                 PORT: process.env.PORT || 8080,
                 MESSAGES: {
                     WELCOME: 'Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану...'
