@@ -1,18 +1,11 @@
 const { Song } = require('../models/mongoose')
 
 const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
-const MSG_ERROR_NOT_FOUND = 'Not found'
+const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
+const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
 const findSongById = function (id) {
     return Song.findById(id)
-}
-
-exports.getAllSongs = async (ctx, next) => {
-    const page = ctx.query.page && parseInt(ctx.query.page) || 0
-    const size = ctx.query.size && parseInt(ctx.query.size) || 20
-    const skip = page * size
-    ctx.body = await Song.find().skip(skip).limit(size).select('_id title')
-    return next()
 }
 
 exports.findSongs = async (ctx, next) => {
@@ -26,6 +19,14 @@ exports.findSongs = async (ctx, next) => {
     ctx.body = songs
 }
 
+exports.getAllSongs = async (ctx, next) => {
+    const page = ctx.query.page && parseInt(ctx.query.page) || 0
+    const size = ctx.query.size && parseInt(ctx.query.size) || 20
+    const skip = page * size
+    ctx.body = await Song.find().skip(skip).limit(size).select('_id title')
+    return next()
+}
+
 exports.getSongById = async (ctx, next) => {
     const song = await findSongById(ctx.params.songId)
     if (song) {
@@ -37,7 +38,12 @@ exports.getSongById = async (ctx, next) => {
 }
 
 exports.getRandomSong = async ctx => {
-    ctx.body = await Song.findRandomSong()
+    const song = await Song.findRandomSong()
+    if (song) {
+        ctx.body = song
+    } else {
+        ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+    }
 }
 
 exports.getQuotesFromSong = async (ctx, next) => {
@@ -50,35 +56,17 @@ exports.getQuotesFromSong = async (ctx, next) => {
     return next()
 }
 
-exports.getQuotesFromVerse = async (ctx, next) => {
-    const song = await findSongById(ctx.params.songId)
-    const verse = song && song.verses.id(ctx.params.verseId)
-    if (verse) {
-        ctx.body = verse.quotes
-    } else {
-        ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
-    }
-    return next()
-}
-
 exports.getRandomQuoteFromSong = async (ctx, next) => {
     const song = await findSongById(ctx.params.songId)
-    if (song) {
-        ctx.body = song.getRandomVerse().getRandomQuote()
+    const verse = song && song.getRandomVerse()
+    const quote = verse && verse.getRandomQuote()
+    if (quote) {
+        ctx.body = quote
     } else {
-        ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+        const message = !song ? MSG_ERROR_SONG_NOT_FOUND : MSG_ERROR_QUOTE_NOT_FOUND
+        ctx.throw(404, message)
     }
     return next()
-}
-
-exports.getRandomQuoteFromVerse = async ctx => {
-    const song = await findSongById(ctx.params.songId)
-    const verse = song && song.verses.find(verse => verse.id === ctx.params.verseId)
-    if (verse) {
-        ctx.body = verse.getRandomQuote()
-    } else {
-        ctx.throw(404)
-    }
 }
 
 exports.getVersesFromSong = async (ctx, next) => {
@@ -91,34 +79,14 @@ exports.getVersesFromSong = async (ctx, next) => {
     return next()
 }
 
-exports.getRandomVerseFromSong = async ctx => {
+exports.getRandomVerseFromSong = async (ctx, next) => {
     const song = await findSongById(ctx.params.songId)
-    if (song) {
+    const verse = song && song.getRandomVerse()
+    if (verse) {
         ctx.body = song.getRandomVerse()
     } else {
-        ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
-    }
-}
-
-exports.getVerseFromSong = async (ctx, next) => {
-    const song = await findSongById(ctx.params.songId)
-    const verse = song && song.verses.id(ctx.params.verseId)
-    if (verse) {
-        ctx.body = verse
-    } else {
-        ctx.throw(404, MSG_ERROR_NOT_FOUND)
-    }
-    return next()
-}
-
-exports.getQuoteFromVerse = async (ctx, next) => {
-    const song = await findSongById(ctx.params.songId)
-    const verse = song && song.verses.id(ctx.params.verseId)
-    const quote = verse && verse.quotes.id(ctx.params.quoteId)
-    if (quote) {
-        ctx.body = quote
-    } else {
-        ctx.throw(404, MSG_ERROR_NOT_FOUND)
+        const message = !song ? MSG_ERROR_SONG_NOT_FOUND : MSG_ERROR_VERSE_NOT_FOUND
+        ctx.throw(404, message)
     }
     return next()
 }

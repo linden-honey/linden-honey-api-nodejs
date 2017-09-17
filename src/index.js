@@ -39,27 +39,13 @@ songsRouter
     .get('/:songId/quotes/random', SongController.getRandomQuoteFromSong)
     .get('/:songId/verses', SongController.getVersesFromSong)
     .get('/:songId/verses/random', SongController.getRandomVerseFromSong)
-    .param('verseId', paramValidationMiddleware(db.isValidId))
-    .get('/:songId/verses/:verseId', SongController.getVerseFromSong)
-    .get('/:songId/verses/:verseId/quotes', SongController.getQuotesFromVerse)
-    .get('/:songId/verses/:verseId/quotes/random', SongController.getRandomQuoteFromVerse)
-    .param('quoteId', paramValidationMiddleware(db.isValidId))
-    .get('/:songId/verses/:verseId/quotes/:quoteId', SongController.getQuoteFromVerse)
 
 versesRouter
     .get('/random', VerseController.getRandomVerse)
-    .param('verseId', paramValidationMiddleware(db.isValidId))
-    .get('/:verseId', VerseController.getVerseById)
-    .get('/:verseId/quotes', VerseController.getQuotesFromVerse)
-    .get('/:verseId/quotes/random', VerseController.getRandomQuoteFromVerse)
-    .param('quoteId', paramValidationMiddleware(db.isValidId))
-    .get('/:verseId/quotes/:quoteId', VerseController.getQuoteFromVerse)
 
 quotesRouter
     .get('/', QuoteController.findQuotes)
     .get('/random', QuoteController.getRandomQuote)
-    .param('quoteId', paramValidationMiddleware(db.isValidId))
-    .get('/:quoteId', QuoteController.getQuoteById)
 
 
 scraperRouter.use((ctx, next) => {
