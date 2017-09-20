@@ -14,8 +14,8 @@ exports.findSongs = async (ctx, next) => {
     const page = ctx.query.page && parseInt(ctx.query.page) || 0
     const size = ctx.query.size && parseInt(ctx.query.size) || 20
     const skip = page * size
-    const order = ctx.query.order === 'asc' ? 1 : -1
-
+    const order = ctx.query.order === 'asc' ? 1 : ctx.query.order === 'desc' ? -1 : 1
+    
     const songs = await Song
         .find({
             title: {
