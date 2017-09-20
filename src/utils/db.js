@@ -5,10 +5,6 @@ mongoose.connection.on('connected', () => {
     console.log(`Mongoose connected to ${mongoose.connection.host}:${mongoose.connection.port}`)
 })
 
-mongoose.connection.on('error', error => {
-    console.log('Mongoose unhandled connection error:', error.message)
-})
-
 mongoose.connection.on('disconnected', () => {
     console.log('Mongoose disconnected')
 })
