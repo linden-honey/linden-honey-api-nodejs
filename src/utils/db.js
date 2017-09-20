@@ -22,6 +22,8 @@ process.on('SIGINT', () => {
 
 exports.isValidId = mongoose.Types.ObjectId.isValid
 
+exports.ObjectId = mongoose.Types.ObjectId
+
 exports.connect = ({ url }) => {
     return mongoose.connect(url, {
         useMongoClient: true

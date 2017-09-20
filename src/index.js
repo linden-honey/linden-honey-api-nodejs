@@ -22,7 +22,7 @@ const scraperRouter = Router({ prefix: PATH.API_SCRAPER })
 
 const paramValidationMiddleware = (validator) => (param, ctx, next) => {
     if (!validator(param)) {
-        ctx.throw('Invalid param', 400)
+        ctx.throw(400, 'Invalid id')
     }
     return next()
 }
@@ -35,31 +35,18 @@ songsRouter
     .get('/random', SongController.getRandomSong)
     .param('songId', paramValidationMiddleware(db.isValidId))
     .get('/:songId', SongController.getSongById)
+    .get('/:songId/quotes', SongController.findQuotesFromSong)
     .get('/:songId/quotes', SongController.getQuotesFromSong)
     .get('/:songId/quotes/random', SongController.getRandomQuoteFromSong)
     .get('/:songId/verses', SongController.getVersesFromSong)
     .get('/:songId/verses/random', SongController.getRandomVerseFromSong)
-    .param('verseId', paramValidationMiddleware(db.isValidId))
-    .get('/:songId/verses/:verseId', SongController.getVerseFromSong)
-    .get('/:songId/verses/:verseId/quotes', SongController.getQuotesFromVerse)
-    .get('/:songId/verses/:verseId/quotes/random', SongController.getRandomQuoteFromVerse)
-    .param('quoteId', paramValidationMiddleware(db.isValidId))
-    .get('/:songId/verses/:verseId/quotes/:quoteId', SongController.getQuoteFromVerse)
 
 versesRouter
     .get('/random', VerseController.getRandomVerse)
-    .param('verseId', paramValidationMiddleware(db.isValidId))
-    .get('/:verseId', VerseController.getVerseById)
-    .get('/:verseId/quotes', VerseController.getQuotesFromVerse)
-    .get('/:verseId/quotes/random', VerseController.getRandomQuoteFromVerse)
-    .param('quoteId', paramValidationMiddleware(db.isValidId))
-    .get('/:verseId/quotes/:quoteId', VerseController.getQuoteFromVerse)
 
 quotesRouter
     .get('/', QuoteController.findQuotes)
     .get('/random', QuoteController.getRandomQuote)
-    .param('quoteId', paramValidationMiddleware(db.isValidId))
-    .get('/:quoteId', QuoteController.getQuoteById)
 
 
 scraperRouter.use((ctx, next) => {
