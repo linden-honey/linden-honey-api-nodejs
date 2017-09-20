@@ -1,4 +1,5 @@
 const { Song } = require('../models/mongoose')
+const { ObjectId } = require('../utils/db')
 
 const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
 const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
@@ -10,6 +11,11 @@ const findSongById = function (id) {
 
 exports.findSongs = async (ctx, next) => {
     if (!ctx.query.search) return next()
+    const page = ctx.query.page && parseInt(ctx.query.page) || 0
+    const size = ctx.query.size && parseInt(ctx.query.size) || 20
+    const skip = page * size
+    const order = ctx.query.order === 'asc' ? 1 : -1
+
     const songs = await Song
         .find({
             title: {
@@ -17,7 +23,11 @@ exports.findSongs = async (ctx, next) => {
                 $options: 'i'
             }
         })
+        .skip(skip)
+        .limit(size)
+        .sort({ 'title': order })
         .select('_id title')
+
     ctx.body = songs
 }
 
@@ -25,7 +35,15 @@ exports.getAllSongs = async (ctx, next) => {
     const page = ctx.query.page && parseInt(ctx.query.page) || 0
     const size = ctx.query.size && parseInt(ctx.query.size) || 20
     const skip = page * size
-    ctx.body = await Song.find().skip(skip).limit(size).select('_id title')
+    const order = ctx.query.order === 'asc' ? 1 : ctx.query.order === 'desc' ? -1 : 1
+
+    ctx.body = await Song
+        .find()
+        .skip(skip)
+        .limit(size)
+        .sort({ title: order })
+        .select('_id title')
+
     return next()
 }
 
@@ -50,17 +68,30 @@ exports.getRandomSong = async ctx => {
 
 exports.findQuotesFromSong = async (ctx, next) => {
     if (!ctx.query.search) return next()
-    console.log(ctx.query.search)
-    const songs = await Song
-        .find({
-            _id: ctx.params.songId,
-            'verses.quotes.phrase': {
-                $regex: ctx.query.search,
-                $options: 'i'
+
+    const quotes = await Song
+        .aggregate([
+            { $unwind: '$verses' },
+            { $unwind: '$verses.quotes' },
+            {
+                $match: {
+                    _id: new ObjectId(ctx.params.songId),
+                    'verses.quotes.phrase': {
+                        $regex: ctx.query.search,
+                        $options: 'i'
+                    }
+                }
+            },
+            { $group: { _id: '$verses.quotes.phrase' } },
+            {
+                $project: {
+                    _id: false,
+                    phrase: '$_id'
+                }
             }
-        })
-        .select('verses.quotes')
-    ctx.body = [].concat(...songs.map(song => [].concat(...song.verses.map(verse => verse.quotes))))
+        ])
+
+    ctx.body = quotes
 }
 
 exports.getQuotesFromSong = async (ctx, next) => {

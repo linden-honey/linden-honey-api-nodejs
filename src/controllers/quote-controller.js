@@ -15,13 +15,34 @@ exports.getRandomQuote = async ctx => {
 
 exports.findQuotes = async (ctx, next) => {
     if (!ctx.query.search) return next()
-    const songs = await Song
-        .find({
-            'verses.quotes.phrase': {
-                $regex: ctx.query.search,
-                $options: 'i'
-            }
-        })
-        .select('verses.quotes')
-    ctx.body = [].concat(...songs.map(song => [].concat(...song.verses.map(verse => verse.quotes))))
+    const page = ctx.query.page && parseInt(ctx.query.page) || 0
+    const size = ctx.query.size && parseInt(ctx.query.size) || 20
+    const skip = page * size
+    const order = ctx.query.order === 'asc' ? 1 : ctx.query.order === 'desc' ? -1 : 1
+
+    const quotes = await Song
+        .aggregate([
+            { $unwind: '$verses' },
+            { $unwind: '$verses.quotes' },
+            {
+                $match: {
+                    'verses.quotes.phrase': {
+                        $regex: ctx.query.search,
+                        $options: 'i'
+                    }
+                }
+            },
+            { $group: { _id: '$verses.quotes.phrase' } },
+            {
+                $project: {
+                    _id: false,
+                    phrase: '$_id'
+                }
+            },
+            { $skip: skip },
+            { $limit: size },
+            { $sort: { phrase: order } }
+        ])
+
+    ctx.body = quotes
 }
