@@ -50,7 +50,7 @@ quotesRouter
 
 
 scraperRouter.use((ctx, next) => {
-    if(JSON.parse(config.get('LH:SCRAPER:ROUTER:ENABLED'))) {
+    if (JSON.parse(config.get('LH:SCRAPER:ROUTER:ENABLED'))) {
         return next()
     }
 })
