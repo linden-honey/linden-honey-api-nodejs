@@ -74,8 +74,8 @@ exports.getRandomSong = async ctx => {
     }
 }
 
-exports.findQuotesFromSong = async (ctx, next) => {
-    if (!ctx.query.search) return next()
+exports.findQuotesFromSongByPhrase = async (ctx, next) => {
+    if (!ctx.query.phrase) return next()
 
     const quotes = await Song
         .aggregate([
@@ -85,7 +85,7 @@ exports.findQuotesFromSong = async (ctx, next) => {
                 $match: {
                     _id: new ObjectId(ctx.params.songId),
                     'verses.quotes.phrase': {
-                        $regex: ctx.query.search,
+                        $regex: ctx.query.phrase,
                         $options: 'i'
                     }
                 }
@@ -100,6 +100,7 @@ exports.findQuotesFromSong = async (ctx, next) => {
         ])
 
     ctx.body = quotes
+    return next()
 }
 
 exports.getQuotesFromSong = async (ctx, next) => {

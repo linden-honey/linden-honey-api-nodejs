@@ -36,11 +36,11 @@ songsRouter
     .get('/search/by-phrase', SongController.findSongsByPhrase)
     .param('songId', paramValidationMiddleware(db.isValidId))
     .get('/:songId', SongController.getSongById)
-    .get('/:songId/quotes', SongController.findQuotesFromSong)
     .get('/:songId/quotes', SongController.getQuotesFromSong)
-    .get('/:songId/quotes/random', SongController.getRandomQuoteFromSong)
+    .get('/:songId/quotes/search/random', SongController.getRandomQuoteFromSong)
+    .get('/:songId/quotes/search/by-phrase', SongController.findQuotesFromSongByPhrase)
     .get('/:songId/verses', SongController.getVersesFromSong)
-    .get('/:songId/verses/random', SongController.getRandomVerseFromSong)
+    .get('/:songId/verses/search/random', SongController.getRandomVerseFromSong)
 
 versesRouter
     .get('/search/random', VerseController.getRandomVerse)

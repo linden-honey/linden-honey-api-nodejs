@@ -5,7 +5,6 @@
 [![node version][node-image]][node-url]
 [![build status][travis-image]][travis-url]
 [![release][release-image]][release-url]
-[![downloads][downloads-image]][release-url]
 [![license][license-image]][license-url]
 
 [node-image]: https://img.shields.io/badge/node-7.6.x-brightgreen.svg?style=flat-square
