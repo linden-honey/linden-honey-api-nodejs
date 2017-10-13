@@ -22,8 +22,8 @@ exports.getRandomQuote = async ctx => {
     }
 }
 
-exports.findQuotes = async (ctx, next) => {
-    if (!ctx.query.search) return next()
+exports.findQuotesByPhrase = async (ctx, next) => {
+    if (!ctx.query.phrase) return next()
     const page = ctx.query.page && parseInt(ctx.query.page) || 0
     const size = ctx.query.size && parseInt(ctx.query.size) || 20
     const skip = page * size
@@ -36,7 +36,7 @@ exports.findQuotes = async (ctx, next) => {
             {
                 $match: {
                     'verses.quotes.phrase': {
-                        $regex: ctx.query.search,
+                        $regex: ctx.query.phrase,
                         $options: 'i'
                     }
                 }

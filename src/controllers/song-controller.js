@@ -9,8 +9,8 @@ const findSongById = function (id) {
     return Song.findById(id)
 }
 
-exports.findSongs = async (ctx, next) => {
-    if (!ctx.query.search) return next()
+const makeFindSongs = (field, selector = field) => async (ctx, next) => {
+    if (!ctx.query[field]) return next()
     const page = ctx.query.page && parseInt(ctx.query.page) || 0
     const size = ctx.query.size && parseInt(ctx.query.size) || 20
     const skip = page * size
@@ -18,8 +18,8 @@ exports.findSongs = async (ctx, next) => {
 
     const songs = await Song
         .find({
-            title: {
-                $regex: ctx.query.search,
+            [selector]: {
+                $regex: ctx.query[field],
                 $options: 'i'
             }
         })
@@ -29,7 +29,12 @@ exports.findSongs = async (ctx, next) => {
         .select('_id title')
 
     ctx.body = songs
+    return next()
 }
+
+exports.findSongsByTitle = makeFindSongs('title')
+
+exports.findSongsByPhrase = makeFindSongs('phrase', 'verses.quotes.phrase')
 
 exports.getAllSongs = async (ctx, next) => {
     const page = ctx.query.page && parseInt(ctx.query.page) || 0

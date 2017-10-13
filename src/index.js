@@ -30,9 +30,10 @@ const paramValidationMiddleware = (validator) => (param, ctx, next) => {
 rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:APP:MESSAGES:WELCOME')))
 
 songsRouter
-    .get('/', SongController.findSongs)
     .get('/', SongController.getAllSongs)
-    .get('/random', SongController.getRandomSong)
+    .get('/search/random', SongController.getRandomSong)
+    .get('/search/by-title', SongController.findSongsByTitle)
+    .get('/search/by-phrase', SongController.findSongsByPhrase)
     .param('songId', paramValidationMiddleware(db.isValidId))
     .get('/:songId', SongController.getSongById)
     .get('/:songId/quotes', SongController.findQuotesFromSong)
@@ -42,11 +43,11 @@ songsRouter
     .get('/:songId/verses/random', SongController.getRandomVerseFromSong)
 
 versesRouter
-    .get('/random', VerseController.getRandomVerse)
+    .get('/search/random', VerseController.getRandomVerse)
 
 quotesRouter
-    .get('/', QuoteController.findQuotes)
-    .get('/random', QuoteController.getRandomQuote)
+    .get('/search/random', QuoteController.getRandomQuote)
+    .get('/search/by-phrase', QuoteController.findQuotesByPhrase)    
 
 
 scraperRouter.use((ctx, next) => {
