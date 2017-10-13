@@ -3,9 +3,18 @@ const { Song } = require('../models/mongoose')
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
 exports.getRandomQuote = async ctx => {
-    const song = await Song.findRandomSong()
-    const verse = song && song.getRandomVerse()
-    const quote = verse && verse.getRandomQuote()
+    const quotes = await Song.aggregate([
+        { $unwind: '$verses' },
+        { $unwind: '$verses.quotes' },
+        { $sample: { size: 1 } },
+        {
+            $project: {
+                _id: false,
+                phrase: '$verses.quotes.phrase'
+            }
+        }
+    ])
+    const quote = quotes && quotes[0]
     if (quote) {
         ctx.body = quote
     } else {
