@@ -6,6 +6,9 @@
     },
     "parserOptions": {
         "ecmaVersion": 8,
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        },
         "sourceType": "module"
     },
     "rules": {
@@ -49,4 +52,3 @@
         ]
     }
 }
-
