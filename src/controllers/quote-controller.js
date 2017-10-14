@@ -2,7 +2,7 @@ const { Song } = require('../models/mongoose')
 
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
-exports.getRandomQuote = async ctx => {
+exports.getRandomQuote = async (ctx, next) => {
     const quotes = await Song.aggregate([
         { $unwind: '$verses' },
         { $unwind: '$verses.quotes' },
@@ -20,23 +20,24 @@ exports.getRandomQuote = async ctx => {
     } else {
         ctx.throw(404, MSG_ERROR_QUOTE_NOT_FOUND)
     }
+    return next()
 }
 
 exports.findQuotesByPhrase = async (ctx, next) => {
-    if (!ctx.query.phrase) return next()
+    const query = ctx.query.phrase && ctx.query.phrase.trim()
     const page = ctx.query.page && parseInt(ctx.query.page) || 0
     const size = ctx.query.size && parseInt(ctx.query.size) || 20
     const skip = page * size
     const order = ctx.query.order === 'asc' ? 1 : ctx.query.order === 'desc' ? -1 : 1
 
-    const quotes = await Song
+    const quotes = !query ? [] : await Song
         .aggregate([
             { $unwind: '$verses' },
             { $unwind: '$verses.quotes' },
             {
                 $match: {
                     'verses.quotes.phrase': {
-                        $regex: ctx.query.phrase,
+                        $regex: query,
                         $options: 'i'
                     }
                 }
@@ -54,4 +55,5 @@ exports.findQuotesByPhrase = async (ctx, next) => {
         ])
 
     ctx.body = quotes
+    return next()
 }

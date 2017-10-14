@@ -10,16 +10,16 @@ const findSongById = function (id) {
 }
 
 const makeFindSongs = (field, selector = field) => async (ctx, next) => {
-    if (!ctx.query[field]) return next()
+    const query = ctx.query[field] && ctx.query[field].trim()
     const page = ctx.query.page && parseInt(ctx.query.page) || 0
     const size = ctx.query.size && parseInt(ctx.query.size) || 20
     const skip = page * size
     const order = ctx.query.order === 'asc' ? 1 : ctx.query.order === 'desc' ? -1 : 1
 
-    const songs = await Song
+    const songs = !query ? [] : await Song
         .find({
             [selector]: {
-                $regex: ctx.query[field],
+                $regex: query,
                 $options: 'i'
             }
         })
@@ -75,9 +75,8 @@ exports.getRandomSong = async ctx => {
 }
 
 exports.findQuotesFromSongByPhrase = async (ctx, next) => {
-    if (!ctx.query.phrase) return next()
-
-    const quotes = await Song
+    const query = ctx.query.phrase && ctx.query.phrase.trim()    
+    const quotes = !query ? [] : await Song
         .aggregate([
             { $unwind: '$verses' },
             { $unwind: '$verses.quotes' },
@@ -85,7 +84,7 @@ exports.findQuotesFromSongByPhrase = async (ctx, next) => {
                 $match: {
                     _id: new ObjectId(ctx.params.songId),
                     'verses.quotes.phrase': {
-                        $regex: ctx.query.phrase,
+                        $regex: query,
                         $options: 'i'
                     }
                 }
