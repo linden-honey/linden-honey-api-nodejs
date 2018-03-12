@@ -12,12 +12,15 @@ nconf
     })
     .defaults({
         LH: {
-            APP: {
+            SERVER: {
                 NAME: 'Linden Honey',
                 PORT: process.env.PORT || 8080,
                 MESSAGES: {
                     WELCOME: 'Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану...'
                 }
+            },
+            DB: {
+                URI: "mongodb://linden-honey:linden-honey@localhost:27017/linden-honey"
             },
             SCRAPER: {
                 ROUTER: {
@@ -28,7 +31,7 @@ nconf
     })
 
 nconf.required([
-    'LH:DB:URL',
+    'LH:DB:URI',
     nconf.get('LH:SCRAPER:ROUTER:ENABLED') ? 'LH:SCRAPER:URL' : 'LH:SCRAPER:ROUTER:ENABLED'
 ])
 
