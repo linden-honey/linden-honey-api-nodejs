@@ -27,7 +27,7 @@ class Scraper {
 
     async fetchPreviews() {
         const response = await fetch(`${this.url}/texts`)
-        const html = await response.text()
+        const html = await response.textConverted()
         return parser.parsePreviews(html)
     }
 
@@ -41,7 +41,7 @@ class Scraper {
         return await retry(async () => {
             console.debug(`Fetching song with id - ${id} - ${new Date()}`)
             const response = await fetch(`${this.url}/text_print.php?area=go_texts&id=${id}`)
-            const html = await response.text()
+            const html = await response.textConverted()
             const song = parser.parseSong(html)
             return validateSong(song, () => {
                 throw new Error('Invalid song')
