@@ -14,4 +14,4 @@ WORKDIR $WORK_DIR
 RUN npm install
 
 EXPOSE $PORT
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "start" ]

@@ -27,7 +27,7 @@ const paramValidationMiddleware = (validator) => (param, ctx, next) => {
     return next()
 }
 
-rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:APP:MESSAGES:WELCOME')))
+rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:SERVER:MESSAGES:WELCOME')))
 
 songsRouter
     .get('/', SongController.getAllSongs)
@@ -65,10 +65,10 @@ server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
 server.use(scraperRouter.middleware())
 
-server.listen(config.get('LH:APP:PORT'), () => {
-    db.connect({ url: config.get('LH:DB:URL') })
+server.listen(config.get('LH:SERVER:PORT'), () => {
+    db.connect({ url: config.get('LH:DB:URI') })
         .catch(error => {
             console.log('Couldn\'t create Mongoose connection:', error.message)
         })
-    console.log(`${config.get('LH:APP:NAME')} application started!`)
+    console.log(`${config.get('LH:SERVER:NAME')} application started!`)
 })
