@@ -1,7 +1,7 @@
 const { describe, it } = require('mocha')
 const { expect } = require('chai')
 
-const parser = require('../src/utils/parser')
+const parser = require('./parser')
 
 describe('Parser', () => {
     describe('#parseQuote(html)', () => {

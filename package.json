@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src",
     "debug": "node --inspect src",
-    "test": "./node_modules/.bin/mocha",
+    "test": "./node_modules/.bin/mocha src/**/*.spec.js",
     "migrate": "./node_modules/.bin/migrate up -d $LH_DB_URL --md src/migrations --es6 --autosync true"
   },
   "repository": {
