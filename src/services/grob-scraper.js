@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const retry = require('async-retry')
 
-const parser = require('../utils/parser')
+const parser = require('../utils/grob-parser')
 
 const defaultConfig = {
     retries: 5,
@@ -24,7 +24,7 @@ const validateSong = validateFactory(
     () => new Error('Song validation failed')
 )
 
-class Scraper {
+class GrobScraper {
     constructor({ url, config = defaultConfig }) {
         this.url = url
         this.config = config
@@ -53,4 +53,4 @@ class Scraper {
     }
 }
 
-module.exports = Scraper
+module.exports = GrobScraper

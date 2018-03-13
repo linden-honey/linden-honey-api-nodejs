@@ -1,1 +1,1 @@
-exports.Scraper = require('./scraper')
+exports.GrobScraper = require('./grob-scraper')

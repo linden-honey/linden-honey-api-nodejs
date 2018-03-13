@@ -1,9 +1,9 @@
 const { describe, it } = require('mocha')
 const { expect } = require('chai')
 
-const parser = require('./parser')
+const parser = require('./grob-parser')
 
-describe('Parser', () => {
+describe('GrobParser', () => {
     describe('#parseQuote(html)', () => {
         it('should return quote object with a phrase string', () => {
             const html = 'Some phrase'

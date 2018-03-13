@@ -2,7 +2,7 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const Router = require('koa-router')
 
-const { Scraper } = require('./services')
+const { GrobScraper } = require('./services')
 const { db, config } = require('./utils')
 const { PATH } = require('./utils/constants')
 const {
@@ -57,7 +57,9 @@ scraperRouter.use((ctx, next) => {
     }
 })
 scraperRouter
-    .get('/songs', ScraperController.getSongs(new Scraper({ url: config.get('LH:SCRAPER:URL') })))
+    .get('/:scraperId/songs', ScraperController.getSongs([
+        new GrobScraper({ url: config.get('LH:SCRAPER:URL') })
+    ]))
 
 server.use(logger())
 server.use(rootRouter.middleware())
