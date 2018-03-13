@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const retry = require('async-retry')
 
-const parser = require('./parser')
+const parser = require('../utils/parser')
 
 const defaultConfig = {
     retries: 5,

@@ -2,7 +2,8 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const Router = require('koa-router')
 
-const { db, config, Scraper } = require('./utils')
+const { Scraper } = require('./services')
+const { db, config } = require('./utils')
 const { PATH } = require('./utils/constants')
 const {
     RootController,
