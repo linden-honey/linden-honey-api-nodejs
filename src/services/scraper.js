@@ -11,13 +11,18 @@ const defaultConfig = {
     randomize: true
 }
 
-const validateSong = (song, action) => {
-    const isValid = song && song.verses && song.verses.length
-    if(!isValid && typeof action === 'function') {
-        return action()
+const validateFactory = (validationPredicate, errorSupplier) => object => {
+    if(!validationPredicate(object)) {
+        const error = typeof errorSupplier === 'function' ? errorSupplier() : new Error("Validation failed")
+        throw error
     }
-    return song
+    return object
 }
+
+const validateSong = validateFactory(
+    song => !!(song && song.verses && song.verses.length),
+    () => new Error('Song validation failed')
+)
 
 class Scraper {
     constructor({ url, config = defaultConfig }) {
@@ -43,9 +48,7 @@ class Scraper {
             const response = await fetch(`${this.url}/text_print.php?area=go_texts&id=${id}`)
             const html = await response.textConverted()
             const song = parser.parseSong(html)
-            return validateSong(song, () => {
-                throw new Error('Invalid song')
-            })
+            return validateSong(song)
         }, this.config)
     }
 }
