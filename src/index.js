@@ -52,13 +52,13 @@ quotesRouter
 
 
 scraperRouter.use((ctx, next) => {
-    if (JSON.parse(config.get('LH:SCRAPER:ROUTER:ENABLED'))) {
+    if (JSON.parse(config.get('LH:SCRAPERS:ENABLED'))) {
         return next()
     }
 })
 scraperRouter
     .get('/:scraperId/songs', ScraperController.getSongs([
-        new GrobScraper({ url: config.get('LH:SCRAPER:URL') })
+        new GrobScraper({ url: config.get('LH:SCRAPERS:GROB:URL') })
     ]))
 
 server.use(logger())

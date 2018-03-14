@@ -22,17 +22,21 @@ nconf
             DB: {
                 URI: "mongodb://linden-honey:linden-honey@localhost:27017/linden-honey"
             },
-            SCRAPER: {
-                ROUTER: {
+            SCRAPERS: {
+                GROB: {
                     ENABLED: false
                 }
             }
         }
     })
 
+const scrapersProps = nconf.get('LH:SCRAPERS:ENABLED')
+    ? ['LH:SCRAPERS:GROB:URL']
+    : []
+
 nconf.required([
     'LH:DB:URI',
-    nconf.get('LH:SCRAPER:ROUTER:ENABLED') ? 'LH:SCRAPER:URL' : 'LH:SCRAPER:ROUTER:ENABLED'
+    ...scrapersProps
 ])
 
 module.exports = nconf
