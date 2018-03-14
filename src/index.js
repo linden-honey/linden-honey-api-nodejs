@@ -2,7 +2,8 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const Router = require('koa-router')
 
-const { db, config, Scraper } = require('./utils')
+const { GrobScraper } = require('./services')
+const { db, config } = require('./utils')
 const { PATH } = require('./utils/constants')
 const {
     RootController,
@@ -51,12 +52,14 @@ quotesRouter
 
 
 scraperRouter.use((ctx, next) => {
-    if (JSON.parse(config.get('LH:SCRAPER:ROUTER:ENABLED'))) {
+    if (JSON.parse(config.get('LH:SCRAPERS:ENABLED'))) {
         return next()
     }
 })
 scraperRouter
-    .get('/songs', ScraperController.getSongs(new Scraper({ url: config.get('LH:SCRAPER:URL') })))
+    .get('/:scraperId/songs', ScraperController.getSongs([
+        new GrobScraper({ url: config.get('LH:SCRAPERS:GROB:URL') })
+    ]))
 
 server.use(logger())
 server.use(rootRouter.middleware())

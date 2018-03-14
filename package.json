@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src",
     "debug": "node --inspect src",
-    "test": "./node_modules/.bin/mocha",
+    "test": "./node_modules/.bin/mocha src/**/*.spec.js",
     "migrate": "./node_modules/.bin/migrate up -d $LH_DB_URL --md src/migrations --es6 --autosync true"
   },
   "repository": {
@@ -34,11 +34,11 @@
     "koa": "^2.5.0",
     "koa-logger": "^3.1.0",
     "koa-router": "^7.4.0",
-    "lodash": "^4.17.5",
     "migrate-mongoose": "^3.2.2",
     "mongoose": "^4.13.11",
     "nconf": "^0.10.0",
-    "node-fetch": "^2.1.1"
+    "node-fetch": "^2.1.1",
+    "ramda": "^0.25.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
