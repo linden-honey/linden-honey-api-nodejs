@@ -1,5 +1,4 @@
 exports.config = require('./config')
 exports.constants = require('./constants')
 exports.db = require('./db')
-exports.parser = require('./parser')
-exports.Scraper = require('./scraper')
+exports.grobParser = require('./grob-parser')

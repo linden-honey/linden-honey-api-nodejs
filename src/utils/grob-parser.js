@@ -2,9 +2,8 @@ const cheerio = require('cheerio')
 
 const { Preview, Quote, Song, Verse } = require('../models/domain')
 
-const parseHtml = html => cheerio.load(html, {
-    decodeEntities: false
-})
+const parseHtml = html => cheerio.load(html)
+const isNotBlank = string => !!string && string.trim().length > 0
 
 const parseQuote = html => {
     const $ = parseHtml(html)
@@ -13,7 +12,7 @@ const parseQuote = html => {
 }
 
 const parseVerse = html => {
-    const quotes = html.split('<br>').map(parseQuote)
+    const quotes = html.split('<br>').map(parseQuote).filter(quote => isNotBlank(quote.phrase))
     return new Verse(quotes)
 }
 

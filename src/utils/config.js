@@ -12,24 +12,31 @@ nconf
     })
     .defaults({
         LH: {
-            APP: {
+            SERVER: {
                 NAME: 'Linden Honey',
                 PORT: process.env.PORT || 8080,
                 MESSAGES: {
                     WELCOME: 'Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану...'
                 }
             },
-            SCRAPER: {
-                ROUTER: {
+            DB: {
+                URI: "mongodb://linden-honey:linden-honey@localhost:27017/linden-honey"
+            },
+            SCRAPERS: {
+                GROB: {
                     ENABLED: false
                 }
             }
         }
     })
 
+const scrapersProps = nconf.get('LH:SCRAPERS:ENABLED')
+    ? ['LH:SCRAPERS:GROB:URL']
+    : []
+
 nconf.required([
-    'LH:DB:URL',
-    nconf.get('LH:SCRAPER:ROUTER:ENABLED') ? 'LH:SCRAPER:URL' : 'LH:SCRAPER:ROUTER:ENABLED'
+    'LH:DB:URI',
+    ...scrapersProps
 ])
 
 module.exports = nconf

@@ -2,7 +2,8 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const Router = require('koa-router')
 
-const { db, config, Scraper } = require('./utils')
+const { GrobScraper } = require('./services')
+const { db, config } = require('./utils')
 const { PATH } = require('./utils/constants')
 const {
     RootController,
@@ -27,7 +28,7 @@ const paramValidationMiddleware = (validator) => (param, ctx, next) => {
     return next()
 }
 
-rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:APP:MESSAGES:WELCOME')))
+rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:SERVER:MESSAGES:WELCOME')))
 
 songsRouter
     .get('/', SongController.getAllSongs)
@@ -51,12 +52,14 @@ quotesRouter
 
 
 scraperRouter.use((ctx, next) => {
-    if (JSON.parse(config.get('LH:SCRAPER:ROUTER:ENABLED'))) {
+    if (JSON.parse(config.get('LH:SCRAPERS:ENABLED'))) {
         return next()
     }
 })
 scraperRouter
-    .get('/songs', ScraperController.getSongs(new Scraper({ url: config.get('LH:SCRAPER:URL') })))
+    .get('/:scraperId/songs', ScraperController.getSongs([
+        new GrobScraper({ url: config.get('LH:SCRAPERS:GROB:URL') })
+    ]))
 
 server.use(logger())
 server.use(rootRouter.middleware())
@@ -65,10 +68,10 @@ server.use(versesRouter.middleware())
 server.use(quotesRouter.middleware())
 server.use(scraperRouter.middleware())
 
-server.listen(config.get('LH:APP:PORT'), () => {
-    db.connect({ url: config.get('LH:DB:URL') })
+server.listen(config.get('LH:SERVER:PORT'), () => {
+    db.connect({ url: config.get('LH:DB:URI') })
         .catch(error => {
             console.log('Couldn\'t create Mongoose connection:', error.message)
         })
-    console.log(`${config.get('LH:APP:NAME')} application started!`)
+    console.log(`${config.get('LH:SERVER:NAME')} application started!`)
 })
