@@ -10,7 +10,7 @@ class VerseController {
         if (verse) {
             ctx.body = verse
         } else {
-            ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
+            ctx.throw(404, VerseController.MSG_ERROR_VERSE_NOT_FOUND)
         }
     }
 }
