@@ -80,7 +80,7 @@ class SongController {
         if (quote) {
             ctx.body = quote
         } else {
-            ctx.throw(404, MSG_ERROR_QUOTE_NOT_FOUND)
+            ctx.throw(404, SongController.MSG_ERROR_QUOTE_NOT_FOUND)
         }
         return next()
     }
@@ -90,7 +90,7 @@ class SongController {
         if (song) {
             ctx.body = song.verses
         } else {
-            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+            ctx.throw(404, SongController.MSG_ERROR_SONG_NOT_FOUND)
         }
         return next()
     }
@@ -100,7 +100,7 @@ class SongController {
         if (verse) {
             ctx.body = verse
         } else {
-            ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
+            ctx.throw(404, SongController.MSG_ERROR_VERSE_NOT_FOUND)
         }
         return next()
     }
