@@ -2,6 +2,8 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const Router = require('koa-router')
 
+const { Song } = require('./models/mongoose')
+const { QuoteRepository, VerseRepository, SongRepository } = require('./repositories')
 const { GrobScraper } = require('./services')
 const { db, config } = require('./utils')
 const { PATH } = require('./utils/constants')
@@ -16,9 +18,9 @@ const {
 const server = module.exports = new Koa()
 
 const rootRouter = Router({ prefix: PATH.ROOT })
-const songsRouter = Router({ prefix: PATH.API_SONGS })
-const versesRouter = Router({ prefix: PATH.API_VERSES })
-const quotesRouter = Router({ prefix: PATH.API_QUOTES })
+const songRouter = Router({ prefix: PATH.API_SONGS })
+const verseRouter = Router({ prefix: PATH.API_VERSES })
+const quoteRouter = Router({ prefix: PATH.API_QUOTES })
 const scraperRouter = Router({ prefix: PATH.API_SCRAPER })
 
 const paramValidationMiddleware = (validator) => (param, ctx, next) => {
@@ -30,25 +32,28 @@ const paramValidationMiddleware = (validator) => (param, ctx, next) => {
 
 rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:SERVER:MESSAGES:WELCOME')))
 
-songsRouter
-    .get('/', SongController.getAllSongs)
-    .get('/search/random', SongController.getRandomSong)
-    .get('/search/by-title', SongController.findSongsByTitle)
-    .get('/search/by-phrase', SongController.findSongsByPhrase)
+const songController = new SongController({db: Song})
+songRouter
+    .get('/', songController.getAllSongs)
+    .get('/search/random', songController.getRandomSong)
+    .get('/search/by-title', songController.findSongsByTitle)
+    .get('/search/by-phrase', songController.findSongsByPhrase)
     .param('songId', paramValidationMiddleware(db.isValidId))
-    .get('/:songId', SongController.getSongById)
-    .get('/:songId/quotes', SongController.getQuotesFromSong)
-    .get('/:songId/quotes/search/random', SongController.getRandomQuoteFromSong)
-    .get('/:songId/quotes/search/by-phrase', SongController.findQuotesFromSongByPhrase)
-    .get('/:songId/verses', SongController.getVersesFromSong)
-    .get('/:songId/verses/search/random', SongController.getRandomVerseFromSong)
+    .get('/:songId', songController.getSongById)
+    .get('/:songId/quotes', songController.getQuotesFromSong)
+    .get('/:songId/quotes/search/random', songController.getRandomQuoteFromSong)
+    .get('/:songId/quotes/search/by-phrase', songController.findQuotesFromSongByPhrase)
+    .get('/:songId/verses', songController.getVersesFromSong)
+    .get('/:songId/verses/search/random', songController.getRandomVerseFromSong)
 
-versesRouter
-    .get('/search/random', VerseController.getRandomVerse)
+const verseController = new VerseController({db: Song})
+verseRouter
+    .get('/search/random', verseController.getRandomVerse)
 
-quotesRouter
-    .get('/search/random', QuoteController.getRandomQuote)
-    .get('/search/by-phrase', QuoteController.findQuotesByPhrase)    
+const quoteController = new VerseController({db: Song})
+quoteRouter
+    .get('/search/random', quoteController.getRandomQuote)
+    .get('/search/by-phrase', quoteController.findQuotesByPhrase)    
 
 
 scraperRouter.use((ctx, next) => {
@@ -63,9 +68,9 @@ scraperRouter
 
 server.use(logger())
 server.use(rootRouter.middleware())
-server.use(songsRouter.middleware())
-server.use(versesRouter.middleware())
-server.use(quotesRouter.middleware())
+server.use(songRouter.middleware())
+server.use(verseRouter.middleware())
+server.use(quoteRouter.middleware())
 server.use(scraperRouter.middleware())
 
 server.listen(config.get('LH:SERVER:PORT'), () => {

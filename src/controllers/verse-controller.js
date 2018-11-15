@@ -1,22 +1,18 @@
-const { Song } = require('../models/mongoose')
+class VerseController {
+    static MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
 
-const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
+    constructor({ repository }) {
+        this.repository = repository
+    }
 
-exports.getRandomVerse = async ctx => {
-    const verses = await Song.aggregate([
-        { $unwind: '$verses' },
-        { $sample: { size: 1 } },
-        {
-            $project: {
-                _id: false,
-                quotes: '$verses.quotes'
-            }
+    async getRandomVerse(ctx) {
+        const verse = await this.repository.getRandomVerse()
+        if (verse) {
+            ctx.body = verse
+        } else {
+            ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
         }
-    ])
-    const verse = verses && verses[0]
-    if(verse) {
-        ctx.body = verse
-    } else {
-        ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
     }
 }
+
+module.exports = VerseController
