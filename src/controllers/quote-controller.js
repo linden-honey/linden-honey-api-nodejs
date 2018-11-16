@@ -1,9 +1,12 @@
+const autoBind = require('auto-bind')
+
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
 class QuoteController {
-   
-    constructor({repository}) {
+
+    constructor({ repository }) {
         this.repository = repository
+        autoBind(this)
     }
 
     async getRandomQuote(ctx, next) {

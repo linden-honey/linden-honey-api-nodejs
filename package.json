@@ -29,6 +29,7 @@
   "homepage": "https://github.com/alebabai/linden-honey",
   "dependencies": {
     "async-retry": "^1.2.1",
+    "auto-bind": "^1.2.1",
     "cheerio": "^1.0.0-rc.2",
     "encoding": "^0.1.12",
     "koa": "^2.5.0",

@@ -1,9 +1,12 @@
+const autoBind = require('auto-bind')
+
 const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
 
 class VerseController {
 
     constructor({ repository }) {
         this.repository = repository
+        autoBind(this)
     }
 
     async getRandomVerse(ctx) {
