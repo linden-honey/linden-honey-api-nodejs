@@ -1,6 +1,7 @@
+const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
+
 class QuoteController {
-    static MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
-        
+   
     constructor({repository}) {
         this.repository = repository
     }
@@ -10,7 +11,7 @@ class QuoteController {
         if (quote) {
             ctx.body = quote
         } else {
-            ctx.throw(404, QuoteController.MSG_ERROR_QUOTE_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_QUOTE_NOT_FOUND)
         }
         return next()
     }
