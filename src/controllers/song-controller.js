@@ -1,7 +1,8 @@
+const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
+const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
+const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
+
 class SongController {
-    static MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
-    static MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
-    static MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
     constructor({ repository }) {
         this.repository = repository
@@ -44,7 +45,7 @@ class SongController {
         if (song) {
             ctx.body = song
         } else {
-            ctx.throw(404, SongController.MSG_ERROR_SONG_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
         }
         return next()
     }
@@ -54,7 +55,7 @@ class SongController {
         if (song) {
             ctx.body = song
         } else {
-            ctx.throw(404, SongController.MSG_ERROR_SONG_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
         }
     }
 
@@ -70,7 +71,7 @@ class SongController {
         if (song) {
             ctx.body = [].concat(...song.verses.map(verse => verse.quotes))
         } else {
-            ctx.throw(404, SongController.MSG_ERROR_SONG_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
         }
         return next()
     }
@@ -80,7 +81,7 @@ class SongController {
         if (quote) {
             ctx.body = quote
         } else {
-            ctx.throw(404, SongController.MSG_ERROR_QUOTE_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_QUOTE_NOT_FOUND)
         }
         return next()
     }
@@ -90,7 +91,7 @@ class SongController {
         if (song) {
             ctx.body = song.verses
         } else {
-            ctx.throw(404, SongController.MSG_ERROR_SONG_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
         }
         return next()
     }
@@ -100,7 +101,7 @@ class SongController {
         if (verse) {
             ctx.body = verse
         } else {
-            ctx.throw(404, SongController.MSG_ERROR_VERSE_NOT_FOUND)
+            ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
         }
         return next()
     }
