@@ -32,7 +32,9 @@ const paramValidationMiddleware = (validator) => (param, ctx, next) => {
 
 rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:SERVER:MESSAGES:WELCOME')))
 
-const songController = new SongController({db: Song})
+const songController = new SongController({
+    repository: new SongRepository({ db: Song })
+})
 songRouter
     .get('/', songController.getAllSongs)
     .get('/search/random', songController.getRandomSong)
@@ -46,15 +48,18 @@ songRouter
     .get('/:songId/verses', songController.getVersesFromSong)
     .get('/:songId/verses/search/random', songController.getRandomVerseFromSong)
 
-const verseController = new VerseController({db: Song})
+const verseController = new VerseController({
+    repository: new VerseRepository({ db: Song })
+})
 verseRouter
     .get('/search/random', verseController.getRandomVerse)
 
-const quoteController = new VerseController({db: Song})
+const quoteController = new QuoteController({
+    repository: new QuoteRepository({ db: Song })
+})
 quoteRouter
     .get('/search/random', quoteController.getRandomQuote)
-    .get('/search/by-phrase', quoteController.findQuotesByPhrase)    
-
+    .get('/search/by-phrase', quoteController.findQuotesByPhrase)
 
 scraperRouter.use((ctx, next) => {
     if (JSON.parse(config.get('LH:SCRAPERS:ENABLED'))) {
