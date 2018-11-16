@@ -1,3 +1,5 @@
+const autoBind = require('auto-bind')
+
 const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
 const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
@@ -6,6 +8,7 @@ class SongController {
 
     constructor({ repository }) {
         this.repository = repository
+        autoBind(this)
     }
 
     async findSongsByTitle(ctx, next) {
