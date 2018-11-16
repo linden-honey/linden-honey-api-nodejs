@@ -92,7 +92,7 @@ class SongRepository {
     }
     
     async getRandomQuoteFromSong(songId) {
-        const quotes = await Song.aggregate([
+        const quotes = await this.db.aggregate([
             {
                 $match: {
                     _id: new ObjectId(songId)
@@ -112,7 +112,7 @@ class SongRepository {
     }
     
     async getRandomVerseFromSong(songId) {
-        const verses = await Song.aggregate([
+        const verses = await this.db.aggregate([
             {
                 $match: {
                     _id: new ObjectId(songId)
