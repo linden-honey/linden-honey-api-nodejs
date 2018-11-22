@@ -28,23 +28,23 @@
   },
   "homepage": "https://github.com/alebabai/linden-honey",
   "dependencies": {
-    "async-retry": "^1.2.1",
-    "auto-bind": "^1.2.1",
-    "cheerio": "^1.0.0-rc.2",
-    "encoding": "^0.1.12",
-    "koa": "^2.5.0",
-    "koa-logger": "^3.1.0",
-    "koa-router": "^7.4.0",
-    "migrate-mongoose": "^3.2.2",
-    "mongoose": "^4.13.11",
-    "nconf": "^0.10.0",
-    "node-fetch": "^2.1.1",
-    "ramda": "^0.25.0"
+    "async-retry": "1.2.3",
+    "auto-bind": "1.2.1",
+    "cheerio": "1.0.0-rc.2",
+    "encoding": "0.1.12",
+    "koa": "2.6.2",
+    "koa-logger": "3.2.0",
+    "koa-router": "7.4.0",
+    "migrate-mongoose": "3.2.2",
+    "mongoose": "4.13.17",
+    "nconf": "0.10.0",
+    "node-fetch": "2.3.0",
+    "ramda": "0.25.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "eslint": "^4.18.2",
-    "mocha": "^5.0.4"
+    "chai": "4.2.0",
+    "eslint": "4.19.1",
+    "mocha": "5.2.0"
   },
   "engines": {
     "node": "10.13.0"
