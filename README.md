@@ -7,7 +7,7 @@
 [![release][release-image]][release-url]
 [![license][license-image]][license-url]
 
-[node-image]: https://img.shields.io/badge/node-7.6.x-brightgreen.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node-10.x.x-brightgreen.svg?style=flat-square
 [node-url]: https://nodejs.org/en/download/
 [release-image]: https://img.shields.io/github/release/linden-honey/linden-honey.svg?style=flat-square
 [release-url]: https://github.com/linden-honey/linden-honey/releases
