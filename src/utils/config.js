@@ -1,42 +1,32 @@
-const nconf = require('nconf')
+const getEnv = (key, defaultValue) => {
+    if (key === undefined) {
+        throw new Error("Missing 'key' argument!")
+    }
+    const hasValue = process.env[key] !== undefined
+    if (!hasValue && defaultValue === undefined) {
+        throw new Error(`"${key}" is required!`)
+    }
+    return hasValue ? process.env[key] : defaultValue
+}
 
-nconf
-    .argv()
-    .env({
-        separator: '_'
-    })
-    .file('file-config', {
-        file: 'linden_honey.json',
-        dir: 'config',
-        search: true
-    })
-    .defaults({
-        LH: {
-            SERVER: {
-                NAME: 'Linden Honey',
-                PORT: process.env.PORT || 8080,
-                MESSAGES: {
-                    WELCOME: 'Welcome to the Linden Honey Server!\n\nPowered by Koa.js and Node.js\n\n\n\nИ всё идёт по плану...'
-                }
-            },
-            DB: {
-                URI: "mongodb://linden-honey:linden-honey@localhost:27017/linden-honey"
-            },
-            SCRAPERS: {
-                GROB: {
-                    ENABLED: false
-                }
-            }
+const config = {
+    application: {
+        rest: {
+            basePath: getEnv('APPLICATION_REST_BASE_PATH', '/api'),
+        },
+        db: {
+            uri: getEnv(
+                'APPLICATION_DB_URI',
+                'mongodb://linden-honey:linden-honey@localhost:27017/linden-honey',
+            )
         }
-    })
+    },
+    server: {
+        port: getEnv('SERVER_PORT', 8080),
+    },
+}
 
-const scrapersProps = nconf.get('LH:SCRAPERS:ENABLED')
-    ? ['LH:SCRAPERS:GROB:URL']
-    : []
-
-nconf.required([
-    'LH:DB:URI',
-    ...scrapersProps
-])
-
-module.exports = nconf
+module.exports = {
+    getEnv,
+    config: Object.freeze(config),
+}
