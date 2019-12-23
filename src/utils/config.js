@@ -18,8 +18,8 @@ const config = {
             uri: getEnv(
                 'APPLICATION_DB_URI',
                 'mongodb://linden-honey:linden-honey@localhost:27017/linden-honey',
-            )
-        }
+            ),
+        },
     },
     server: {
         port: getEnv('SERVER_PORT', 8080),

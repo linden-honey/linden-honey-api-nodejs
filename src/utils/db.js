@@ -20,8 +20,8 @@ exports.isValidId = mongoose.Types.ObjectId.isValid
 
 exports.ObjectId = mongoose.Types.ObjectId
 
-exports.connect = ({ url }) => {
-    return mongoose.connect(url, {
+exports.connect = ({ uri }) => {
+    return mongoose.connect(uri, {
         useMongoClient: true
     })
 }
