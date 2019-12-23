@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    container_name: core_db
+    container_name: db
     image: bitnami/mongodb:4.2.2
     environment:
       MONGODB_USERNAME: linden-honey
