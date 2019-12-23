@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/linden-honey/linden-honey#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "swagger-ui-express": "^4.1.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",

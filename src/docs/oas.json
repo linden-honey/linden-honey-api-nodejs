@@ -1,0 +1,76 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "paths": {},
+    "components": {
+        "schemas": {
+            "Quote": {
+                "required": [
+                    "phrase"
+                ],
+                "type": "object",
+                "properties": {
+                    "phrase": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Song": {
+                "required": [
+                    "title",
+                    "verses"
+                ],
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "album": {
+                        "type": "string"
+                    },
+                    "verses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Verse"
+                        }
+                    }
+                }
+            },
+            "Verse": {
+                "required": [
+                    "quotes"
+                ],
+                "type": "object",
+                "properties": {
+                    "quotes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Quote"
+                        }
+                    }
+                }
+            },
+            "Preview": {
+                "required": [
+                    "id",
+                    "title"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
