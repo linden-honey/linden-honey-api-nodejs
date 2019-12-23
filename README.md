@@ -1,63 +1,69 @@
 # Linden Honey
 
-> RESTful Web Service powered by Koa.js
+> RESTful Web Service with lyrics powered by Express.js
 
 [![node version][node-image]][node-url]
-[![build status][travis-image]][travis-url]
+[![build status][ci-image]][ci-url]
 [![release][release-image]][release-url]
 [![license][license-image]][license-url]
 
-[node-image]: https://img.shields.io/badge/node-10.x.x-brightgreen.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node->=12-brightgreen.svg?style=flat-square
 [node-url]: https://nodejs.org/en/download/
 [release-image]: https://img.shields.io/github/release/linden-honey/linden-honey.svg?style=flat-square
 [release-url]: https://github.com/linden-honey/linden-honey/releases
-[downloads-image]: https://img.shields.io/github/downloads/linden-honey/linden-honey/latest/total.svg?style=flat-square
-[downloads-url]: https://github.com/linden-honey/linden-honey/releases
-[travis-image]: https://img.shields.io/travis/linden-honey/linden-honey/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/linden-honey/linden-honey
+[ci-image]: https://img.shields.io/github/workflow/status/linden-honey/linden-honey/CI?style=flat-square
+[ci-url]: https://github.com/linden-honey/linden-honey/actions
 [license-image]: https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square
 [license-url]: https://github.com/linden-honey/linden-honey/blob/master/LICENSE
 
-REST API for the lyrics of __Yegor Letov__ and his post-punk/psychedelic rock band __Grazhdanskaya Oborona (Civil Defense)__
-
 ## Technologies
 
-* [Yarn](https://yarnpkg.com/lang/en/)
-* [Koa.js](https://koajs.com/)
-* [MongoDB](https://docs.mongodb.com/)
+- [Node](https://nodejs.org/)
+- [Express.js](https://expressjs.com/)
 
 ## Usage
 
 ### Local
 
-The following environment variables should be exported before running or you can create file `config/linden_honey.json` with the same structure:
-* `LH_DB_URL`
-* `LH_DB_MIGRATION_URL` //only for migrations
+The following environment variables should be exported before running:
 
-Start application:
-```
-yarn start
-```
+- `APPLICATION_DB_URI`
 
-Start application in debug mode:
-```
-yarn debug
+Run application:
+
+```bash
+npm run start
 ```
 
-Run database migration script:
+Run application in debug mode:
+
+```bash
+npm run debug
 ```
-yarn migrate
+
+Run tests:
+
+```bash
+npm run test
 ```
 
 ### Docker
 
-Bootstrap project using docker-compose:
-```
+Bootstrap full project using docker-compose:
+
+```bash
 docker-compose up
 ```
 
-Stop and remove containers, networks, images, and volumes:
+Bootstrap project excluding some services using docker-compose:
+
+```bash
+docker-compose up  --scale [SERVICE=0...]
 ```
+
+Stop and remove containers, networks, images:
+
+```bash
 docker-compose down
 ```
 
