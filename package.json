@@ -1,52 +1,33 @@
 {
   "name": "linden-honey",
-  "version": "1.4.0",
-  "description": "REST API for the lyrics of Yegor Letov and his post-punk/psychedelic rock-band Grazhdanskaya Oborona (Civil Defense)",
+  "version": "1.0.0",
+  "description": "RESTful Web Service with lyrics powered by Express.js",
   "main": "src/index.js",
   "scripts": {
     "start": "node src",
     "debug": "node --inspect src",
-    "test": "./node_modules/.bin/mocha src/**/*.spec.js",
-    "migrate": "./node_modules/.bin/migrate up -d $LH_DB_URL --md src/migrations --es6 --autosync true"
+    "test": "mocha src/**/*.spec.js",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/alebabai/linden-honey.git"
+    "url": "git+https://github.com/linden-honey/linden-honey.git"
   },
-  "keywords": [
-    "linden honey",
-    "letov",
-    "grob",
-    "koajs",
-    "mongo",
-    "mongoose"
-  ],
-  "author": "Alexander Babai",
+  "author": "Alexander Babai <aliaksandr.babai@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alebabai/linden-honey/issues"
+    "url": "https://github.com/linden-honey/linden-honey/issues"
   },
-  "homepage": "https://github.com/alebabai/linden-honey",
+  "homepage": "https://github.com/linden-honey/linden-honey#readme",
   "dependencies": {
-    "async-retry": "1.2.3",
-    "auto-bind": "1.2.1",
-    "cheerio": "1.0.0-rc.2",
-    "encoding": "0.1.12",
-    "koa": "2.6.2",
-    "koa-logger": "3.2.0",
-    "koa-router": "7.4.0",
-    "migrate-mongoose": "3.2.2",
-    "mongoose": "4.13.17",
-    "nconf": "0.10.0",
-    "node-fetch": "2.3.0",
-    "ramda": "0.25.0"
+    "express": "^4.17.1"
   },
   "devDependencies": {
-    "chai": "4.2.0",
-    "eslint": "4.19.1",
-    "mocha": "5.2.0"
-  },
-  "engines": {
-    "node": "10.13.0"
+    "babel-eslint": "^10.0.3",
+    "chai": "^4.2.0",
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "mocha": "^6.2.2"
   }
 }
