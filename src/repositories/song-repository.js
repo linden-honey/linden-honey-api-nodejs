@@ -5,7 +5,7 @@ class SongRepository {
         this.collection = collection
     }
 
-    findSongs({ text, selector, pageable = { page: 0, size: 20, order: 'asc' } }) {
+    findSongs = ({ text, selector, pageable = { page: 0, size: 20, order: 'asc' } }) => {
         const query = text && text.trim()
         const page = pageable.page && parseInt(pageable.page) || 0
         const size = pageable.size && parseInt(pageable.size) || 20
@@ -31,7 +31,7 @@ class SongRepository {
             .toArray()
     }
 
-    findSongsByTitle(title, pageable = { page: 0, size: 20, order: 'asc' }) {
+    findSongsByTitle = (title, pageable = { page: 0, size: 20, order: 'asc' }) => {
         return this.findSongs({
             text: title,
             selector: 'title',
@@ -39,7 +39,7 @@ class SongRepository {
         })
     }
 
-    findSongsByPhrase(phrase, pageable = { page: 0, size: 20, order: 'asc' }) {
+    findSongsByPhrase = (phrase, pageable = { page: 0, size: 20, order: 'asc' }) => {
         return this.findSongs({
             text: phrase,
             selector: 'verses.quotes.phrase',
@@ -47,13 +47,13 @@ class SongRepository {
         })
     }
 
-    findSongById(id) {
+    findSongById = (id) => {
         return this.collection.findOne({
             _id: id
         })
     }
 
-    getAllSongs(pageable = { page: 0, size: 20, order: 'asc' }) {
+    getAllSongs = (pageable = { page: 0, size: 20, order: 'asc' }) => {
         const page = pageable.page && parseInt(pageable.page) || 0
         const size = pageable.size && parseInt(pageable.size) || 20
         const skip = page * size
@@ -72,7 +72,7 @@ class SongRepository {
             .toArray()
     }
 
-    async getRandomSong() {
+    getRandomSong = async () => {
         const songs = await this.collection
             .aggregate([
                 { $sample: { size: 1 } }
@@ -81,7 +81,7 @@ class SongRepository {
         return songs && songs[0]
     }
 
-    findQuotesFromSongByPhrase(songId, phrase) {
+    findQuotesFromSongByPhrase = (songId, phrase) => {
         const query = phrase && phrase.trim()
         return !query ? [] : this.collection
             .aggregate([
@@ -107,7 +107,7 @@ class SongRepository {
             .toArray()
     }
 
-    async getRandomQuoteFromSong(songId) {
+    getRandomQuoteFromSong = async (songId) => {
         const quotes = await this.collection
             .aggregate([
                 {
@@ -129,7 +129,7 @@ class SongRepository {
         return quotes && quotes[0]
     }
 
-    async getRandomVerseFromSong(songId) {
+    getRandomVerseFromSong = async (songId) => {
         const verses = await this.collection
             .aggregate([
                 {

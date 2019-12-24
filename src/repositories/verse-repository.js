@@ -3,7 +3,7 @@ class VerseRepository {
         this.collection = collection
     }
 
-    async getRandomVerse() {
+    getRandomVerse = async () => {
         const verses = await this.collection
             .aggregate([
                 {

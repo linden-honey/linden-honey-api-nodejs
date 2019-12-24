@@ -3,7 +3,7 @@ class QuoteRepository {
         this.collection = collection
     }
 
-    async getRandomQuote() {
+    getRandomQuote = async () => {
         const quotes = await this.collection
             .aggregate([
                 { $unwind: '$verses' },
@@ -21,13 +21,12 @@ class QuoteRepository {
     }
 
 
-    findQuotesByPhrase(phrase, pageable = { page: 0, size: 20, order: "asc" }) {
+    findQuotesByPhrase = (phrase, pageable = { page: 0, size: 20, order: "asc" }) => {
         const query = phrase && phrase.trim()
         const page = pageable.page && parseInt(pageable.page) || 0
         const size = pageable.size && parseInt(pageable.size) || 20
         const skip = page * size
         const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
-
         return !query ? [] : this.collection
             .aggregate([
                 { $unwind: '$verses' },
