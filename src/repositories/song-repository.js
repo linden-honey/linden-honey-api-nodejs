@@ -49,7 +49,7 @@ class SongRepository {
 
     findSongById = (id) => {
         return this.collection.findOne({
-            _id: id
+            _id: new ObjectId(id),
         })
     }
 
