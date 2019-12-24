@@ -21,7 +21,7 @@
   "homepage": "https://github.com/linden-honey/linden-honey#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "4.13.17",
+    "mongodb": "^3.4.1",
     "swagger-ui-express": "^4.1.2"
   },
   "devDependencies": {

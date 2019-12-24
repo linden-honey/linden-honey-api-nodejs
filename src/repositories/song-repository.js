@@ -1,8 +1,8 @@
 const { ObjectId } = require('../utils/db')
 
 class SongRepository {
-    constructor({ db }) {
-        this.db = db
+    constructor({ collection }) {
+        this.collection = collection
     }
 
     findSongs({ text, selector, pageable = { page: 0, size: 20, order: 'asc' } }) {
@@ -12,17 +12,23 @@ class SongRepository {
         const skip = page * size
         const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
 
-        return !query ? [] : this.db
-            .find({
-                [selector]: {
-                    $regex: query,
-                    $options: 'i'
-                }
-            })
+        return !query ? [] : this.collection
+            .find(
+                {
+                    [selector]: {
+                        $regex: query,
+                        $options: 'i',
+                    },
+                },
+                {
+                    _id: 1,
+                    title: 1,
+                },
+            )
             .skip(skip)
             .limit(size)
             .sort({ 'title': order })
-            .select('_id title')
+            .toArray()
     }
 
     findSongsByTitle(title, pageable = { page: 0, size: 20, order: 'asc' }) {
@@ -42,7 +48,9 @@ class SongRepository {
     }
 
     findSongById(id) {
-        return this.db.findById(id)
+        return this.collection.findOne({
+            _id: id
+        })
     }
 
     getAllSongs(pageable = { page: 0, size: 20, order: 'asc' }) {
@@ -50,25 +58,32 @@ class SongRepository {
         const size = pageable.size && parseInt(pageable.size) || 20
         const skip = page * size
         const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
-    
-        return this.db
-            .find()
+        return this.collection
+            .find(
+                null,
+                {
+                    _id: 1,
+                    title: 1,
+                },
+            )
             .skip(skip)
             .limit(size)
             .sort({ title: order })
-            .select('_id title')
+            .toArray()
     }
-    
+
     async getRandomSong() {
-        const songs = await this.db.aggregate([
-            { $sample: { size: 1 } }
-        ])
+        const songs = await this.collection
+            .aggregate([
+                { $sample: { size: 1 } }
+            ])
+            .toArray()
         return songs && songs[0]
     }
-    
+
     findQuotesFromSongByPhrase(songId, phrase) {
-        const query = phrase && phrase.trim()    
-        return !query ? [] : this.db
+        const query = phrase && phrase.trim()
+        return !query ? [] : this.collection
             .aggregate([
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
@@ -89,44 +104,49 @@ class SongRepository {
                     }
                 }
             ])
+            .toArray()
     }
-    
+
     async getRandomQuoteFromSong(songId) {
-        const quotes = await this.db.aggregate([
-            {
-                $match: {
-                    _id: new ObjectId(songId)
+        const quotes = await this.collection
+            .aggregate([
+                {
+                    $match: {
+                        _id: new ObjectId(songId)
+                    }
+                },
+                { $unwind: '$verses' },
+                { $unwind: '$verses.quotes' },
+                { $sample: { size: 1 } },
+                {
+                    $project: {
+                        _id: false,
+                        phrase: '$verses.quotes.phrase'
+                    }
                 }
-            },
-            { $unwind: '$verses' },
-            { $unwind: '$verses.quotes' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    phrase: '$verses.quotes.phrase'
-                }
-            }
-        ])
+            ])
+            .toArray()
         return quotes && quotes[0]
     }
-    
+
     async getRandomVerseFromSong(songId) {
-        const verses = await this.db.aggregate([
-            {
-                $match: {
-                    _id: new ObjectId(songId)
+        const verses = await this.collection
+            .aggregate([
+                {
+                    $match: {
+                        _id: new ObjectId(songId)
+                    }
+                },
+                { $unwind: '$verses' },
+                { $sample: { size: 1 } },
+                {
+                    $project: {
+                        _id: false,
+                        quotes: '$verses.quotes'
+                    }
                 }
-            },
-            { $unwind: '$verses' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    quotes: '$verses.quotes'
-                }
-            }
-        ])
+            ])
+            .toArray()
         return verses && verses[0]
     }
 

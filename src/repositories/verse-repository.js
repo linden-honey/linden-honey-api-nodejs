@@ -1,19 +1,27 @@
 class VerseRepository {
-    constructor({ db }) {
-        this.db = db
+    constructor({ collection }) {
+        this.collection = collection
     }
 
     async getRandomVerse() {
-        const verses = await this.db.aggregate([
-            { $unwind: '$verses' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    quotes: '$verses.quotes'
-                }
-            }
-        ])
+        const verses = await this.collection
+            .aggregate([
+                {
+                    $unwind: '$verses'
+                },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
+                {
+                    $project: {
+                        _id: false,
+                        quotes: '$verses.quotes',
+                    },
+                },
+            ])
+            .toArray()
         return verses && verses[0]
     }
 }

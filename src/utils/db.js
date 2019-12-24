@@ -1,27 +1,38 @@
-const mongoose = require('mongoose')
+const { connect, ObjectId } = require('mongodb')
 
-mongoose.Promise = Promise
-mongoose.connection.on('connected', () => {
-    console.log(`Mongoose connected to ${mongoose.connection.host}:${mongoose.connection.port}`)
-})
+exports.ObjectId = ObjectId
+exports.isValidId = ObjectId.isValid
 
-mongoose.connection.on('disconnected', () => {
-    console.log('Mongoose disconnected')
-})
-
-process.on('SIGINT', () => {
-    mongoose.connection.close(() => {
-        console.log('Mongoose connection closed through app termination')
-        process.exit(0)
+exports.connect = async (uri) => {
+    const client = await connect(uri, {
+        useUnifiedTopology: true,
     })
-})
+    
+    try {
+        await client.db()
+            .collection('song')
+            .createIndex(
+                {
+                    title: 'text',
+                },
+                {
+                    default_language: 'russian',
+                    weights: {
+                        title: 1,
+                    },
+                },
+            )
+    } catch (e) {
+        console.error('Failed to create index', e)
+    }
 
-exports.isValidId = mongoose.Types.ObjectId.isValid
+    // client.addListener('connected', (arg) => {
+    //     console.log('Connected to ', arg)
+    // })
 
-exports.ObjectId = mongoose.Types.ObjectId
+    // client.addListener('disconnected', () => {
+    //     console.log('Database - disconnected')
+    // })
 
-exports.connect = ({ uri }) => {
-    return mongoose.connect(uri, {
-        useMongoClient: true
-    })
+    return client
 }

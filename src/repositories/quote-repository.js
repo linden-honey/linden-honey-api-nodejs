@@ -1,20 +1,22 @@
 class QuoteRepository {
-    constructor({ db }) {
-        this.db = db
+    constructor({ collection }) {
+        this.collection = collection
     }
 
     async getRandomQuote() {
-        const quotes = await this.db.aggregate([
-            { $unwind: '$verses' },
-            { $unwind: '$verses.quotes' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    phrase: '$verses.quotes.phrase'
+        const quotes = await this.collection
+            .aggregate([
+                { $unwind: '$verses' },
+                { $unwind: '$verses.quotes' },
+                { $sample: { size: 1 } },
+                {
+                    $project: {
+                        _id: false,
+                        phrase: '$verses.quotes.phrase'
+                    }
                 }
-            }
-        ])
+            ])
+            .toArray()
         return quotes && quotes[0]
     }
 
@@ -26,7 +28,7 @@ class QuoteRepository {
         const skip = page * size
         const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
 
-        return !query ? [] : this.db
+        return !query ? [] : this.collection
             .aggregate([
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
@@ -49,6 +51,7 @@ class QuoteRepository {
                 { $limit: size },
                 { $sort: { phrase: order } }
             ])
+            .toArray()
     }
 
 }
