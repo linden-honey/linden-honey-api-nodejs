@@ -1,4 +1,4 @@
-const createValidator = (extractor, predicate, message) => {
+const createValidator = (extractor, predicate, errorMessage = 'Validation failed!') => {
     if (typeof extractor !== 'function') {
         throw new Error('Invalid extractor!')
     }
@@ -8,7 +8,7 @@ const createValidator = (extractor, predicate, message) => {
     return (req, res, next) => {
         const param = extractor(req)
         if (!predicate(param)) {
-            res.status(400).send(message || 'Bad request')
+            res.status(400).send(errorMessage)
         } else {
             next()
         }
