@@ -1,7 +1,7 @@
 const express = require('express')
 require('express-async-errors')// patch to support promise rejection
 
-const { connect, isValidId } = require('./utils/db')
+const { connect, ObjectId } = require('./utils/db')
 const { config } = require('./utils/config')
 
 const {
@@ -55,7 +55,7 @@ connect(config.application.db.uri).then(client => {
         .get('/search/random', songController.getRandomSong)
         .get('/search/by-title', songController.findSongsByTitle)
         .get('/search/by-phrase', songController.findSongsByPhrase)
-        .use('/:songId', validation.createValidator(({ params: { songId } }) => songId, isValidId, 'Invalid id!'))
+        .use('/:songId', validation.createValidator(({ params: { songId } }) => songId, ObjectId.isValid, 'Invalid id!'))
         .get('/:songId', songController.getSongById)
         .get('/:songId/quotes', songController.getQuotesFromSong)
         .get('/:songId/quotes/search/random', songController.getRandomQuoteFromSong)

@@ -32,8 +32,10 @@ const connect = async (uri) => {
     return client
 }
 
+const convertSortOrder = (order) => order === 'asc' ? 1 : order === 'desc' ? -1 : 1
+
 module.exports = {
     connect,
+    convertSortOrder,
     ObjectId,
-    isValidId: ObjectId.isValid,
 }
