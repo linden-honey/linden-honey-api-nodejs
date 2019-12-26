@@ -1,3 +1,5 @@
+const { createPageable } = require('../utils/pageable')
+
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
 class QuoteController {
@@ -15,14 +17,13 @@ class QuoteController {
     }
 
     findQuotesByPhrase = async (req, res) => {
-        const { phrase, page, size, order } = req.query
-        const pageable = {
-            page,
-            size,
-            order,
-        }
+        const { phrase } = req.query
+        const pageable = createPageable({ ...req.query, sortBy: 'phrase' })
         const quotes = await this.repository.findQuotesByPhrase(phrase, pageable)
-        res.json(quotes)
+        res.json({
+            data: quotes,
+            ...pageable
+        })
     }
 }
 
