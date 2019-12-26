@@ -1,13 +1,16 @@
-const { connect, ObjectId } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
-exports.ObjectId = ObjectId
-exports.isValidId = ObjectId.isValid
-
-exports.connect = async (uri) => {
-    const client = await connect(uri, {
+const connect = async (uri) => {
+    const client = new MongoClient(uri, {
         useUnifiedTopology: true,
     })
-    
+
+    try {
+        await client.connect()
+    } catch (e) {
+        console.error(`Couldn't establish connection to ${uri}`, e)
+    }
+
     try {
         await client.db()
             .collection('song')
@@ -26,13 +29,11 @@ exports.connect = async (uri) => {
         console.error('Failed to create index', e)
     }
 
-    // client.addListener('connected', (arg) => {
-    //     console.log('Connected to ', arg)
-    // })
-
-    // client.addListener('disconnected', () => {
-    //     console.log('Database - disconnected')
-    // })
-
     return client
+}
+
+module.exports = {
+    connect,
+    ObjectId,
+    isValidId: ObjectId.isValid,
 }
