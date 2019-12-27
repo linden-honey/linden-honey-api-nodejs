@@ -1,7 +1,7 @@
 const defaults = {
     limit: 20,
     offset: 0,
-    sortBy: '',
+    sortBy: undefined,
     sortOrder: 'asc'
 }
 
@@ -11,8 +11,8 @@ const createPageable = ({
     sortBy = defaults.sortBy,
     sortOrder = defaults.sortOrder,
 } = defaults) => ({
-    limit: parseInt(limit),
-    offset: parseInt(offset),
+    limit: parseInt(limit) || defaults.limit,
+    offset: parseInt(offset) || defaults.offset,
     sortBy,
     sortOrder,
 })

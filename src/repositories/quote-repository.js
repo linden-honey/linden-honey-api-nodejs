@@ -4,6 +4,10 @@ const { createPageable } = require('../utils/pageable')
 class QuoteRepository {
     constructor({ collection }) {
         this.collection = collection
+        this.defaultSort = {
+            field: 'phrase',
+            order: 'asc'
+        }
     }
 
     getRandomQuote = async () => {
@@ -28,7 +32,8 @@ class QuoteRepository {
         const {
             limit,
             offset,
-            sortOrder,
+            sortBy = this.defaultSort.field,
+            sortOrder = this.defaultSort.order,
         } = createPageable(pageable)
         return !query
             ? []
@@ -53,7 +58,7 @@ class QuoteRepository {
                     },
                     { $skip: offset },
                     { $limit: limit },
-                    { $sort: { phrase: convertSortOrder(sortOrder) } }
+                    { $sort: { [sortBy]: convertSortOrder(sortOrder) } }
                 ])
                 .toArray()
     }

@@ -18,7 +18,9 @@ class QuoteController {
 
     findQuotesByPhrase = async (req, res) => {
         const { phrase } = req.query
-        const pageable = createPageable({ ...req.query, sortBy: 'phrase' })
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
         const quotes = await this.repository.findQuotesByPhrase(phrase, pageable)
         res.json({
             data: quotes,

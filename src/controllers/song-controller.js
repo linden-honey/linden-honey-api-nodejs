@@ -1,3 +1,5 @@
+const { createPageable } = require('../utils/pageable')
+
 const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
 const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
@@ -8,36 +10,38 @@ class SongController {
     }
 
     findSongsByTitle = async (req, res) => {
-        const { title, page, size, order } = req.query
-        const pageable = {
-            page,
-            size,
-            order,
-        }
+        const { title } = req.query
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
         const songs = await this.repository.findSongsByTitle(title, pageable)
-        res.json(songs)
+        res.json({
+            data: songs,
+            ...pageable
+        })
     }
 
     findSongsByPhrase = async (req, res) => {
-        const { phrase, page, size, order } = req.query
-        const pageable = {
-            page,
-            size,
-            order,
-        }
+        const { phrase } = req.query
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
         const songs = await this.repository.findSongsByPhrase(phrase, pageable)
-        res.json(songs)
+        res.json({
+            data: songs,
+            ...pageable
+        })
     }
 
     getAllSongs = async (req, res) => {
-        const { page, size, order } = req.query
-        const pageable = {
-            page,
-            size,
-            order,
-        }
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
         const songs = await this.repository.getAllSongs(pageable)
-        res.json(songs)
+        res.json({
+            data: songs,
+            ...pageable
+        })
     }
 
     getSongById = async (req, res) => {

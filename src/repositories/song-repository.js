@@ -1,17 +1,23 @@
-const { ObjectId } = require('../utils/db')
+const { ObjectId, convertSortOrder } = require('../utils/db')
+const { createPageable } = require('../utils/pageable')
 
 class SongRepository {
     constructor({ collection }) {
         this.collection = collection
+        this.defaultSort = {
+            field: 'title',
+            order: 'asc',
+        }
     }
 
-    findSongs = ({ text, selector, pageable = { page: 0, size: 20, order: 'asc' } }) => {
+    findSongs = ({ text, selector, pageable }) => {
         const query = text && text.trim()
-        const page = pageable.page && parseInt(pageable.page) || 0
-        const size = pageable.size && parseInt(pageable.size) || 20
-        const skip = page * size
-        const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
-
+        const {
+            limit,
+            offset,
+            sortBy = this.defaultSort.field,
+            sortOrder = this.defaultSort.order,
+        } = createPageable(pageable)
         return !query ? [] : this.collection
             .find(
                 {
@@ -25,25 +31,25 @@ class SongRepository {
                     title: 1,
                 },
             )
-            .skip(skip)
-            .limit(size)
-            .sort({ 'title': order })
+            .skip(offset)
+            .limit(limit)
+            .sort({ [sortBy]: convertSortOrder(sortOrder) })
             .toArray()
     }
 
-    findSongsByTitle = (title, pageable = { page: 0, size: 20, order: 'asc' }) => {
+    findSongsByTitle = (title, pageable) => {
         return this.findSongs({
             text: title,
             selector: 'title',
-            pageable
+            pageable: createPageable(pageable)
         })
     }
 
-    findSongsByPhrase = (phrase, pageable = { page: 0, size: 20, order: 'asc' }) => {
+    findSongsByPhrase = (phrase, pageable) => {
         return this.findSongs({
             text: phrase,
             selector: 'verses.quotes.phrase',
-            pageable
+            pageable: createPageable(pageable)
         })
     }
 
@@ -53,11 +59,13 @@ class SongRepository {
         })
     }
 
-    getAllSongs = (pageable = { page: 0, size: 20, order: 'asc' }) => {
-        const page = pageable.page && parseInt(pageable.page) || 0
-        const size = pageable.size && parseInt(pageable.size) || 20
-        const skip = page * size
-        const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
+    getAllSongs = (pageable) => {
+        const {
+            limit,
+            offset,
+            sortBy = this.defaultSort.field,
+            sortOrder = this.defaultSort.order,
+        } = createPageable(pageable)
         return this.collection
             .find(
                 null,
@@ -66,9 +74,9 @@ class SongRepository {
                     title: 1,
                 },
             )
-            .skip(skip)
-            .limit(size)
-            .sort({ title: order })
+            .skip(offset)
+            .limit(limit)
+            .sort({ [sortBy]: convertSortOrder(sortOrder) })
             .toArray()
     }
 
