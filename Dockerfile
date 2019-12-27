@@ -6,10 +6,11 @@ LABEL name="linden-honey" \
 ARG WORK_DIR=/linden-honey
 WORKDIR $WORK_DIR
 
-ENV SERVER_PORT=80
+ENV SERVER_PORT=80 \
+    NODE_ENV="production"
 
-COPY package.json package-lock.json $WORK_DIR
-RUN npm run i
+COPY package.json package-lock.json $WORK_DIR/
+RUN npm i
 
 COPY src ./src
 
