@@ -4,7 +4,387 @@
         "title": "OpenAPI definition",
         "version": "v0"
     },
-    "paths": {},
+    "paths": {
+        "/api/songs": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getSongs",
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/SongsResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/search/random": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getRandomSong",
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Song"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/search/by-title": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "findSongsByTitle",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/SongsResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/search/by-phrase": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "findSongsByPhrase",
+                "parameters": [
+                    {
+                        "name": "phrase",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/SongsResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getSongById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}/quotes": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getQuotesFromSong",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Quote"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}/quotes/search/random": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getRandomQuoteFromSong",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Quote"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}/quotes/search/by-phrase": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "findQuotesFromSongByPhrase",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "phrase",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Quote"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}/verses": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getVersesFromSong",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Verse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}/verses/search/random": {
+            "get": {
+                "tags": [
+                    "song-controller"
+                ],
+                "operationId": "getRandomVerseFromSong",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Verse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/verses/search/random": {
+            "get": {
+                "tags": [
+                    "verse-controller"
+                ],
+                "operationId": "getRandomVerse",
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Verse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/quotes/search/random": {
+            "get": {
+                "tags": [
+                    "quote-controller"
+                ],
+                "operationId": "getRandomQuote",
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Quote"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/quotes/search/by-phrase": {
+            "get": {
+                "tags": [
+                    "quote-controller"
+                ],
+                "operationId": "findQuotesByPhrase",
+                "parameters": [
+                    {
+                        "name": "phrase",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QuotesResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     "components": {
         "schemas": {
             "Quote": {
@@ -14,6 +394,38 @@
                 "type": "object",
                 "properties": {
                     "phrase": {
+                        "type": "string"
+                    }
+                }
+            },
+            "QuotesResponse": {
+                "required": [
+                    "data",
+                    "limit",
+                    "offset",
+                    "sortBy",
+                    "sortOrder"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Quote"
+                        }
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sortBy": {
+                        "type": "string"
+                    },
+                    "sortOrder": {
                         "type": "string"
                     }
                 }
@@ -39,6 +451,38 @@
                         "items": {
                             "$ref": "#/components/schemas/Verse"
                         }
+                    }
+                }
+            },
+            "SongsResponse": {
+                "required": [
+                    "data",
+                    "limit",
+                    "offset",
+                    "sortBy",
+                    "sortOrder"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Song"
+                        }
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sortBy": {
+                        "type": "string"
+                    },
+                    "sortOrder": {
+                        "type": "string"
                     }
                 }
             },
