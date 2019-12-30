@@ -7,7 +7,7 @@ class VerseRepository {
         const verses = await this.collection
             .aggregate([
                 {
-                    $unwind: '$verses'
+                    $unwind: '$verses',
                 },
                 {
                     $sample: {

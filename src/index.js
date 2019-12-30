@@ -7,7 +7,7 @@ const { config } = require('./utils/config')
 const {
     QuoteRepository,
     VerseRepository,
-    SongRepository
+    SongRepository,
 } = require('./repositories')
 
 const {
@@ -27,7 +27,7 @@ const app = express()
 
 const { Router } = express
 
-connect(config.application.db.uri).then(client => {
+connect(config.application.db.uri).then((client) => {
     const collection = client.db().collection('songs')
 
     /**
@@ -48,7 +48,7 @@ connect(config.application.db.uri).then(client => {
     const songController = new SongController({
         repository: new SongRepository({
             collection,
-        })
+        }),
     })
     songRouter
         .get('/', songController.getAllSongs)
@@ -70,7 +70,7 @@ connect(config.application.db.uri).then(client => {
     const verseController = new VerseController({
         repository: new VerseRepository({
             collection,
-        })
+        }),
     })
     verseRouter
         .get('/search/random', verseController.getRandomVerse)
@@ -82,7 +82,7 @@ connect(config.application.db.uri).then(client => {
     const quoteController = new QuoteController({
         repository: new QuoteRepository({
             collection,
-        })
+        }),
     })
     quoteRouter
         .get('/search/random', quoteController.getRandomQuote)

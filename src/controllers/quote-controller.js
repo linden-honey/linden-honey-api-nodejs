@@ -24,7 +24,7 @@ class QuoteController {
         const quotes = await this.repository.findQuotesByPhrase(phrase, pageable)
         res.json({
             data: quotes,
-            ...pageable
+            ...pageable,
         })
     }
 }

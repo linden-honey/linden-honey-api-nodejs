@@ -38,8 +38,8 @@ describe('Validation module', () => {
                 res = mock()
                 res = {
                     status: spy(() => ({
-                        send
-                    }))
+                        send,
+                    })),
                 }
                 next = spy()
             })

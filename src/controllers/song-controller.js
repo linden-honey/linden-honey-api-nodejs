@@ -17,7 +17,7 @@ class SongController {
         const songs = await this.repository.findSongsByTitle(title, pageable)
         res.json({
             data: songs,
-            ...pageable
+            ...pageable,
         })
     }
 
@@ -29,7 +29,7 @@ class SongController {
         const songs = await this.repository.findSongsByPhrase(phrase, pageable)
         res.json({
             data: songs,
-            ...pageable
+            ...pageable,
         })
     }
 
@@ -40,7 +40,7 @@ class SongController {
         const songs = await this.repository.getAllSongs(pageable)
         res.json({
             data: songs,
-            ...pageable
+            ...pageable,
         })
     }
 
@@ -74,7 +74,7 @@ class SongController {
         const { songId } = req.params
         const song = await this.repository.findSongById(songId)
         if (song) {
-            const quotes = [].concat(...song.verses.map(verse => verse.quotes))
+            const quotes = [].concat(...song.verses.map((verse) => verse.quotes))
             res.json(quotes)
         } else {
             res.status(404).send(MSG_ERROR_SONG_NOT_FOUND)

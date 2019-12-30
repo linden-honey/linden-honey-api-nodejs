@@ -37,27 +37,21 @@ class SongRepository {
             .toArray()
     }
 
-    findSongsByTitle = (title, pageable) => {
-        return this.findSongs({
-            text: title,
-            selector: 'title',
-            pageable: createPageable(pageable)
-        })
-    }
+    findSongsByTitle = (title, pageable) => this.findSongs({
+        text: title,
+        selector: 'title',
+        pageable: createPageable(pageable),
+    })
 
-    findSongsByPhrase = (phrase, pageable) => {
-        return this.findSongs({
-            text: phrase,
-            selector: 'verses.quotes.phrase',
-            pageable: createPageable(pageable)
-        })
-    }
+    findSongsByPhrase = (phrase, pageable) => this.findSongs({
+        text: phrase,
+        selector: 'verses.quotes.phrase',
+        pageable: createPageable(pageable),
+    })
 
-    findSongById = (id) => {
-        return this.collection.findOne({
-            _id: new ObjectId(id),
-        })
-    }
+    findSongById = (id) => this.collection.findOne({
+        _id: new ObjectId(id),
+    })
 
     getAllSongs = (pageable) => {
         const {
@@ -83,7 +77,7 @@ class SongRepository {
     getRandomSong = async () => {
         const songs = await this.collection
             .aggregate([
-                { $sample: { size: 1 } }
+                { $sample: { size: 1 } },
             ])
             .toArray()
         return songs && songs[0]
@@ -100,17 +94,17 @@ class SongRepository {
                         _id: new ObjectId(songId),
                         'verses.quotes.phrase': {
                             $regex: query,
-                            $options: 'i'
-                        }
-                    }
+                            $options: 'i',
+                        },
+                    },
                 },
                 { $group: { _id: '$verses.quotes.phrase' } },
                 {
                     $project: {
                         _id: false,
-                        phrase: '$_id'
-                    }
-                }
+                        phrase: '$_id',
+                    },
+                },
             ])
             .toArray()
     }
@@ -120,8 +114,8 @@ class SongRepository {
             .aggregate([
                 {
                     $match: {
-                        _id: new ObjectId(songId)
-                    }
+                        _id: new ObjectId(songId),
+                    },
                 },
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
@@ -129,9 +123,9 @@ class SongRepository {
                 {
                     $project: {
                         _id: false,
-                        phrase: '$verses.quotes.phrase'
-                    }
-                }
+                        phrase: '$verses.quotes.phrase',
+                    },
+                },
             ])
             .toArray()
         return quotes && quotes[0]
@@ -142,22 +136,21 @@ class SongRepository {
             .aggregate([
                 {
                     $match: {
-                        _id: new ObjectId(songId)
-                    }
+                        _id: new ObjectId(songId),
+                    },
                 },
                 { $unwind: '$verses' },
                 { $sample: { size: 1 } },
                 {
                     $project: {
                         _id: false,
-                        quotes: '$verses.quotes'
-                    }
-                }
+                        quotes: '$verses.quotes',
+                    },
+                },
             ])
             .toArray()
         return verses && verses[0]
     }
-
 }
 
 module.exports = SongRepository

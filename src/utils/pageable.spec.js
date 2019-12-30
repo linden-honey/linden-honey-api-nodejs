@@ -1,5 +1,5 @@
 const { describe, it } = require('mocha')
-const { expect, assert } = require('chai')
+const { expect } = require('chai')
 
 const { createPageable, defaultPageable } = require('./pageable')
 

@@ -9,6 +9,7 @@ const connect = async (uri) => {
         await client.connect()
     } catch (e) {
         console.error(`Couldn't establish connection to ${uri}`, e)
+        process.exit(1)
     }
 
     try {
@@ -32,7 +33,16 @@ const connect = async (uri) => {
     return client
 }
 
-const convertSortOrder = (order) => order === 'asc' ? 1 : order === 'desc' ? -1 : 1
+const convertSortOrder = (order) => {
+    switch (order) {
+        case 'asc':
+            return 1
+        case 'desc':
+            return -1
+        default:
+            return 1
+    }
+}
 
 module.exports = {
     connect,

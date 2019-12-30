@@ -6,7 +6,7 @@ class QuoteRepository {
         this.collection = collection
         this.defaultSort = {
             field: 'phrase',
-            order: 'asc'
+            order: 'asc',
         }
     }
 
@@ -19,9 +19,9 @@ class QuoteRepository {
                 {
                     $project: {
                         _id: false,
-                        phrase: '$verses.quotes.phrase'
-                    }
-                }
+                        phrase: '$verses.quotes.phrase',
+                    },
+                },
             ])
             .toArray()
         return quotes && quotes[0]
@@ -45,24 +45,27 @@ class QuoteRepository {
                         $match: {
                             'verses.quotes.phrase': {
                                 $regex: query,
-                                $options: 'i'
-                            }
-                        }
+                                $options: 'i',
+                            },
+                        },
                     },
                     { $group: { _id: '$verses.quotes.phrase' } },
                     {
                         $project: {
                             _id: false,
-                            phrase: '$_id'
-                        }
+                            phrase: '$_id',
+                        },
                     },
                     { $skip: offset },
                     { $limit: limit },
-                    { $sort: { [sortBy]: convertSortOrder(sortOrder) } }
+                    {
+                        $sort: {
+                            [sortBy]: convertSortOrder(sortOrder),
+                        },
+                    },
                 ])
                 .toArray()
     }
-
 }
 
 module.exports = QuoteRepository
