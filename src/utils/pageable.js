@@ -19,4 +19,5 @@ const createPageable = ({
 
 module.exports = {
     createPageable,
+    defaultPageable: Object.freeze(defaults),
 }
