@@ -32,8 +32,10 @@ module.exports = {
         {
             files: '*.spec.js',
             rules: {
-                'no-unused-expressions': 'off'
-            }
-        }
+                'no-unused-expressions': 'off',
+                'one-var': 'off',
+                'one-var-declaration-per-line': 'off',
+            },
+        },
     ]
 }
