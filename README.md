@@ -25,10 +25,6 @@
 
 ### Local
 
-The following environment variables should be exported before running:
-
-- `APPLICATION_DB_URI`
-
 Run application:
 
 ```bash
@@ -58,7 +54,7 @@ docker-compose up
 Bootstrap project excluding some services using docker-compose:
 
 ```bash
-docker-compose up  --scale [SERVICE=0...]
+docker-compose up --scale [SERVICE=0...]
 ```
 
 Stop and remove containers, networks, images:
