@@ -2,7 +2,6 @@ version: "3.7"
 
 services:
   db:
-    container_name: db
     image: bitnami/mongodb:4.2.2
     environment:
       MONGODB_USERNAME: linden-honey
@@ -17,7 +16,6 @@ services:
       - db_data:/bitnami
 
   app:
-    container_name: app
     image: lindenhoney/linden-honey:latest
     build: .
     depends_on:
