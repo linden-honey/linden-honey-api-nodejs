@@ -20,7 +20,7 @@
 
 - [Node](https://nodejs.org/)
 - [Express.js](https://expressjs.com/)
-- [Mongodb](https://www.mongodb.com/)
+- [MongoDB](https://www.mongodb.com/)
 
 ## Usage
 
