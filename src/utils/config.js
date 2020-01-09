@@ -1,13 +1,4 @@
-const getEnv = (key, defaultValue) => {
-    if (key === undefined) {
-        throw new Error("Missing 'key' argument!")
-    }
-    const hasValue = process.env[key] !== undefined
-    if (!hasValue && defaultValue === undefined) {
-        throw new Error(`"${key}" is required!`)
-    }
-    return hasValue ? process.env[key] : defaultValue
-}
+const { getEnv } = require('./env')
 
 const config = {
     application: {
@@ -26,7 +17,4 @@ const config = {
     },
 }
 
-module.exports = {
-    getEnv,
-    config: Object.freeze(config),
-}
+module.exports = Object.freeze(config)
