@@ -31,26 +31,14 @@ connect(config.application.db.uri).then((client) => {
     const collection = client.db().collection('songs')
 
     /**
-     * Declare documentation routes
-     */
-    const docsRouter = new Router()
-    const docsController = new DocsController({
-        spec: oas,
-    })
-    docsRouter.use('/', docsController.swaggerUiStatic)
-    docsRouter.get('/api-docs', docsController.getSpec)
-    docsRouter.get('/', docsController.getSwaggerUi)
-
-    /**
      * Declare song routes
      */
-    const songRouter = new Router()
     const songController = new SongController({
         repository: new SongRepository({
             collection,
         }),
     })
-    songRouter
+    const songRouter = new Router()
         .get('/', songController.getAllSongs)
         .get('/search/random', songController.getRandomSong)
         .get('/search/by-title', songController.findSongsByTitle)
@@ -66,35 +54,44 @@ connect(config.application.db.uri).then((client) => {
     /**
      * Declare verse routes
      */
-    const verseRouter = new Router()
     const verseController = new VerseController({
         repository: new VerseRepository({
             collection,
         }),
     })
-    verseRouter
+    const verseRouter = new Router()
         .get('/search/random', verseController.getRandomVerse)
 
     /**
      * Declare quote routes
      */
-    const quoteRouter = new Router()
     const quoteController = new QuoteController({
         repository: new QuoteRepository({
             collection,
         }),
     })
-    quoteRouter
+    const quoteRouter = new Router()
         .get('/search/random', quoteController.getRandomQuote)
         .get('/search/by-phrase', quoteController.findQuotesByPhrase)
+
+    /**
+     * Declare documentation routes
+     */
+    const docsController = new DocsController({
+        spec: oas,
+    })
+    const docsRouter = new Router()
+        .use('/', docsController.swaggerUiStatic)
+        .get('/api-docs', docsController.getSpec)
+        .get('/', docsController.getSwaggerUi)
 
     /**
      * Declare API routes
      */
     const apiRouter = new Router()
-    apiRouter.use('/songs', songRouter)
-    apiRouter.use('/verses', verseRouter)
-    apiRouter.use('/quotes', quoteRouter)
+        .use('/songs', songRouter)
+        .use('/verses', verseRouter)
+        .use('/quotes', quoteRouter)
 
     /**
      * Apply routes
