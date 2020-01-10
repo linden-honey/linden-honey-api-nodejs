@@ -467,7 +467,7 @@
                     "data": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Song"
+                            "$ref": "#/components/schemas/Preview"
                         }
                     },
                     "limit": {
