@@ -1,6 +1,18 @@
 const { ObjectId, convertSortOrder } = require('../utils/db')
 const { createPageable } = require('../utils/pageable')
 
+const renameField = (
+    oldName,
+    newName,
+    {
+        [oldName]: value,
+        ...others
+    },
+) => ({
+    [newName]: value,
+    ...others,
+})
+
 class SongRepository {
     constructor({ collection }) {
         this.collection = collection
@@ -37,6 +49,7 @@ class SongRepository {
                     },
                 },
             )
+            .map((song) => renameField('_id', 'id', song))
             .toArray()
     }
 
@@ -52,9 +65,12 @@ class SongRepository {
         pageable: createPageable(pageable),
     })
 
-    findSongById = (id) => this.collection.findOne({
-        _id: new ObjectId(id),
-    })
+    findSongById = async (id) => {
+        const song = await this.collection.findOne({
+            _id: new ObjectId(id),
+        })
+        return renameField('_id', 'id', song)
+    }
 
     getAllSongs = (pageable) => {
         const {
@@ -77,6 +93,7 @@ class SongRepository {
                     },
                 },
             )
+            .map((song) => renameField('_id', 'id', song))
             .toArray()
     }
 
@@ -89,6 +106,7 @@ class SongRepository {
                     },
                 },
             ])
+            .map((song) => renameField('_id', 'id', song))
             .toArray()
         return songs && songs[0]
     }
