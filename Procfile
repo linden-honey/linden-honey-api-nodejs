@@ -1,1 +1,1 @@
-web: yarn start 
+web: SERVER_PORT=$PORT npm start

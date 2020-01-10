@@ -1,35 +1,35 @@
-version: "3"
+version: "3.7"
 
 services:
   db:
-    container_name: linden-honey-db
-    image: bitnami/mongodb:latest
+    image: bitnami/mongodb:4.2.2
     environment:
-      - MONGODB_USERNAME=linden-honey
-      - MONGODB_PASSWORD=linden-honey
-      - MONGODB_DATABASE=linden-honey
+      MONGODB_USERNAME: linden-honey
+      MONGODB_PASSWORD: linden-honey
+      MONGODB_DATABASE: linden-honey
+    restart: on-failure
     ports:
       - 27017:27017
+    networks:
+      - internal
     volumes:
-      - linden-honey-db-data:/bitnami
-    networks:
-      - linden-honey-net
+      - db_data:/bitnami
+
   app:
-    container_name: linden-honey-app
+    image: lindenhoney/linden-honey:latest
     build: .
+    depends_on:
+      - db
     environment:
-     - LH_SERVER_PORT=8080
-     - LH_DB_URI=mongodb://linden-honey:linden-honey@db:27017/linden-honey
+      APPLICATION_DB_URI: mongodb://linden-honey:linden-honey@core_db:27017/linden-honey
     ports:
-     - "8080:8080"
+      - 8080:80
     networks:
-      - linden-honey-net
-    links:
-     - db
+      - internal
 
 volumes:
-  linden-honey-db-data:
+  db_data:
 
 networks:
-  linden-honey-net:
+  internal:
     driver: bridge

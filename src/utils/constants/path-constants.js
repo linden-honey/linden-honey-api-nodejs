@@ -1,6 +1,0 @@
-exports.ROOT = '/'
-exports.API = '/api'
-exports.API_SONGS = '/api/songs'
-exports.API_VERSES = '/api/verses'
-exports.API_QUOTES = '/api/quotes'
-exports.API_SCRAPER = '/api/scraper'

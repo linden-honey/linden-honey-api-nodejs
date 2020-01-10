@@ -1,112 +1,115 @@
-const autoBind = require('auto-bind')
+const { createPageable } = require('../utils/pageable')
 
 const MSG_ERROR_SONG_NOT_FOUND = 'Song not found'
 const MSG_ERROR_VERSE_NOT_FOUND = 'Verse not found'
 const MSG_ERROR_QUOTE_NOT_FOUND = 'Quote not found'
 
 class SongController {
-
     constructor({ repository }) {
         this.repository = repository
-        autoBind(this)
     }
 
-    async findSongsByTitle(ctx, next) {
-        const title = ctx.query.title
-        const pageable = {
-            page: ctx.query.page,
-            size: ctx.query.size,
-            order: ctx.query.order
-        }
-        ctx.body = await this.repository.findSongsByTitle(title, pageable)
-        return next()
+    findSongsByTitle = async (req, res) => {
+        const { title } = req.query
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
+        const songs = await this.repository.findSongsByTitle(title, pageable)
+        res.json({
+            data: songs,
+            ...pageable,
+        })
     }
 
-    async findSongsByPhrase(ctx, next) {
-        const phrase = ctx.query.phrase
-        const pageable = {
-            page: ctx.query.page,
-            size: ctx.query.size,
-            order: ctx.query.order
-        }
-        ctx.body = await this.repository.findSongsByPhrase(phrase, pageable)
-        return next()
+    findSongsByPhrase = async (req, res) => {
+        const { phrase } = req.query
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
+        const songs = await this.repository.findSongsByPhrase(phrase, pageable)
+        res.json({
+            data: songs,
+            ...pageable,
+        })
     }
 
-    async getAllSongs(ctx, next) {
-        const pageable = {
-            page: ctx.query.page,
-            size: ctx.query.size,
-            order: ctx.query.order
-        }
-        ctx.body = await this.repository.getAllSongs(pageable)
-        return next()
+    getAllSongs = async (req, res) => {
+        const sortBy = this.repository.defaultSort.field
+        const sortOrder = this.repository.defaultSort.order
+        const pageable = createPageable({ sortBy, sortOrder, ...req.query })
+        const songs = await this.repository.getAllSongs(pageable)
+        res.json({
+            data: songs,
+            ...pageable,
+        })
     }
 
-    async getSongById(ctx, next) {
-        const song = await this.repository.findSongById(ctx.params.songId)
+    getSongById = async (req, res) => {
+        const { songId } = req.params
+        const song = await this.repository.findSongById(songId)
         if (song) {
-            ctx.body = song
+            res.json(song)
         } else {
-            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+            res.status(404).send(MSG_ERROR_SONG_NOT_FOUND)
         }
-        return next()
     }
 
-    async getRandomSong(ctx) {
+    getRandomSong = async (_, res) => {
         const song = await this.repository.getRandomSong()
         if (song) {
-            ctx.body = song
+            res.json(song)
         } else {
-            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+            res.status(404).send(MSG_ERROR_SONG_NOT_FOUND)
         }
     }
 
-    async findQuotesFromSongByPhrase(ctx, next) {
-        const songId = ctx.params.songId
-        const phrase = ctx.query.phrase
-        ctx.body = await this.repository.findQuotesFromSongByPhrase(songId, phrase)
-        return next()
+    findQuotesFromSongByPhrase = async (req, res) => {
+        const { songId } = req.params
+        const { phrase } = req.query
+        const quotes = await this.repository.findQuotesFromSongByPhrase(songId, phrase)
+        res.json(quotes)
     }
 
-    async getQuotesFromSong(ctx, next) {
-        const song = await this.repository.findSongById(ctx.params.songId)
+    getQuotesFromSong = async (req, res) => {
+        const { songId } = req.params
+        const song = await this.repository.findSongById(songId)
         if (song) {
-            ctx.body = [].concat(...song.verses.map(verse => verse.quotes))
+            const quotes = [].concat(...song.verses.map((verse) => verse.quotes))
+            res.json(quotes)
         } else {
-            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+            res.status(404).send(MSG_ERROR_SONG_NOT_FOUND)
         }
-        return next()
     }
 
-    async getRandomQuoteFromSong(ctx, next) {
-        const quote = await this.repository.getRandomQuoteFromSong(ctx.params.songId)
+    getRandomQuoteFromSong = async (req, res) => {
+        const { songId } = req.params
+        const quote = await this.repository.getRandomQuoteFromSong(songId)
         if (quote) {
-            ctx.body = quote
+            res.json(quote)
         } else {
-            ctx.throw(404, MSG_ERROR_QUOTE_NOT_FOUND)
+            res.status(404).send(MSG_ERROR_QUOTE_NOT_FOUND)
         }
-        return next()
     }
 
-    async getVersesFromSong(ctx, next) {
-        const song = await this.repository.findSongById(ctx.params.songId)
+    getVersesFromSong = async (req, res) => {
+        const { songId } = req.params
+        const song = await this.repository.findSongById(songId)
         if (song) {
-            ctx.body = song.verses
+            const { verses } = song
+            res.json(verses)
         } else {
-            ctx.throw(404, MSG_ERROR_SONG_NOT_FOUND)
+            res.status(404).send(MSG_ERROR_SONG_NOT_FOUND)
         }
-        return next()
     }
 
-    async getRandomVerseFromSong(ctx, next) {
-        const verse = await this.repository.getRandomVerseFromSong(ctx.params.songId)
+    getRandomVerseFromSong = async (req, res) => {
+        const { songId } = req.params
+        const verse = await this.repository.getRandomVerseFromSong(songId)
         if (verse) {
-            ctx.body = verse
+            res.json(verse)
         } else {
-            ctx.throw(404, MSG_ERROR_VERSE_NOT_FOUND)
+            res.status(404).send(MSG_ERROR_VERSE_NOT_FOUND)
         }
-        return next()
     }
 }
 

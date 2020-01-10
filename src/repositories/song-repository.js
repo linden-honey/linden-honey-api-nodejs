@@ -1,74 +1,119 @@
-const { ObjectId } = require('../utils/db')
+const { ObjectId, convertSortOrder } = require('../utils/db')
+const { createPageable } = require('../utils/pageable')
+
+const renameField = (
+    oldName,
+    newName,
+    {
+        [oldName]: value,
+        ...others
+    },
+) => ({
+    [newName]: value,
+    ...others,
+})
 
 class SongRepository {
-    constructor({ db }) {
-        this.db = db
+    constructor({ collection }) {
+        this.collection = collection
+        this.defaultSort = {
+            field: 'title',
+            order: 'asc',
+        }
     }
 
-    findSongs({ text, selector, pageable = { page: 0, size: 20, order: 'asc' } }) {
+    findSongs = ({ text, selector, pageable }) => {
         const query = text && text.trim()
-        const page = pageable.page && parseInt(pageable.page) || 0
-        const size = pageable.size && parseInt(pageable.size) || 20
-        const skip = page * size
-        const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
-
-        return !query ? [] : this.db
-            .find({
-                [selector]: {
-                    $regex: query,
-                    $options: 'i'
-                }
-            })
-            .skip(skip)
-            .limit(size)
-            .sort({ 'title': order })
-            .select('_id title')
+        const {
+            limit,
+            offset,
+            sortBy = this.defaultSort.field,
+            sortOrder = this.defaultSort.order,
+        } = createPageable(pageable)
+        return !query ? [] : this.collection
+            .find(
+                {
+                    [selector]: {
+                        $regex: query,
+                        $options: 'i',
+                    },
+                },
+                {
+                    projection: {
+                        title: 1,
+                    },
+                    skip: offset,
+                    limit,
+                    sort: {
+                        [sortBy]: convertSortOrder(sortOrder),
+                    },
+                },
+            )
+            .map((song) => renameField('_id', 'id', song))
+            .toArray()
     }
 
-    findSongsByTitle(title, pageable = { page: 0, size: 20, order: 'asc' }) {
-        return this.findSongs({
-            text: title,
-            selector: 'title',
-            pageable
+    findSongsByTitle = (title, pageable) => this.findSongs({
+        text: title,
+        selector: 'title',
+        pageable: createPageable(pageable),
+    })
+
+    findSongsByPhrase = (phrase, pageable) => this.findSongs({
+        text: phrase,
+        selector: 'verses.quotes.phrase',
+        pageable: createPageable(pageable),
+    })
+
+    findSongById = async (id) => {
+        const song = await this.collection.findOne({
+            _id: new ObjectId(id),
         })
+        return renameField('_id', 'id', song)
     }
 
-    findSongsByPhrase(phrase, pageable = { page: 0, size: 20, order: 'asc' }) {
-        return this.findSongs({
-            text: phrase,
-            selector: 'verses.quotes.phrase',
-            pageable
-        })
+    getAllSongs = (pageable) => {
+        const {
+            limit,
+            offset,
+            sortBy = this.defaultSort.field,
+            sortOrder = this.defaultSort.order,
+        } = createPageable(pageable)
+        return this.collection
+            .find(
+                null,
+                {
+                    projection: {
+                        title: 1,
+                    },
+                    skip: offset,
+                    limit,
+                    sort: {
+                        [sortBy]: convertSortOrder(sortOrder),
+                    },
+                },
+            )
+            .map((song) => renameField('_id', 'id', song))
+            .toArray()
     }
 
-    findSongById(id) {
-        return this.db.findById(id)
-    }
-
-    getAllSongs(pageable = { page: 0, size: 20, order: 'asc' }) {
-        const page = pageable.page && parseInt(pageable.page) || 0
-        const size = pageable.size && parseInt(pageable.size) || 20
-        const skip = page * size
-        const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
-    
-        return this.db
-            .find()
-            .skip(skip)
-            .limit(size)
-            .sort({ title: order })
-            .select('_id title')
-    }
-    
-    async getRandomSong() {
-        const songs = await this.db.aggregate([
-            { $sample: { size: 1 } }
-        ])
+    getRandomSong = async () => {
+        const songs = await this.collection
+            .aggregate([
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
+            ])
+            .map((song) => renameField('_id', 'id', song))
+            .toArray()
         return songs && songs[0]
     }
-    
-    findQuotesFromSongByPhrase(songId, phrase) {
-        const query = phrase && phrase.trim()    
-        return !query ? [] : this.db
+
+    findQuotesFromSongByPhrase = (songId, phrase) => {
+        const query = phrase && phrase.trim()
+        return !query ? [] : this.collection
             .aggregate([
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
@@ -77,59 +122,70 @@ class SongRepository {
                         _id: new ObjectId(songId),
                         'verses.quotes.phrase': {
                             $regex: query,
-                            $options: 'i'
-                        }
-                    }
+                            $options: 'i',
+                        },
+                    },
                 },
-                { $group: { _id: '$verses.quotes.phrase' } },
                 {
                     $project: {
-                        _id: false,
-                        phrase: '$_id'
-                    }
-                }
+                        _id: 0,
+                        phrase: '$verses.quotes.phrase',
+                    },
+                },
             ])
-    }
-    
-    async getRandomQuoteFromSong(songId) {
-        const quotes = await this.db.aggregate([
-            {
-                $match: {
-                    _id: new ObjectId(songId)
-                }
-            },
-            { $unwind: '$verses' },
-            { $unwind: '$verses.quotes' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    phrase: '$verses.quotes.phrase'
-                }
-            }
-        ])
-        return quotes && quotes[0]
-    }
-    
-    async getRandomVerseFromSong(songId) {
-        const verses = await this.db.aggregate([
-            {
-                $match: {
-                    _id: new ObjectId(songId)
-                }
-            },
-            { $unwind: '$verses' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    quotes: '$verses.quotes'
-                }
-            }
-        ])
-        return verses && verses[0]
+            .toArray()
     }
 
+    getRandomQuoteFromSong = async (songId) => {
+        const quotes = await this.collection
+            .aggregate([
+                {
+                    $match: {
+                        _id: new ObjectId(songId),
+                    },
+                },
+                { $unwind: '$verses' },
+                { $unwind: '$verses.quotes' },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        phrase: '$verses.quotes.phrase',
+                    },
+                },
+            ])
+            .toArray()
+        return quotes && quotes[0]
+    }
+
+    getRandomVerseFromSong = async (songId) => {
+        const verses = await this.collection
+            .aggregate([
+                {
+                    $match: {
+                        _id: new ObjectId(songId),
+                    },
+                },
+                { $unwind: '$verses' },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        quotes: '$verses.quotes',
+                    },
+                },
+            ])
+            .toArray()
+        return verses && verses[0]
+    }
 }
 
 module.exports = SongRepository
