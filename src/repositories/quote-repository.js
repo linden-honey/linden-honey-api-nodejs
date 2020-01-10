@@ -15,10 +15,14 @@ class QuoteRepository {
             .aggregate([
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
-                { $sample: { size: 1 } },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
                 {
                     $project: {
-                        _id: false,
+                        _id: 0,
                         phrase: '$verses.quotes.phrase',
                     },
                 },
@@ -49,11 +53,10 @@ class QuoteRepository {
                             },
                         },
                     },
-                    { $group: { _id: '$verses.quotes.phrase' } },
                     {
                         $project: {
-                            _id: false,
-                            phrase: '$_id',
+                            _id: 0,
+                            phrase: '$verses.quotes.phrase',
                         },
                     },
                     { $skip: offset },

@@ -27,13 +27,16 @@ class SongRepository {
                     },
                 },
                 {
-                    _id: 1,
-                    title: 1,
+                    projection: {
+                        title: 1,
+                    },
+                    skip: offset,
+                    limit,
+                    sort: {
+                        [sortBy]: convertSortOrder(sortOrder),
+                    },
                 },
             )
-            .skip(offset)
-            .limit(limit)
-            .sort({ [sortBy]: convertSortOrder(sortOrder) })
             .toArray()
     }
 
@@ -64,20 +67,27 @@ class SongRepository {
             .find(
                 null,
                 {
-                    _id: 1,
-                    title: 1,
+                    projection: {
+                        title: 1,
+                    },
+                    skip: offset,
+                    limit,
+                    sort: {
+                        [sortBy]: convertSortOrder(sortOrder),
+                    },
                 },
             )
-            .skip(offset)
-            .limit(limit)
-            .sort({ [sortBy]: convertSortOrder(sortOrder) })
             .toArray()
     }
 
     getRandomSong = async () => {
         const songs = await this.collection
             .aggregate([
-                { $sample: { size: 1 } },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
             ])
             .toArray()
         return songs && songs[0]
@@ -98,11 +108,10 @@ class SongRepository {
                         },
                     },
                 },
-                { $group: { _id: '$verses.quotes.phrase' } },
                 {
                     $project: {
-                        _id: false,
-                        phrase: '$_id',
+                        _id: 0,
+                        phrase: '$verses.quotes.phrase',
                     },
                 },
             ])
@@ -119,10 +128,14 @@ class SongRepository {
                 },
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
-                { $sample: { size: 1 } },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
                 {
                     $project: {
-                        _id: false,
+                        _id: 0,
                         phrase: '$verses.quotes.phrase',
                     },
                 },
@@ -140,10 +153,14 @@ class SongRepository {
                     },
                 },
                 { $unwind: '$verses' },
-                { $sample: { size: 1 } },
+                {
+                    $sample: {
+                        size: 1,
+                    },
+                },
                 {
                     $project: {
-                        _id: false,
+                        _id: 0,
                         quotes: '$verses.quotes',
                     },
                 },

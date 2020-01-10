@@ -6,9 +6,7 @@ class VerseRepository {
     getRandomVerse = async () => {
         const verses = await this.collection
             .aggregate([
-                {
-                    $unwind: '$verses',
-                },
+                { $unwind: '$verses' },
                 {
                     $sample: {
                         size: 1,
@@ -16,7 +14,7 @@ class VerseRepository {
                 },
                 {
                     $project: {
-                        _id: false,
+                        _id: 0,
                         quotes: '$verses.quotes',
                     },
                 },
