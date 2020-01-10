@@ -2,7 +2,7 @@ const express = require('express')
 require('express-async-errors')// patch to support promise rejection
 
 const { connect, ObjectId } = require('./utils/db')
-const { config } = require('./utils/config')
+const config = require('./utils/config')
 
 const {
     QuoteRepository,
