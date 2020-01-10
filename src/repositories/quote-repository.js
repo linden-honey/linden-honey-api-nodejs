@@ -1,56 +1,74 @@
+const { convertSortOrder } = require('../utils/db')
+const { createPageable } = require('../utils/pageable')
+
 class QuoteRepository {
-    constructor({ db }) {
-        this.db = db
+    constructor({ collection }) {
+        this.collection = collection
+        this.defaultSort = {
+            field: 'phrase',
+            order: 'asc',
+        }
     }
 
-    async getRandomQuote() {
-        const quotes = await this.db.aggregate([
-            { $unwind: '$verses' },
-            { $unwind: '$verses.quotes' },
-            { $sample: { size: 1 } },
-            {
-                $project: {
-                    _id: false,
-                    phrase: '$verses.quotes.phrase'
-                }
-            }
-        ])
-        return quotes && quotes[0]
-    }
-
-
-    findQuotesByPhrase(phrase, pageable = { page: 0, size: 20, order: "asc" }) {
-        const query = phrase && phrase.trim()
-        const page = pageable.page && parseInt(pageable.page) || 0
-        const size = pageable.size && parseInt(pageable.size) || 20
-        const skip = page * size
-        const order = pageable.order === 'asc' ? 1 : pageable.order === 'desc' ? -1 : 1
-
-        return !query ? [] : this.db
+    getRandomQuote = async () => {
+        const quotes = await this.collection
             .aggregate([
                 { $unwind: '$verses' },
                 { $unwind: '$verses.quotes' },
                 {
-                    $match: {
-                        'verses.quotes.phrase': {
-                            $regex: query,
-                            $options: 'i'
-                        }
-                    }
+                    $sample: {
+                        size: 1,
+                    },
                 },
-                { $group: { _id: '$verses.quotes.phrase' } },
                 {
                     $project: {
-                        _id: false,
-                        phrase: '$_id'
-                    }
+                        _id: 0,
+                        phrase: '$verses.quotes.phrase',
+                    },
                 },
-                { $skip: skip },
-                { $limit: size },
-                { $sort: { phrase: order } }
             ])
+            .toArray()
+        return quotes && quotes[0]
     }
 
+    findQuotesByPhrase = (phrase, pageable) => {
+        const query = phrase && phrase.trim()
+        const {
+            limit,
+            offset,
+            sortBy = this.defaultSort.field,
+            sortOrder = this.defaultSort.order,
+        } = createPageable(pageable)
+        return !query
+            ? []
+            : this.collection
+                .aggregate([
+                    { $unwind: '$verses' },
+                    { $unwind: '$verses.quotes' },
+                    {
+                        $match: {
+                            'verses.quotes.phrase': {
+                                $regex: query,
+                                $options: 'i',
+                            },
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            phrase: '$verses.quotes.phrase',
+                        },
+                    },
+                    { $skip: offset },
+                    { $limit: limit },
+                    {
+                        $sort: {
+                            [sortBy]: convertSortOrder(sortOrder),
+                        },
+                    },
+                ])
+                .toArray()
+    }
 }
 
 module.exports = QuoteRepository

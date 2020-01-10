@@ -1,87 +1,105 @@
-const Koa = require('koa')
-const logger = require('koa-logger')
-const Router = require('koa-router')
+const express = require('express')
+require('express-async-errors')// patch to support promise rejection
 
-const { Song } = require('./models/mongoose')
-const { QuoteRepository, VerseRepository, SongRepository } = require('./repositories')
-const { GrobScraper } = require('./services')
-const { db, config } = require('./utils')
-const { PATH } = require('./utils/constants')
+const { connect, ObjectId } = require('./utils/db')
+const config = require('./utils/config')
+
 const {
-    RootController,
+    QuoteRepository,
+    VerseRepository,
+    SongRepository,
+} = require('./repositories')
+
+const {
+    DocsController,
     QuoteController,
     VerseController,
     SongController,
-    ScraperController
 } = require('./controllers')
 
-const server = module.exports = new Koa()
+const {
+    validation,
+} = require('./middleware')
 
-const rootRouter = Router({ prefix: PATH.ROOT })
-const songRouter = Router({ prefix: PATH.API_SONGS })
-const verseRouter = Router({ prefix: PATH.API_VERSES })
-const quoteRouter = Router({ prefix: PATH.API_QUOTES })
-const scraperRouter = Router({ prefix: PATH.API_SCRAPER })
+const { oas } = require('./docs')
 
-const paramValidationMiddleware = (validator) => (param, ctx, next) => {
-    if (!validator(param)) {
-        ctx.throw(400, 'Invalid id')
-    }
-    return next()
-}
+const app = express()
 
-rootRouter.get(PATH.ROOT, RootController.getRootPageHandler(config.get('LH:SERVER:MESSAGES:WELCOME')))
+const { Router } = express
 
-const songController = new SongController({
-    repository: new SongRepository({ db: Song })
-})
-songRouter
-    .get('/', songController.getAllSongs)
-    .get('/search/random', songController.getRandomSong)
-    .get('/search/by-title', songController.findSongsByTitle)
-    .get('/search/by-phrase', songController.findSongsByPhrase)
-    .param('songId', paramValidationMiddleware(db.isValidId))
-    .get('/:songId', songController.getSongById)
-    .get('/:songId/quotes', songController.getQuotesFromSong)
-    .get('/:songId/quotes/search/random', songController.getRandomQuoteFromSong)
-    .get('/:songId/quotes/search/by-phrase', songController.findQuotesFromSongByPhrase)
-    .get('/:songId/verses', songController.getVersesFromSong)
-    .get('/:songId/verses/search/random', songController.getRandomVerseFromSong)
+connect(config.application.db.uri).then((client) => {
+    const collection = client.db().collection('songs')
 
-const verseController = new VerseController({
-    repository: new VerseRepository({ db: Song })
-})
-verseRouter
-    .get('/search/random', verseController.getRandomVerse)
+    /**
+     * Declare song routes
+     */
+    const songController = new SongController({
+        repository: new SongRepository({
+            collection,
+        }),
+    })
+    const songRouter = new Router()
+        .get('/', songController.getAllSongs)
+        .get('/search/random', songController.getRandomSong)
+        .get('/search/by-title', songController.findSongsByTitle)
+        .get('/search/by-phrase', songController.findSongsByPhrase)
+        .use('/:songId', validation.createValidator(({ params: { songId } }) => songId, ObjectId.isValid, 'Invalid id!'))
+        .get('/:songId', songController.getSongById)
+        .get('/:songId/quotes', songController.getQuotesFromSong)
+        .get('/:songId/quotes/search/random', songController.getRandomQuoteFromSong)
+        .get('/:songId/quotes/search/by-phrase', songController.findQuotesFromSongByPhrase)
+        .get('/:songId/verses', songController.getVersesFromSong)
+        .get('/:songId/verses/search/random', songController.getRandomVerseFromSong)
 
-const quoteController = new QuoteController({
-    repository: new QuoteRepository({ db: Song })
-})
-quoteRouter
-    .get('/search/random', quoteController.getRandomQuote)
-    .get('/search/by-phrase', quoteController.findQuotesByPhrase)
+    /**
+     * Declare verse routes
+     */
+    const verseController = new VerseController({
+        repository: new VerseRepository({
+            collection,
+        }),
+    })
+    const verseRouter = new Router()
+        .get('/search/random', verseController.getRandomVerse)
 
-scraperRouter.use((ctx, next) => {
-    if (JSON.parse(config.get('LH:SCRAPERS:ENABLED'))) {
-        return next()
-    }
-})
-scraperRouter
-    .get('/:scraperId/songs', ScraperController.getSongs([
-        new GrobScraper({ url: config.get('LH:SCRAPERS:GROB:URL') })
-    ]))
+    /**
+     * Declare quote routes
+     */
+    const quoteController = new QuoteController({
+        repository: new QuoteRepository({
+            collection,
+        }),
+    })
+    const quoteRouter = new Router()
+        .get('/search/random', quoteController.getRandomQuote)
+        .get('/search/by-phrase', quoteController.findQuotesByPhrase)
 
-server.use(logger())
-server.use(rootRouter.middleware())
-server.use(songRouter.middleware())
-server.use(verseRouter.middleware())
-server.use(quoteRouter.middleware())
-server.use(scraperRouter.middleware())
+    /**
+     * Declare documentation routes
+     */
+    const docsController = new DocsController({
+        spec: oas,
+    })
+    const docsRouter = new Router()
+        .use('/', docsController.swaggerUiStatic)
+        .get('/api-docs', docsController.getSpec)
+        .get('/', docsController.getSwaggerUi)
 
-server.listen(config.get('LH:SERVER:PORT'), () => {
-    db.connect({ url: config.get('LH:DB:URI') })
-        .catch(error => {
-            console.log('Couldn\'t create Mongoose connection:', error.message)
-        })
-    console.log(`${config.get('LH:SERVER:NAME')} application started!`)
+    /**
+     * Declare API routes
+     */
+    const apiRouter = new Router()
+        .use('/songs', songRouter)
+        .use('/verses', verseRouter)
+        .use('/quotes', quoteRouter)
+
+    /**
+     * Apply routes
+     */
+    app.use('/', docsRouter)
+    app.use(config.application.rest.basePath, apiRouter)
+
+    app.listen(config.server.port, () => {
+        console.log(`Application is started on ${config.server.port} port!`)
+    })
 })
