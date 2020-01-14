@@ -17,9 +17,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/SongsResponse"
-                                    }
+                                    "$ref": "#/components/schemas/SongsResponse"
                                 }
                             }
                         }
@@ -39,9 +37,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/Song"
-                                    }
+                                    "$ref": "#/components/schemas/Song"
                                 }
                             }
                         }
@@ -71,9 +67,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/SongsResponse"
-                                    }
+                                    "$ref": "#/components/schemas/SongsResponse"
                                 }
                             }
                         }
@@ -103,9 +97,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/SongsResponse"
-                                    }
+                                    "$ref": "#/components/schemas/SongsResponse"
                                 }
                             }
                         }
@@ -322,9 +314,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/Verse"
-                                    }
+                                    "$ref": "#/components/schemas/Verse"
                                 }
                             }
                         }
@@ -344,9 +334,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/Quote"
-                                    }
+                                    "$ref": "#/components/schemas/Quote"
                                 }
                             }
                         }
