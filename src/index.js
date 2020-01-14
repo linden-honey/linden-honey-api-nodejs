@@ -21,7 +21,7 @@ const {
     validation,
 } = require('./middleware')
 
-const { oas } = require('./docs')
+const { openapi } = require('./docs')
 
 const app = express()
 
@@ -78,7 +78,7 @@ connect(config.application.db.uri).then((client) => {
      * Declare documentation routes
      */
     const docsController = new DocsController({
-        spec: oas,
+        spec: openapi,
     })
     const docsRouter = new Router()
         .use('/', docsController.swaggerUiStatic)
