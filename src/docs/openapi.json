@@ -11,15 +11,53 @@
                     "song-controller"
                 ],
                 "operationId": "getSongs",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },
+                    {
+                        "name": "sortOrder",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "default response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/SongsResponse"
-                                    }
+                                    "$ref": "#/components/schemas/SongsResponse"
                                 }
                             }
                         }
@@ -39,9 +77,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/Song"
-                                    }
+                                    "$ref": "#/components/schemas/Song"
                                 }
                             }
                         }
@@ -63,6 +99,44 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },
+                    {
+                        "name": "sortOrder",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
                     }
                 ],
                 "responses": {
@@ -71,9 +145,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/SongsResponse"
-                                    }
+                                    "$ref": "#/components/schemas/SongsResponse"
                                 }
                             }
                         }
@@ -95,6 +167,44 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },
+                    {
+                        "name": "sortOrder",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
                     }
                 ],
                 "responses": {
@@ -103,9 +213,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/SongsResponse"
-                                    }
+                                    "$ref": "#/components/schemas/SongsResponse"
                                 }
                             }
                         }
@@ -322,9 +430,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/Verse"
-                                    }
+                                    "$ref": "#/components/schemas/Verse"
                                 }
                             }
                         }
@@ -344,9 +450,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "schema": {
-                                        "$ref": "#/components/schemas/Quote"
-                                    }
+                                    "$ref": "#/components/schemas/Quote"
                                 }
                             }
                         }
@@ -367,6 +471,44 @@
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "20"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "phrase"
+                        }
+                    },
+                    {
+                        "name": "sortOrder",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
                         }
                     }
                 ],

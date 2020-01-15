@@ -21,7 +21,7 @@ services:
     depends_on:
       - db
     environment:
-      APPLICATION_DB_URI: mongodb://linden-honey:linden-honey@core_db:27017/linden-honey
+      APPLICATION_DB_URI: mongodb://linden-honey:linden-honey@db:27017/linden-honey
     ports:
       - 8080:80
     networks:
