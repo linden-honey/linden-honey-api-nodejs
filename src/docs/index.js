@@ -1,1 +1,1 @@
-exports.oas = require('./oas.json')
+exports.openapi = require('./openapi.json')

@@ -9,7 +9,6 @@ const getEnv = (key, defaultValue) => {
     return hasValue ? process.env[key] : defaultValue
 }
 
-
 module.exports = {
     getEnv,
 }

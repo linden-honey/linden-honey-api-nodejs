@@ -23,6 +23,7 @@ describe('Env module', () => {
         })
         it('Should throw an Error - required key', () => {
             const key = `KEY_${new Date().getMilliseconds()}`
+            delete process.env[key]
             expect(() => getEnv(key)).to.throw(`"${key}" is required!`)
         })
     })
