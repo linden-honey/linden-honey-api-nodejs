@@ -1,9 +1,6 @@
 FROM node:12-alpine
 
-LABEL name="linden-honey" \
-      maintainer="aliaksandr.babai@gmail.com"
-
-ARG WORK_DIR=/linden-honey
+ARG WORK_DIR=/app
 WORKDIR $WORK_DIR
 
 ENV SERVER_PORT=80 \
