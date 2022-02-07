@@ -16,7 +16,7 @@ services:
       - db_data:/bitnami
 
   app:
-    image: lindenhoney/linden-honey:latest
+    image: lindenhoney/linden-honey-api-nodejs:latest
     build: .
     depends_on:
       - db

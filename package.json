@@ -1,7 +1,7 @@
 {
-  "name": "linden-honey",
-  "version": "1.5.4",
-  "description": "RESTful Web Service with lyrics powered by Express.js",
+  "name": "linden-honey-api",
+  "version": "1.5.5",
+  "description": "Service with lyrics API powered by Express.js",
   "main": "src/index.js",
   "scripts": {
     "start": "node src",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/linden-honey/linden-honey.git"
+    "url": "git+https://github.com/linden-honey/linden-honey-api-nodejs.git"
   },
   "author": "Alexander Babai <aliaksandr.babai@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/linden-honey/linden-honey/issues"
+    "url": "https://github.com/linden-honey/linden-honey-api-nodejs/issues"
   },
-  "homepage": "https://github.com/linden-honey/linden-honey#readme",
+  "homepage": "https://github.com/linden-honey/linden-honey-api-nodejs#readme",
   "dependencies": {
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
