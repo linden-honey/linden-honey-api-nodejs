@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/linden-honey/linden-honey.git"
+    "url": "git+https://github.com/linden-honey/linden-honey-nodejs.git"
   },
   "author": "Alexander Babai <aliaksandr.babai@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/linden-honey/linden-honey/issues"
+    "url": "https://github.com/linden-honey/linden-honey-nodejs/issues"
   },
-  "homepage": "https://github.com/linden-honey/linden-honey#readme",
+  "homepage": "https://github.com/linden-honey/linden-honey-nodejs#readme",
   "dependencies": {
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
