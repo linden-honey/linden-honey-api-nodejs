@@ -10,8 +10,6 @@ services:
     restart: on-failure
     ports:
       - 27017:27017
-    networks:
-      - internal
     volumes:
       - db_data:/bitnami
 
@@ -24,12 +22,6 @@ services:
       APPLICATION_DB_URI: mongodb://linden-honey:linden-honey@db:27017/linden-honey
     ports:
       - 8080:80
-    networks:
-      - internal
 
 volumes:
   db_data:
-
-networks:
-  internal:
-    driver: bridge
