@@ -1,4 +1,4 @@
-# Linden Honey
+# Linden Honey API
 
 > Service with lyrics API powered by Express.js
 
